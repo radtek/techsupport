@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process key="techsupport2" name="techsupport" version="6" xmlns="http://jbpm.org/4.4/jpdl">
+<process key="techsupport2" name="techsupport" version="7" xmlns="http://jbpm.org/4.4/jpdl">
    <start g="34,16,48,48" name="start1">
       <transition to="ce_appr"/>
    </start>
@@ -22,22 +22,27 @@
    	  <description>公司审批/总工审批</description>
       <transition to="ce_appr_condition"/>
    </task>
-   <task candidate-users="#{deptApprovalUsers}" form="/business/techSupport/deptApproval/deptApproval.jsp" g="58,357,175,52" name="tech_department_appr">
-      <description>部门审批</description>
+   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="58,357,175,52" name="tech_department_appr">
+      <description>技术部门审批</description>
+      <assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
+      	<field name="department_approval_type" >
+      		<string value="tech_appr"/>
+      	</field>
+      </assignment-handler>
       <transition to="join1"/>
    </task>
-   <decision expr="#{ceApprovalCode == approvalCodePassed ? 'department_appr':'end'}" g="25,613,48,48" name="ce_appr_condition">
+   <decision expr="#{ceApprovalCode == approvalCodePassed ? 'pass':'nopass'}" g="25,613,48,48" name="ce_appr_condition">
    	  <description>公司审批条件/总工审批条件</description>
-      <transition g="-62,-25" name="end" to="end"/>
-      <transition g="-85,-25" name="department_appr"/>
+      <transition g="-62,-25" name="nopass" to="end"/>
+      <transition g="-19,-19" name="pass" to="department_appr_condition"/>
    </decision>
-   <decision expr="#{ deptApprovalCode == approvalCodePassed  ? 'tracking_appr' : 'ce_appr' }" g="179,62,48,48" name="department_appr_condition">
+   <decision expr="#{ techDeptApprResult &amp;&amp; productDeptApprResult ? 'tracking_appr' : 'ce_appr' }" g="117,42,48,48" name="department_appr">
    	  <description>部门审批条件</description>
       <transition g="-53,-15" name="ce_appr" to="ce_appr"/>
-      <transition g="-65,-69" name="tracking_appr" to="exception_tracking_fork"/>
+      <transition g="-65,-69" name="tracking_appr" to="updateStatusToGoing"/>
    </decision>
    
-   <fork g="248,86,100,60" name="exception_tracking_fork">
+   <fork g="298,59,100,60" name="exception_tracking_fork">
    	<description>例外追踪处理分支</description>
    	<transition to="tracking_appr"/>
    	<transition to="exception_process"/>
@@ -52,20 +57,27 @@
       <description>结束例外处理分支</description>
       <transition to="feedback"/>
    </join>
-   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/reassign_depart/reassign_depart.jsp" g="278,2,155,52" name="reassign_depart">
+   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/reassign_depart/reassign_depart.jsp" g="421,10,155,52" name="reassign_depart">
       <transition to="reassign_depart_condition"/>
    </task>
-   <task candidate-users="#{deptApprovalUsers}" form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="390,92,150,52" name="reassgin_stleader">
+   <task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="519,97,150,52" name="reassgin_stleader">
    	  <description>重新指派支持单负责人</description>
+   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"></assignment-handler>
       <transition to="reassign_stleader_condition"/>
    </task>
-   <decision expr="#{reassign_stleader_repeat}" g="731,57,48,48" name="reassign_stleader_condition">
-      <transition g="762,146:-151,-25" name="to_reassgin_stleader" to="reassgin_stleader"/>
+   <decision expr="#{reassign_stleader_repeat}" g="791,55,48,48" name="reassign_stleader_condition">
+      <transition g="762,146:-67,10" name="to_reassgin_stleader" to="reassgin_stleader"/>
    </decision>
-   <decision expr="#{reassign_depart_repeat}" g="571,7,48,48" name="reassign_depart_condition">
-      <transition g="520,77:-141,-25" name="to reassign_depart" to="reassign_depart"/>
+   <decision expr="#{reassign_depart_repeat}" g="720,8,48,48" name="reassign_depart_condition">
+      <transition g="631,75:-45,3" name="to reassign_depart" to="reassign_depart"/>
    </decision>
-   <task g="249,358,195,52" name="product_department_appr">
+   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="249,358,195,52" name="product_department_appr">
+      <description>产品方案部审批</description>
+   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
+      	<field name="department_approval_type">
+      		<string value="product_appr"/>
+      	</field>
+      </assignment-handler>
       <transition to="join1"/>
    </task>
    <fork g="165,449,48,48" name="fork1">
@@ -73,12 +85,24 @@
       </transition>
       <transition to="product_department_appr"/>
    </fork>
-   <join g="165,197,48,48" name="join1">
-      <transition to="department_appr_condition"/>
+   <join g="104,185,48,48" name="join1">
+      <transition to="department_appr"/>
    </join>
-   <decision g="140,576,48,48">
-      <transition name="tech_appr,product_appr" to="fork1" g="-5,-20"/>
-      <transition name="tech_appr" to="tech_department_appr" g="-51,-8"/>
-      <transition name="product_appr" to="product_department_appr" g="-40,0"/>
+   <decision g="128,543,48,48" name="department_appr_condition">
+   	  <description>部门审批条件判断，是不是多部门审批</description>
+   	  <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
+      <transition g="-5,-20" name="both" to="fork1"/>
+      <transition g="-51,-8" name="tech_appr" to="tech_department_appr"/>
+      <transition g="-40,0" name="product_appr" to="product_department_appr"/>
    </decision>
+   <java name="updateStatusToGoing" g="139,143,168,52" class="com.aisino2.techsupport.workflow.autotask" method="updateStatus">
+   	  <description>在完成部门审批后把支持单状态改为进行中</description>
+   	  <field name="st_status" type="java.lang.String">
+   	  	<string value="going"/>
+   	  </field>
+   	  <field name="worksheet_id" type="java.lang.Integer">
+   	  	<object value="#{worksheetno}"/>
+   	  </field>
+      <transition to="exception_tracking_fork"/>
+   </java>
 </process>
