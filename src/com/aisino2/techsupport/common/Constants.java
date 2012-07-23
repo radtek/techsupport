@@ -80,6 +80,10 @@ public class Constants {
 	public static String ST_SMS_ROLE_STATUS_DICT_CODE="dm_ts_role_status";
 	//流程环节字典
 	public static String ST_WORKFLOW_NAME_DICT_CODE = "dm_ts_proc";
+	/**
+	 * 部门审批角色类型
+	 */
+	public static String ST_DEPART_APPR_TYPE_DICT_CODE = "dm_depart_appr_type";
 //	技术支持单角色信息
 //	填报人
 	public static String ST_ROLE_NAME_APPLICANT;
