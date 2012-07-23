@@ -50,8 +50,9 @@ public class CeApprovalServiceImpl extends BaseService implements
 //		流程控制
 //		当提交的技术支持单，在本环节重新对单位做出了指派的时候，那么主要更新指派信息
 		Map<String, Object> candidate_users=new HashMap<String, Object>();
-		List<Department> deptlist= st.getSupportDeptList();
-		candidate_users.putAll(workflow.setDeptAssigneeVariable(deptlist));
+//		取消对部门审批人的指派，指派改在具体的部门指派的监听器里面进行
+//		List<Department> deptlist= st.getSupportDeptList();
+//		candidate_users.putAll(workflow.setDeptAssigneeVariable(deptlist));
 		Map<String, Object> parammap=new HashMap<String, Object>();
 		parammap.put("ceApprovalCode", tracking.getApprovalCode());
 		//debug
