@@ -217,7 +217,8 @@ public class WorkflowUtil {
 		return var;
 	}
 
-	// add 级联找出符合要求的二级审核候选人
+	// add 级联找出符合要求的二级审核候选人 ##废弃
+	@Deprecated
 	private StringBuffer findAssigneeDeptUsersIdByDepartment(Department department) {
 		StringBuffer assigneeDeptUsersId = new StringBuffer();
 		User user = new User();
@@ -253,6 +254,8 @@ public class WorkflowUtil {
 		
 		return assigneeDeptUsersId;
 	}
+	
+	@Deprecated
 	public  Map<String, Object> setDeptAssigneeVariable(
 			List<Department> asssigneeDeptList) {
 		Map<String, Object> params = new HashMap<String, Object>();
