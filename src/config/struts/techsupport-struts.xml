@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  <!-- 技术支持单ACTION -->
+  <package name="techsupport" extends="json-default" namespace="/techsupport">
+  	<!-- 填报申请 -->
+  	<action name="*_apply" method="{1}" class="ApplyAction">
+  		<result  type="json">
+  		</result>
+  	</action>
+  	
+<!--   	总工审核 -->
+  	<action name="*_ceApproval" method="{1}" class="CeApprovalAction">
+  		<result type="json"></result>
+  	</action>
+  	
+<!--   	部门审核 -->
+	<action name="*_deptApproval" method="{1}" class="DeptApprovalAction">
+		<result type="json"></result>
+	</action>
+	<!-- 上传 -->
+	<action name="common_upload" class="TSCommonAction" method="uploadFile">
+		<result type="json"></result>
+  	</action>
+  	<!-- 公用调用 -->
+  	<action name="*_tscommon" class="TSCommonAction" method="{1}">
+  		<result type="json">
+  		</result>
+  	</action>
+
+  	<!-- 待办工作单 -->
+  	<action name="*_worksheet" class="WorksheetAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	
+  	<!-- 追踪批复 进展信息 -->
+  	<action name="*_tracking" class="TrackingAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	
+  	<!-- 反馈确认 -->
+  	<action name="*_feedback" class="FeedbackAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	
+  	<!-- 归档 -->
+  	<action name="*_archive" class="ArchiveAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	
+<!--   	短信提示 -->
+	<action name="*_smsHint" class="smsHintAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+<!--   	基本支持单视图 -->
+  	<action name="*_supportTicket" class="supportTicketAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	<!--   	发送邮件 -->
+  	<action name="*_mail" class="mailAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	<!--   	督办进展 -->
+  	<action name="*_supervision" class="SupervisionAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+<!--   	支持变更 -->
+  	<action name="*_supportchange" class="SupportChangeAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  	<!--导出数据并发送邮件 -->
+  	<action name="*_word" class="wordAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+<!--   	例外处理 -->
+  	<action name="*_exception" class="ExceptionAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+  </package>
+</struts>
