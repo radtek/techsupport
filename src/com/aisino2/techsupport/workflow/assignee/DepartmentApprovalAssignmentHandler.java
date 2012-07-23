@@ -8,6 +8,11 @@ import com.aisino2.sysadmin.service.IRoleService;
 import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.techsupport.service.SupportTicketService;
 
+/**
+ * 部门审批指派处理
+ * @author hooxin
+ *
+ */
 public class DepartmentApprovalAssignmentHandler implements AssignmentHandler {
 	/**
 	 * 部门审批角色类型
