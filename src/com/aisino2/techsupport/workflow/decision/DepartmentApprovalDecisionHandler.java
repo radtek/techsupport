@@ -11,7 +11,7 @@ import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.workflow.WorkflowUtil;
 
 @Component
-public class CeApprovalDecisionHandler implements DecisionHandler {
+public class DepartmentApprovalDecisionHandler implements DecisionHandler {
 	private WorkflowUtil util;
 	private SupportTicketService stService;
 	
