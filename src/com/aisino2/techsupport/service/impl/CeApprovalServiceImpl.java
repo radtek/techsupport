@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class CeApprovalServiceImpl extends BaseService implements
 	
 	private static Logger log=Logger.getLogger(CeApprovalServiceImpl.class);
 	
-	public void insertCeApproval(String taskId, SupportTicket st,Tracking tracking) {
+	public void insertCeApproval(String taskId, SupportTicket st,Tracking tracking,ServletContext servletContext) {
 //		如果不通过，设置状态为公司审批未通过
 		if(tracking.getApprovalCode().equals(Constants.ST_APPR_TYPE_APPR_NOPASS))
 			st.setStStatus(Constants.ST_STATUS_COMPANY_APPRAVAL_NOPASS);
@@ -56,7 +57,8 @@ public class CeApprovalServiceImpl extends BaseService implements
 		Map<String, Object> parammap=new HashMap<String, Object>();
 		parammap.put("ceApprovalCode", tracking.getApprovalCode());
 		//debug
-		
+		//设置当前的应用程序容器
+		parammap.put("serveltContext", servletContext);
 //		流程提交
 		workflow.workflowNext(workflow.setVariable(taskId,null,candidate_users ,parammap));
 	}
