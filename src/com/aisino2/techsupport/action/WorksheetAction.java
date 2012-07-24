@@ -43,6 +43,79 @@ public class WorksheetAction extends PageAction {
 	private int totalrows = 0;
 	
 	/**
+	 * 调用返回结果
+	 */
+	private int returnNo = 0;
+	/**
+	 * 调用返回消息
+	 */
+	private String returnMsg = "";
+	/**
+	 *  部署ID
+	 */
+	private String deploy_id = "";
+	
+	public String getDeploy_id() {
+		return deploy_id;
+	}
+
+	public void setDeploy_id(String deploy_id) {
+		this.deploy_id = deploy_id;
+	}
+
+	public int getReturnNo() {
+		return returnNo;
+	}
+
+	public void setReturnNo(int returnNo) {
+		this.returnNo = returnNo;
+	}
+
+	public String getReturnMsg() {
+		return returnMsg;
+	}
+
+	public void setReturnMsg(String returnMsg) {
+		this.returnMsg = returnMsg;
+	}
+
+	
+	/**
+	 * 通过XML文件部署一个流程
+	 * @return
+	 * @throws Exception
+	 */
+	public String deploy_by_xml() throws Exception{
+		try{
+			worksheetService.deployWorkflowByXml();
+		}
+		catch(RuntimeException e){
+			log.error(e);
+			log.debug(e,e.fillInStackTrace());
+			returnNo = 1;
+			returnMsg = e.getMessage();
+		}
+		
+		return SUCCESS;
+	}
+	/**
+	 * 删除一个已经部署的流程。
+	 * @return
+	 * @throws Exception
+	 */
+	public String remove_deployment() throws Exception{
+		try{
+			worksheetService.removeDeployment(deploy_id);
+		}catch(RuntimeException e){
+			log.error(e);
+			log.debug(e,e.fillInStackTrace());
+			returnNo=1;
+			returnMsg = e.getMessage();
+		}
+		
+		return SUCCESS;
+	}
+	/**
 	 * 待办工作单
 	 * 
 	 * @return
