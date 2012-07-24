@@ -9,7 +9,7 @@
 <head>
 <title>流程测试</title>
 <script type="text/javascript" src="<%=tsBase %>/common/javascript/common.js"></script>
-<script type="text/javascript" src="<%=tsBase %>/worksheet/worksheet.js"></script>
+<script type="text/javascript" src="<%=tsBase %>/worksheet/workflowManager.js"></script>
 
 <link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
 </head>
@@ -23,7 +23,7 @@
 	List<ProcessDefinition> pdList=repositoryService.createProcessDefinitionQuery().list();
 	List<ProcessInstance> piList=executionService.createProcessInstanceQuery().list();
 %>
-	<a href="deploy.jsp">发布新流程</a>&nbsp; 
+	<a href="#" onclick="javascript:deployByXml();">发布新流程</a>&nbsp; 
 	<table>
 		<caption>流程定义</caption>
 		<thead>
@@ -36,7 +36,7 @@
 		for(ProcessDefinition pd:pdList){
 			%>
 			<tr>
-				<td><%=pd.getId() %></td><td><%=pd.getName() %></td><td><%=pd.getVersion() %></td><td><a href="remove.jsp?delayid=<%=pd.getDeploymentId()  %>">删除</a>&nbsp;<a href="start.jsp?ptid=<%= pd.getId()  %>">开始</a>
+				<td><%=pd.getId() %></td><td><%=pd.getName() %></td><td><%=pd.getVersion() %></td><td><a href="#" onclick="javascript:removeDeployment('<%=pd.getDeploymentId()  %>')">删除</a>&nbsp;<a href="start.jsp?ptid=<%= pd.getId()  %>">开始</a>
 			</tr>
 			<%
 		}
