@@ -60,4 +60,10 @@ public interface WorksheetService {
 	Page get_region_with_userrole_for_page(Map map,int pageno,int pagesize,String dir, String sort);
 	
 	void deployWorkflow();
+	
+	void deployWorkflowByXml();
+	
+	void removeDeployment(String deploy_id);
+	
+	void startWorkflow(String process_id,Map<String, Object> var);
 }

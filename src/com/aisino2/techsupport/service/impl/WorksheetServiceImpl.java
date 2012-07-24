@@ -373,11 +373,23 @@ public class WorksheetServiceImpl extends BaseService implements
 	}
 	@Override
 	public void deployWorkflow() {
+		
+	}
+	@Override
+	public void deployWorkflowByXml() {
 		try{
 			workflow.workflowDeploy();
 		}catch(JbpmException e){
 			log.debug(e);
 			throw new RuntimeException("该版本的流程图已经发布过了");
 		}
+	}
+	@Override
+	public void removeDeployment(String deploy_id) {
+		workflow.getRepositoryService().deleteDeploymentCascade(deploy_id);
+	}
+	@Override
+	public void startWorkflow(String process_id, Map<String, Object> var) {
+		workflow.getExecutionService().startProcessInstanceById(process_id, var);
 	}
 }
