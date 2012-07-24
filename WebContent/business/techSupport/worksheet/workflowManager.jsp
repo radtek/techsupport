@@ -3,10 +3,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%@include file="../common/base.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>流程测试</title>
+<script type="text/javascript" src="<%=tsBase %>/common/javascript/common.js"></script>
+<script type="text/javascript" src="<%=tsBase %>/worksheet/worksheet.js"></script>
+
+<link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
 </head>
 <body>
 <%
