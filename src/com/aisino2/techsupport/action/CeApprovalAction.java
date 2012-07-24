@@ -12,7 +12,7 @@ import com.aisino2.techsupport.service.ICeApprovalService;
 import com.aisino2.techsupport.service.WorksheetService;
 
 /**
- *
+ * 
  * 技术支持单 总工审核环节。
  */
 @Component("CeApprovalAction")
@@ -28,57 +28,61 @@ public class CeApprovalAction extends BaseAction {
 	 * 支持单任务号
 	 */
 	private String taskId;
-	
+
 	/**
-	 * 回显用支持的实体 
+	 * 回显用支持的实体
 	 */
 	private SupportTicket st;
-	
+
 	/**
-	 * 环节保存用的 
+	 * 环节保存用的
 	 */
 	private SupportTicket ceApprovalSt;
-	
-//	返回状态信息
+
+	// 返回状态信息
 	/**
 	 * 返回状态信息
 	 */
 	private String returnMsg;
-//	返回状态号
+	// 返回状态号
 	/**
 	 * 返回状态号
 	 */
 	private int returnNo;
-	
+
 	/**
 	 * 
 	 * 初始化 技术支持单 总工审核环节信息
-	 * @return 
+	 * 
+	 * @return
 	 * @throws Exception
 	 */
-	public String init() throws Exception{
-		st=worksheetService.getWorksheetTask(taskId).getSt();
+	public String init() throws Exception {
+		st = worksheetService.getWorksheetTask(taskId).getSt();
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 保存总工审核信息
+	 * 
 	 * @throws Exception
 	 */
-	public String  save()	throws Exception{
+	public String save() throws Exception {
 		try {
-			ceApprovalService.insertCeApproval(taskId, ceApprovalSt,ceApprovalSt.getTrackList().get(0));
+			ceApprovalService.insertCeApproval(taskId, ceApprovalSt,
+					ceApprovalSt.getTrackList().get(0), this.getRequest()
+							.getSession().getServletContext());
 			returnNo = 0;
-			returnMsg="总工审核 保存成功";
+			returnMsg = "总工审核 保存成功";
 		} catch (RuntimeException e) {
-			returnNo=1;
-			returnMsg="总工审核 保存失败";
+			returnNo = 1;
+			returnMsg = "总工审核 保存失败";
 			throw e;
 		}
 		return SUCCESS;
 	}
 
-	@Resource(name="CeApprovalServiceImpl")
+	@Resource(name = "CeApprovalServiceImpl")
 	public void setCeApprovalService(ICeApprovalService ceApprovalService) {
 		this.ceApprovalService = ceApprovalService;
 	}
@@ -107,7 +111,7 @@ public class CeApprovalAction extends BaseAction {
 		this.ceApprovalSt = ceApprovalSt;
 	}
 
-	@Resource(name="WorksheetServiceImpl")
+	@Resource(name = "WorksheetServiceImpl")
 	public void setWorksheetService(WorksheetService worksheetService) {
 		this.worksheetService = worksheetService;
 	}
