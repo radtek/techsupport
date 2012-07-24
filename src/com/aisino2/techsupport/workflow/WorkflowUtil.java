@@ -98,21 +98,13 @@ public class WorkflowUtil {
 //					getRepositoryService().createProcessDefinitionQuery()
 //							.deploymentId(deployid).list().get(0).getId(), var);
 //		}
-		try{
-			deployid = workflowDeploy();
-	
-			getExecutionService().startProcessInstanceById(
-					getRepositoryService().createProcessDefinitionQuery()
-							.deploymentId(deployid).list().get(0).getId(), var);
-		}catch (org.jbpm.api.JbpmException e) {
-			ProcessDefinition pd = pdList.get(0);
-			getExecutionService().startProcessInstanceById(pd.getId(), var);
-		}
 //		else {
 //			ProcessDefinition pd = pdList.get(pdList.size() - 1);
 //			getExecutionService().startProcessInstanceById(pd.getId(), var);
 //		}
 
+		ProcessDefinition pd = pdList.get(0);
+		getExecutionService().startProcessInstanceById(pd.getId(), var);
 	}
 
 	/**

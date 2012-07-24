@@ -95,13 +95,16 @@
       <transition g="-51,-8" name="tech_appr" to="tech_department_appr"/>
       <transition g="-40,0" name="product_appr" to="product_department_appr"/>
    </decision>
-   <java name="updateStatusToGoing" g="139,143,168,52" class="com.aisino2.techsupport.workflow.autotask" method="updateStatus">
+   <java name="updateStatusToGoing" g="139,143,168,52" class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" method="updateStatus">
    	  <description>在完成部门审批后把支持单状态改为进行中</description>
    	  <field name="st_status" type="java.lang.String">
    	  	<string value="going"/>
    	  </field>
    	  <field name="worksheet_id" type="java.lang.Integer">
-   	  	<object value="#{worksheetno}"/>
+   	  	<object expr="#{worksheetno}"/>
+   	  </field>
+   	  <field name="sc" type="javax.servlet.ServletContext">
+   	  	<object expr="#{servletContext}"/>
    	  </field>
       <transition to="exception_tracking_fork"/>
    </java>
