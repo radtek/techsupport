@@ -1,5 +1,7 @@
 package com.aisino2.techsupport.service;
 
+import javax.servlet.ServletContext;
+
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;
 
@@ -14,5 +16,5 @@ public interface ICeApprovalService {
 	 * @param st 支持单实体
 	 * @param tracking 意见与追踪
 	 */
-	void insertCeApproval(String taskId,SupportTicket st, Tracking tracking);
+	void insertCeApproval(String taskId,SupportTicket st, Tracking tracking,ServletContext servletContext);
 }
