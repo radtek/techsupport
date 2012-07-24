@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.struts2.ServletActionContext;
 import org.jbpm.api.model.OpenExecution;
 import org.jbpm.api.task.Assignable;
 import org.jbpm.api.task.AssignmentHandler;
@@ -37,8 +38,8 @@ public class DepartmentApprovalAssignmentHandler implements AssignmentHandler {
 	@Override
 	public void assign(Assignable assignable, OpenExecution exec) throws Exception {
 		Map<String, Object> var = (Map<String, Object>) exec.getVariables();
-		ServletContext sc = (ServletContext) var.get("servletContext");
-		
+//		ServletContext sc = (ServletContext) var.get("servletContext");
+		ServletContext sc = ServletActionContext.getServletContext();
 		context = WebApplicationContextUtils.getWebApplicationContext(sc);
 		role_service = (IRoleService) context.getBean("roleService");
 		user_role_service  = (IUser_roleService) context.getBean("user_roleService");
