@@ -386,6 +386,8 @@ public class WorksheetServiceImpl extends BaseService implements
 	}
 	@Override
 	public void removeDeployment(String deploy_id) {
+		if(deploy_id == null || deploy_id.length() == 0)
+			throw new RuntimeException("部署ID为空，删除已部署的流程必须要指定部署ID。");
 		workflow.getRepositoryService().deleteDeploymentCascade(deploy_id);
 	}
 	@Override
