@@ -51,7 +51,7 @@ public class DepartmentApprovalAssignmentHandler implements AssignmentHandler {
 		ur.setRoleid(role.getRoleid());
 		List<User_role> ur_list = user_role_service.getListUser_role(ur);
 		for(User_role userrole : ur_list){
-			assignable.addCandidateGroup(String.valueOf(userrole.getUserid()));
+			assignable.addCandidateUser(String.valueOf(userrole.getUserid()));
 		}
 	}
 
