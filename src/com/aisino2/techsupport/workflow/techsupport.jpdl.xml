@@ -103,9 +103,6 @@
    	  <field name="worksheet_id" type="java.lang.Integer">
    	  	<object expr="#{worksheetno}"/>
    	  </field>
-   	  <field name="sc" type="javax.servlet.ServletContext">
-   	  	<object expr="#{servletContext}"/>
-   	  </field>
       <transition to="exception_tracking_fork"/>
    </java>
 </process>
