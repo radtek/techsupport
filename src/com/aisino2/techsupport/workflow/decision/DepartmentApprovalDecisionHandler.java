@@ -1,6 +1,5 @@
 package com.aisino2.techsupport.workflow.decision;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.aisino2.sysadmin.domain.Department;
-import com.aisino2.sysadmin.domain.Dict;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.Role;
 import com.aisino2.sysadmin.service.IDict_itemService;
@@ -46,6 +44,10 @@ public class DepartmentApprovalDecisionHandler implements DecisionHandler {
 		SupportTicket st = new SupportTicket();
 		st.setId(worksheet_id);
 		st = stService.getSupportTicket(st);
+		//添加后面需要用到的判断结果
+		execution.setVariable("productDeptApprResult", true);
+		execution.setVariable("techDeptApprResult", true);
+		
 		Set<String> assign_roles = new HashSet<String>(); 
 		//獲取部門審批角色字典項
 		Dict_item dictitem = new Dict_item();
