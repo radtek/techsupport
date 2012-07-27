@@ -1,5 +1,5 @@
 <%@page import="com.aisino2.techsupport.common.Constants"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@include file="../../../public/common.jsp"%>
 <%@include file="../common/base.jsp"%>
 
@@ -34,9 +34,14 @@
 }
 -->
 </style>
+<%
+String activityName = request.getParameter("worksheet.activityName");
+System.out.println("==================================="+activityName+"===================================");
+%>
 <input type="hidden" id="p_taskId">
 <input type="hidden" id="sv_st_id">
 <input type="hidden" id="att_stId">
+<input type="hidden" id="activityName" value="<%=activityName%>">
 <table width="100%" border="0" cellpadding="0" cellspacing="0"
 	align="center">
 	<tr>

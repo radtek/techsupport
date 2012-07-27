@@ -8,6 +8,8 @@ var saveURL=BUSNEISS_PATH+'/save_deptApproval.action';
 var trackingInfoURL=BUSNEISS_PATH+"/querylistNoPage_tracking.action";
 var ingridWidth=400;
 
+//部門審批類型
+var deptApprType;
 //附件
 var attachment_div_id="attachment_list_div";
 var attachment_table_id="attachment_list_table";
@@ -187,7 +189,9 @@ $(function(){
 		params = getSubmitParams('.deptApproval input,textarea',params);
 //		设置任务号
 		params['taskId']=$('#p_taskId').val();
-
+//		设置部门审批类型
+		params['deptApprType'] = deptApprType;
+		
 		$.post(saveURL,params,function(dataobj){
 			if(dataobj.returnNo==0){
 				$(detailWindow).empty();
@@ -292,7 +296,26 @@ function loadData(){
 //			gxdwmc_ = '产品方案部';
 //			gxdwbm_ = 'cpfab';
 //		}
-		
+		//驗証包含審批類型角色
+//		userroles = getRoleByUserid(userid);
+//		if(userroles && userroles.length > 0){
+//			for(var i=0;i<userroles.length;i++){
+//				if(userroles[i].rolename == ST_ROLE_TECH_DEPT_APPR_TYPE
+//					&& !$('#psgScheDate').val()){
+//					
+//				}
+//			}
+//		}
+		if($('#activityName').val() == '技术部门审批'){
+			gxdwmc_ = '技术开发部';
+			gxdwbm_ = 'jskfb';
+			deptApprType = ST_ROLE_TECH_DEPT_APPR_TYPE;
+		}
+		else {
+			gxdwmc_ = '产品方案部';
+			gxdwbm_ = 'cpfab';
+			deptApprType = ST_ROLE_PRODUCT_DEPT_APPR_TYPE;
+		}
 		if(gxdwmc_=="技术开发部"){
 			$('#devAppr').show();
 			$('#devAppr').append('<input type="hidden" name="st.trackList[0].type" value="'+TRACKING_TYPE_HDEVREPLY+'">');
