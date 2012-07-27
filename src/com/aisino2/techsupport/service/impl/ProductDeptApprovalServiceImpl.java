@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Component;
+
 import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;
@@ -14,6 +16,12 @@ import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.service.TrackingService;
 import com.aisino2.techsupport.workflow.WorkflowUtil;
 
+/**
+ * 產品部門審批
+ * @author hooxin
+ *
+ */
+@Component
 public class ProductDeptApprovalServiceImpl implements
 		IDeptApprovalService {
 	private SupportTicketService stService;
@@ -53,8 +61,10 @@ public class ProductDeptApprovalServiceImpl implements
 		trackingService.insertTracking(tracking);
 		
 		Map<String, Object> var = new HashMap<String, Object>();
-		var.put("productDeprtApprovalResult", Constants.ST_APPR_TYPE_APPR_PASSED
+		var.put("productDeptApprResult", Constants.ST_APPR_TYPE_APPR_PASSED
 				.equals(tracking.getApprovalCode()) ? true : false);
+//		添加本部門審批的人員
+		var.put("departApprUserId__product", tracking.getProcessor().getUserid());
 		workflow.getTaskService().completeTask(taskId, var);
 	}
 
