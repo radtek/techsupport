@@ -36,8 +36,8 @@ public class SupportChangeServiceImpl implements ISupportChangeService {
 	private IUserService user_service;
 	private ISupportLeaderRelationDao supportLeaderRelationDao;
 	private IDepartmentService department_service;
-	
-	@Resource(name="departmentService")
+
+	@Resource(name = "departmentService")
 	public void setDepartment_service(IDepartmentService department_service) {
 		this.department_service = department_service;
 	}
@@ -77,7 +77,7 @@ public class SupportChangeServiceImpl implements ISupportChangeService {
 		if (st.getSupportDeptList() == null
 				|| st.getSupportDeptList().isEmpty())
 			throw new RuntimeException("需要变更的部门为空");
-		//更新最后操作时间
+		// 更新最后操作时间
 		st.setLastUpdateDate(new Date());
 		// 保存支持单信息指派部门信息
 		support_ticket_service.updateSupportTicket(st);
@@ -86,11 +86,11 @@ public class SupportChangeServiceImpl implements ISupportChangeService {
 		SupportLeaderRelation slr = new SupportLeaderRelation();
 		List<Integer> deleteNotDepartid = new ArrayList<Integer>();
 		for (Department d : st.getSupportDeptList()) {
-			if(d != null){
+			if (d != null) {
 				d = department_service.getDepartment(d);
 				deleteNotDepartid.add(d.getDepartid());
 			}
-			
+
 		}
 		slr.setStId(st.getId());
 		slr.setDeleteNotDepartid(deleteNotDepartid);
@@ -195,14 +195,155 @@ public class SupportChangeServiceImpl implements ISupportChangeService {
 	/**
 	 * 重新指派负责人
 	 */
+	// public void change_support_leader(String taskId, SupportTicket st,
+	// Tracking tracking) {
+	// if (st.getLstSupportLeaders() == null
+	// || st.getLstSupportLeaders().isEmpty())
+	// throw new RuntimeException("需要变更的支持单负责人为空");
+	// //更新最后操作时间
+	// st.setLastUpdateDate(new Date());
+	// //添加部门审批信息
+	// st.getTrackList().add(tracking);
+	// // 保存支持单信息指派部门信息
+	// support_ticket_service.updateSupportTicket(st);
+	// // 保存变更原因为进展
+	// tracking_service.insertTracking(tracking);
+	//
+	// // 流程部分
+	// String reassign_support_leader_process_id = workflow
+	// .getExecutionService()
+	// .findExecutionById(
+	// workflow.getTaskService().getTask(taskId)
+	// .getExecutionId()).getProcessInstance().getId();
+	// Task tracking_task = workflow.getTaskService().createTaskQuery()
+	// .processInstanceId(reassign_support_leader_process_id)
+	// .activityName(Constants.ST_PROCESS_TRACKING).uniqueResult();
+	// // 之前的 追踪批复 候选人
+	// List<Participation> tracking_candidate_users = workflow
+	// .getTaskService().getTaskParticipations(tracking_task.getId());
+	// System.out.println("================taskID="+tracking_task.getId());
+	//
+	// SupportTicket comm_st = support_ticket_service.getSupportTicket(st);
+	//
+	// if (tracking_candidate_users.isEmpty()) {
+	// try {
+	//
+	// workflow.getTaskService()
+	// .addTaskParticipatingUser(
+	// tracking_task.getId(),
+	// st.getLstSupportLeaders().get(0).getUserid()
+	// .toString(), Participation.CANDIDATE);
+	//
+	// Map<String, String> params = new HashMap<String, String>();
+	// params.put("reassign_stleader_repeat", "to_reassgin_stleader");
+	// // 完成本流程跳转到下一个流程
+	// workflow.getTaskService().completeTask(taskId, params);
+	// return;
+	// } catch (Exception e) {
+	// List<Participation> new_tracking_candidate_users = workflow
+	// .getTaskService().getTaskParticipations(
+	// tracking_task.getId());
+	// // 当添加出错的时候，滚回以前的状态
+	// for (Participation new_p : new_tracking_candidate_users) {
+	// if (Integer.parseInt(new_p.getUserId()) == st
+	// .getLstSupportLeaders().get(0).getUserid()) {
+	// workflow.getTaskService().addTaskParticipatingUser(
+	// tracking_task.getId(),
+	// st.getLstSupportLeaders().get(0).getUserid()
+	// .toString(), Participation.CANDIDATE);
+	// }
+	// }
+	//
+	// throw new RuntimeException("流程控制 追踪批复 候选人发生错误",
+	// e.fillInStackTrace());
+	// }
+	// }
+	//
+	// System.out.println("====================2222222222222222");
+	// User sl = user_service.getUser(st.getLstSupportLeaders().get(0));
+	// //修正子部门和父级部门可以分别指派的问题
+	// //获取当前部门审批人的部门信息
+	// User curr_appr_user = new User();
+	// curr_appr_user.setUserid(tracking.getProcessor().getUserid());
+	// curr_appr_user = user_service.getUser(curr_appr_user);
+	//
+	// for (Participation p : tracking_candidate_users) {
+	// User old_tracking_user = new User();
+	// old_tracking_user.setUserid(Integer.parseInt(p.getUserId()));
+	// old_tracking_user = user_service.getUser(old_tracking_user);
+	//
+	//
+	// // 因为一个部门只允许指派一个
+	// //修正子部门和父级部门可以分别指派的问题
+	// Department old_department = new Department();
+	// old_department.setDepartid(old_tracking_user.getDepartid());
+	// old_department = department_service.getDepartment(old_department);
+	// System.out.println("==========33333333333333333");
+	// while(old_department != null && !old_department.getDepartid().equals(
+	// curr_appr_user.getDepartid())){
+	// old_department = department_service.getParentDepart(old_department);
+	// }
+	// if (old_department != null && old_department.getDepartid()
+	// .equals(curr_appr_user.getDepartid())){
+	//
+	// Department sl_department = new Department();
+	// sl_department.setDepartid(sl.getDepartid());
+	// sl_department = department_service.getDepartment(sl_department);
+	// while(!sl_department.getDepartid().equals(
+	// curr_appr_user.getDepartid())){
+	// sl_department = department_service.getParentDepart(sl_department);
+	// }
+	//
+	// if(sl_department != null && sl_department.getDepartid()
+	// .equals(curr_appr_user.getDepartid())){
+	// workflow.getTaskService().removeTaskParticipatingUser(
+	// tracking_task.getId(), p.getUserId(),
+	// Participation.CANDIDATE);
+	// }
+	// }
+	//
+	// }
+	// System.out.println("=============4444444444444444444");
+	// workflow.getTaskService().addTaskParticipatingUser(
+	// tracking_task.getId(), sl.getUserid().toString(),
+	// Participation.CANDIDATE);
+	//
+	// try {
+	//
+	// Map<String, String> params = new HashMap<String, String>();
+	// params.put("reassign_stleader_repeat",
+	// "to_reassgin_stleader");
+	// // 完成本流程跳转到下一个流程
+	// workflow.getTaskService().completeTask(taskId, params);
+	//
+	// } catch (Exception e) {
+	// List<Participation> new_tracking_candidate_users = workflow
+	// .getTaskService().getTaskParticipations(
+	// tracking_task.getId());
+	// for(Participation p : new_tracking_candidate_users)
+	// workflow.getTaskService().removeTaskParticipatingUser(
+	// tracking_task.getId(), p.getUserId(),
+	// Participation.CANDIDATE);
+	// for(Participation p : tracking_candidate_users){
+	// // 当添加出错的时候，滚回以前的状态
+	// workflow.getTaskService().addTaskParticipatingUser(
+	// tracking_task.getId(), p.getUserId(),
+	// Participation.CANDIDATE);
+	// }
+	//
+	// throw new RuntimeException("流程控制 追踪批复 候选人发生错误",
+	// e.fillInStackTrace());
+	// }
+	//
+	// }
 	public void change_support_leader(String taskId, SupportTicket st,
 			Tracking tracking) {
 		if (st.getLstSupportLeaders() == null
 				|| st.getLstSupportLeaders().isEmpty())
 			throw new RuntimeException("需要变更的支持单负责人为空");
-		//更新最后操作时间
+		// 更新最后操作时间
 		st.setLastUpdateDate(new Date());
-		//添加部门审批信息
+		// 添加部门审批信息
 		st.getTrackList().add(tracking);
 		// 保存支持单信息指派部门信息
 		support_ticket_service.updateSupportTicket(st);
@@ -221,119 +362,20 @@ public class SupportChangeServiceImpl implements ISupportChangeService {
 		// 之前的 追踪批复 候选人
 		List<Participation> tracking_candidate_users = workflow
 				.getTaskService().getTaskParticipations(tracking_task.getId());
-		System.out.println("================taskID="+tracking_task.getId());
-		
-		SupportTicket comm_st = support_ticket_service.getSupportTicket(st);
-
-		if (tracking_candidate_users.isEmpty()) {
-			try {
-
-				workflow.getTaskService()
-						.addTaskParticipatingUser(
-								tracking_task.getId(),
-								st.getLstSupportLeaders().get(0).getUserid()
-										.toString(), Participation.CANDIDATE);
-
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("reassign_stleader_repeat", "to_reassgin_stleader");
-				// 完成本流程跳转到下一个流程
-				workflow.getTaskService().completeTask(taskId, params);
-				return;
-			} catch (Exception e) {
-				List<Participation> new_tracking_candidate_users = workflow
-						.getTaskService().getTaskParticipations(
-								tracking_task.getId());
-				// 当添加出错的时候，滚回以前的状态
-				for (Participation new_p : new_tracking_candidate_users) {
-					if (Integer.parseInt(new_p.getUserId()) == st
-							.getLstSupportLeaders().get(0).getUserid()) {
-						workflow.getTaskService().addTaskParticipatingUser(
-								tracking_task.getId(),
-								st.getLstSupportLeaders().get(0).getUserid()
-										.toString(), Participation.CANDIDATE);
-					}
-				}
-
-				throw new RuntimeException("流程控制 追踪批复 候选人发生错误",
-						e.fillInStackTrace());
-			}
-		}
-		
-		System.out.println("====================2222222222222222");
-		User sl = user_service.getUser(st.getLstSupportLeaders().get(0));
-		//修正子部门和父级部门可以分别指派的问题 
-		//获取当前部门审批人的部门信息
-		User curr_appr_user = new User();
-		curr_appr_user.setUserid(tracking.getProcessor().getUserid());
-		curr_appr_user = user_service.getUser(curr_appr_user);
-		
+		//移除老的负责人
 		for (Participation p : tracking_candidate_users) {
-			User old_tracking_user = new User();
-			old_tracking_user.setUserid(Integer.parseInt(p.getUserId()));
-			old_tracking_user = user_service.getUser(old_tracking_user);
-			
-			
-			// 因为一个部门只允许指派一个
-			//修正子部门和父级部门可以分别指派的问题
-			Department old_department = new Department();
-			old_department.setDepartid(old_tracking_user.getDepartid());
-			old_department = department_service.getDepartment(old_department);
-			System.out.println("==========33333333333333333");
-			while(old_department != null && !old_department.getDepartid().equals(
-					curr_appr_user.getDepartid())){
-				old_department = department_service.getParentDepart(old_department);
-			}
-			if (old_department != null && old_department.getDepartid()
-					.equals(curr_appr_user.getDepartid())){
-				
-				Department sl_department = new Department();
-				sl_department.setDepartid(sl.getDepartid());
-				sl_department = department_service.getDepartment(sl_department);
-				while(!sl_department.getDepartid().equals(
-						curr_appr_user.getDepartid())){
-					sl_department = department_service.getParentDepart(sl_department);
-				}
-				
-				if(sl_department != null && sl_department.getDepartid()
-					.equals(curr_appr_user.getDepartid())){
-					workflow.getTaskService().removeTaskParticipatingUser(
-							tracking_task.getId(), p.getUserId(),
-							Participation.CANDIDATE);
-				}
-			}
-
+			workflow.getTaskService().removeTaskParticipatingUser(
+					tracking_task.getId(), p.getUserId(),
+					Participation.CANDIDATE);
 		}
-		System.out.println("=============4444444444444444444");
-		workflow.getTaskService().addTaskParticipatingUser(
-				tracking_task.getId(), sl.getUserid().toString(),
-				Participation.CANDIDATE);
+		
+		st = support_ticket_service.getSupportTicket(st);
 
-		try {
-			
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("reassign_stleader_repeat",
-					"to_reassgin_stleader");
-			// 完成本流程跳转到下一个流程
-			workflow.getTaskService().completeTask(taskId, params);
-			
-		} catch (Exception e) {
-			List<Participation> new_tracking_candidate_users = workflow
-					.getTaskService().getTaskParticipations(
-							tracking_task.getId());
-			for(Participation p : new_tracking_candidate_users)
-				workflow.getTaskService().removeTaskParticipatingUser(
-						tracking_task.getId(), p.getUserId(),
-						Participation.CANDIDATE);
-			for(Participation p : tracking_candidate_users){
-				// 当添加出错的时候，滚回以前的状态
-					workflow.getTaskService().addTaskParticipatingUser(
-							tracking_task.getId(), p.getUserId(),
-							Participation.CANDIDATE);
-			}
-			
-			throw new RuntimeException("流程控制 追踪批复 候选人发生错误",
-					e.fillInStackTrace());
+		//添加新的负责人
+		for(User sl_user : st.getLstSupportLeaders()){
+			workflow.getTaskService().addTaskParticipatingUser(
+					 tracking_task.getId(), String.valueOf(sl_user.getUserid()),
+					 Participation.CANDIDATE);
 		}
-
 	}
 }
