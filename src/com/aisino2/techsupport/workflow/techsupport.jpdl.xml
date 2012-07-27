@@ -4,8 +4,13 @@
    <start g="34,16,48,48" name="start1">
       <transition to="ce_appr"/>
    </start>
-   <task candidate-users="#{trackingUsers}" form="/business/techSupport/tracking/tracking.jsp" g="497,308,144,52" name="tracking_appr">
+   <task form="/business/techSupport/tracking/tracking.jsp" g="497,308,144,52" name="tracking_appr">
       <description>追踪批复</description>
+      <assignment-handler class="com.aisino2.techsupport.workflow.assignee.TrackingAssignmentHandler">
+	      <field name="worksheet_id" type="java.lang.Integer">
+	   	  	<object expr="#{worksheetno}"/>
+	   	  </field>
+      </assignment-handler>
       <transition to="terminate_exception_proc"/>
    </task>
    <end g="879,610,48,48" name="end"/>
