@@ -490,3 +490,28 @@ function Attachemnt(){
 	
 	
 }
+
+/**
+ * 通過用戶ID獲取角色信息
+ * @param userid
+ * @returns {Array}
+ */
+function getRoleByUserid(userid){
+	var userroles = [];
+	var _params = {dataxml:"<Params>\n" +
+			"<Param name=\"userid\">"+ userid +"</Param>\n" +
+			"</Params>\n"};
+	$.ajax({
+		url:'queryUsreRoleList_user.action',
+		async:false,
+		type:'post',
+		data:_params,
+		dataType : 'json',
+		success : function(json) {
+			userroles = json.userRoleList;
+
+		}
+	});
+	
+	return userroles;
+}

@@ -48,7 +48,8 @@
 	//区总区域映射字典代码
 	var ST_RGM_RG_MAP_DICT_CODE="<%=com.aisino2.techsupport.common.Constants.ST_RGM_RG_MAP_DICT_CODE%>";
 	var ST_RD_MAP_DICT_CODE = "<%=com.aisino2.techsupport.common.Constants.ST_RD_MAP_DICT_CODE%>";
-	
+	//
+	var ST_DEPART_APPR_TYPE_DICT_CODE = "<%=com.aisino2.techsupport.common.Constants.ST_DEPART_APPR_TYPE_DICT_CODE%>";
 	//普通进展批复
 	var TRACKING_TYPE_TRACKING="<%=com.aisino2.techsupport.common.Constants.TRACKING_TYPE_TRACKING%>";
 	//总共批复
@@ -94,12 +95,15 @@
 //	重庆区总
 	var ST_ROLE_NAME_RGM_CQ="<%=com.aisino2.techsupport.common.Constants.ST_ROLE_NAME_RGM_CQ%>";
 //	四川区总
-	var st_ROLE_NAME_RGM_SC="<%=com.aisino2.techsupport.common.Constants.st_ROLE_NAME_RGM_SC%>";
+	var ST_ROLE_NAME_RGM_SC="<%=com.aisino2.techsupport.common.Constants.st_ROLE_NAME_RGM_SC%>";
 //	技术负责人
 	var ST_ROLE_NAME_STLEADER="<%=com.aisino2.techsupport.common.Constants.ST_ROLE_NAME_STLEADER%>";
 //	质量管理员
 	var ST_ROLE_NAME_QC="<%=com.aisino2.techsupport.common.Constants.ST_ROLE_NAME_QC%>";
-
+	//技術部門審批
+	var ST_ROLE_TECH_DEPT_APPR_TYPE ="<%=com.aisino2.techsupport.common.Constants.ST_ROLE_TECH_DEPT_APPR_TYPE%>";
+	//產品部門審批
+	var ST_ROLE_PRODUCT_DEPT_APPR_TYPE = "<%=com.aisino2.techsupport.common.Constants.ST_ROLE_PRODUCT_DEPT_APPR_TYPE%>";
 	//流程环节字典
-	var ST_WORKFLOW_NAME_DICT_CODE = "<%=com.aisino2.techsupport.common.Constants.ST_WORKFLOW_NAME_DICT_CODE%>"
+	var ST_WORKFLOW_NAME_DICT_CODE = "<%=com.aisino2.techsupport.common.Constants.ST_WORKFLOW_NAME_DICT_CODE%>";
 </script>
