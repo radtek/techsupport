@@ -144,7 +144,7 @@ function setProcess(taskId){
 			usingDetailWidth=archiveDetailWidth;
 		else
 			usingDetailWidth=detailWidth;
-		detailDialog(detailid,usingDetailWidth,processURL,null);
+		detailDialog(detailid,usingDetailWidth,processURL,{'worksheet.activityName':worksheet.activityName});
 		
 	},'json');
 	
