@@ -67,7 +67,7 @@ public class ArchiveAction extends BaseAction{
 			HttpSession session=this.getRequest().getSession();
 			archiveSt.setArchiveUser((User) session.getAttribute(Constants.userKey));
 			archiveSt.setArchiveDate(new Date());
-			archiveSerivce.inserArchive(taskId , archiveSt);
+			archiveSerivce.insertArchive(taskId , archiveSt);
 			returnNo=0;
 			returnMsg="归档 成功";
 		} catch (RuntimeException e) {

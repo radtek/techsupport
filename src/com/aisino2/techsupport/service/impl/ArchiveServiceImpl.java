@@ -30,7 +30,7 @@ public class ArchiveServiceImpl extends BaseService implements ArchiveSerivce {
 	 */
 	private WorkflowUtil workflow;
 	
-	public void inserArchive(String taskId, SupportTicket st) {
+	public void insertArchive(String taskId, SupportTicket st) {
 //		保存支持单信息
 		st.setStStatus(Constants.ST_STATUS_COMPLETE);
 		//更新最后操作时间
@@ -41,7 +41,7 @@ public class ArchiveServiceImpl extends BaseService implements ArchiveSerivce {
 //		流程控制
 //		流程前进
 //		完成最后的结单流程
-		workflow.workflowNext(workflow.setVariable(taskId, null));
+		workflow.getTaskService().completeTask(taskId);
 	}
 
 	@Resource(name="SupportTicketServiceImpl")

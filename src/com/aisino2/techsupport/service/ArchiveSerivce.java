@@ -9,5 +9,5 @@ public interface ArchiveSerivce {
 	 * @param st 技术支持单 
 	 * @param taskId 任务号
 	 */
-	void inserArchive(String taskId,SupportTicket st);
+	void insertArchive(String taskId,SupportTicket st);
 }
