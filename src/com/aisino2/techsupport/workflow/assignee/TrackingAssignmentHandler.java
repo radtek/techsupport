@@ -25,22 +25,15 @@ public class TrackingAssignmentHandler implements AssignmentHandler {
 	private static final long serialVersionUID = -6006774398647741472L;
 	private ApplicationContext context;
 	private SupportTicketService st_service;
-	private Integer worksheet_id;
-	
-	
-	public void setWorksheet_id(Integer worksheet_id) {
-		this.worksheet_id = worksheet_id;
-	}
-
 
 	@Override
 	public void assign(Assignable assignale, OpenExecution exec) throws Exception {
 		ServletContext servletContext = ServletActionContext.getServletContext();
 		context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 		st_service = (SupportTicketService) context.getBean("SupportTicketServiceImpl");
-		
+		Integer stid = (Integer)exec.getVariable("worksheetno");
 		SupportTicket st = new SupportTicket();
-		st.setId(worksheet_id);
+		st.setId(stid);
 		
 		st = st_service.getSupportTicket(st);
 		

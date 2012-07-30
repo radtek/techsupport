@@ -22,13 +22,8 @@ public class UpdateStStatus {
 
 	private SupportTicketService st_service;
 	private ApplicationContext context;
-	private Integer worksheet_id;
 	private ServletContext sc;
 
-	
-	public void setWorksheet_id(Integer worksheet_id) {
-		this.worksheet_id = worksheet_id;
-	}
 
 	public void setSt_status(String st_status) {
 		this.st_status = st_status;
@@ -47,7 +42,7 @@ public class UpdateStStatus {
 	/**
 	 * 修改状态
 	 */
-	public void updateStatus() {
+	public void updateStatus(Integer worksheet_id) {
 
 		if (st_status == null) {
 			throw new RuntimeException("需要设置的状态为空，必须填入");
