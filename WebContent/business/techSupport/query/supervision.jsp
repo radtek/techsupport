@@ -33,7 +33,7 @@
 				//绑定保存按钮
 				$('#saveBtn').click(function(){
 					if(verify()){
-						var params = getSubmitParams('#supervision_process [name~=supervision.]');
+						var params = getSubmitParams($('#supervision_process').find('[name*=supervision.]'));
 						$.post(supervision_url,params,function(data){
 							$("#"+supervision_div).hideAndRemove("show");
 						});
