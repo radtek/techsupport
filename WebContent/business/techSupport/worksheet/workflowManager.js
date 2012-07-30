@@ -9,8 +9,9 @@
  * @param data
  */
 function success_callback(data){
+	
 	if(!data.returnNo){
-		$('#iframe').load('business/techSupport/worksheet/workflowManager.jsp');
+		$('#iframes').load('business/techSupport/worksheet/workflowManager.jsp');
 	}
 	else{
 		alert(data.returnMsg);
