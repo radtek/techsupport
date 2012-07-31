@@ -1,5 +1,6 @@
 package com.aisino2.techsupport.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Component;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.service.BaseService;
 import com.aisino2.sysadmin.domain.Department;
+import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
+import com.aisino2.sysadmin.service.IDict_itemService;
 import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.techsupport.dao.ISupportDeptDao;
 import com.aisino2.techsupport.dao.ISupportLeaderRelationDao;
@@ -43,15 +46,22 @@ public class SupportTicketServiceImpl extends BaseService implements
 	private ISupportDeptDao supportDeptDao;
 
 	private IDepartmentService departmentService;
-	
+
 	private ISupportLeaderRelationDao supportLeaderRelationDao;
-	
-	//附件服务, 这里是把关联的附件信息和技术支持单一起保存在数据库里面
+
+	// 附件服务, 这里是把关联的附件信息和技术支持单一起保存在数据库里面
 	private IAttachmentService attachmentService;
-	
+
 	private IUserService user_service;
-	
-	@Resource(name="userService")
+
+	private IDict_itemService dictitem_service;
+
+	@Resource(name = "dict_itemService")
+	public void setDictitem_service(IDict_itemService dictitem_service) {
+		this.dictitem_service = dictitem_service;
+	}
+
+	@Resource(name = "userService")
 	public void setUser_service(IUserService user_service) {
 		this.user_service = user_service;
 	}
@@ -87,7 +97,7 @@ public class SupportTicketServiceImpl extends BaseService implements
 	public SupportTicket getSupportTicket(SupportTicket st) {
 		SupportTicket supportTicket = null;
 		try {
-			if(st.getApplicant()==null)
+			if (st.getApplicant() == null)
 				st.setApplicant(new User());
 			supportTicket = this.supportTicketDao.getSupportTicket(st);
 		} catch (RuntimeException e) {
@@ -118,22 +128,23 @@ public class SupportTicketServiceImpl extends BaseService implements
 					if (dept == null)
 						continue;
 					SupportDept sdept = new SupportDept();
-					Department department=new Department();
+					Department department = new Department();
 					department.setDepartcode(dept.getDepartcode());
-					department=departmentService.getDepartment(department);
+					department = departmentService.getDepartment(department);
 					sdept.setDeptId(department.getDepartid());
 					sdept.setStId(supportTicket.getId());
 
 					supportDeptDao.insertSupportDept(sdept);
 				}
 			}
-			
-			//保存附件信息
-			if(supportTicket.getAttachment_list()!=null && supportTicket.getAttachment_list().size()>0){
-				for(Attachment attachment : supportTicket.getAttachment_list()){
+
+			// 保存附件信息
+			if (supportTicket.getAttachment_list() != null
+					&& supportTicket.getAttachment_list().size() > 0) {
+				for (Attachment attachment : supportTicket.getAttachment_list()) {
 					attachment.setStId(supportTicket.getId());
-					
-					//关联数据到支持单信息
+
+					// 关联数据到支持单信息
 					attachmentService.updateAttachment(attachment);
 				}
 			}
@@ -159,84 +170,102 @@ public class SupportTicketServiceImpl extends BaseService implements
 				SupportDept supportDept = new SupportDept();
 				supportDept.setStId(st.getId());
 				this.supportDeptDao.removeSupportDept(supportDept);
-				
+
 				for (Department dept : st.getSupportDeptList()) {
 					if (dept == null)
 						continue;
-					
+
 					SupportDept sdept = new SupportDept();
-					Department department=new Department();
+					Department department = new Department();
 					department.setDepartcode(dept.getDepartcode());
-					department=departmentService.getDepartment(department);
+					department = departmentService.getDepartment(department);
 					sdept.setDeptId(department.getDepartid());
 					sdept.setStId(st.getId());
-//					//检查是不是已有该部门了，如果没有在执行插入操作
-//					SupportDept check_supportDept = null;
-//					try{
-//						check_supportDept = supportDeptDao.getListSupportDepts(sdept).get(0);
-//					}catch (Exception e) {
-//						log.debug(e,e.fillInStackTrace());
-//					}
-//					
-//					if(check_supportDept!=null)
-						this.supportDeptDao.insertSupportDept(sdept);
+					// //检查是不是已有该部门了，如果没有在执行插入操作
+					// SupportDept check_supportDept = null;
+					// try{
+					// check_supportDept =
+					// supportDeptDao.getListSupportDepts(sdept).get(0);
+					// }catch (Exception e) {
+					// log.debug(e,e.fillInStackTrace());
+					// }
+					//
+					// if(check_supportDept!=null)
+					this.supportDeptDao.insertSupportDept(sdept);
 
 				}
 
 			}
-//			添加 技术负责人关联信息
-			if(st.getLstSupportLeaders() != null
-					&& st.getLstSupportLeaders().size() > 0){
+			// 添加 技术负责人关联信息
+			if (st.getLstSupportLeaders() != null
+					&& st.getLstSupportLeaders().size() > 0) {
+
+				//装载所有审批部门
+				Dict_item dict_item = new Dict_item();
+				List<Dict_item> department_approval_items = dictitem_service
+						.getListDict_item(dict_item);
+				List<Department> dept_approval_departments = new ArrayList<Department>();
+				for(Dict_item item : department_approval_items){
+					Department approval_department = new Department();
+					approval_department.setDepartcode(item.getFact_value());
+					approval_department = departmentService.getDepartment(approval_department);
+					if(approval_department!=null){
+						dept_approval_departments.add(approval_department);
+					}
+				}
 				
-				for(User sl : st.getLstSupportLeaders()){
-					if(sl.getUserid() == null || sl.getUserid()==0)
+				for (User sl : st.getLstSupportLeaders()) {
+					if (sl.getUserid() == null || sl.getUserid() == 0)
 						continue;
-						
-					//先删除以前的再添加新的负责人
-					
+
+					// 先删除以前的再添加新的负责人
+
 					SupportLeaderRelation check_slrelation = new SupportLeaderRelation();
+					check_slrelation.setStId(st.getId());
+					
 					sl = user_service.getUser(sl);
-					//修正子部门和父级部门可以分别指派的问题
-					if(st.getTrackList()!=null && st.getTrackList().size()>0){
-						User tracking_user = user_service.getUser(
-								st.getTrackList().get(0).getProcessor());
-						Department old_department = new Department();
-						old_department.setDepartid(tracking_user.getDepartid());
-						old_department = departmentService.getDepartment(old_department);
-						List<Department> sl_department_list = 
-								departmentService.getAllChildDepart(old_department);
-						sl_department_list.add(0, old_department);
-						check_slrelation.setStId(st.getId());
-						for(Department guess_sl_dept : sl_department_list){
-							check_slrelation.setDepartid(guess_sl_dept.getDepartid());
-							this.supportLeaderRelationDao.delete(check_slrelation);
+
+					List<Department> old_sl_department_list = new ArrayList<Department>();
+					
+					for(Department d : dept_approval_departments){
+						if(sl.getDepartment().getDepartfullcode().contains(d.getDepartfullcode())){
+							old_sl_department_list.add(d);
+							old_sl_department_list.addAll(departmentService.getAllChildDepart(d));
 						}
-						
 					}
 					
-					SupportLeaderRelation slrelation=new SupportLeaderRelation();
+					for (Department guess_sl_dept : old_sl_department_list) {
+						check_slrelation.setDepartid(guess_sl_dept
+								.getDepartid());
+						this.supportLeaderRelationDao
+								.delete(check_slrelation);
+					}
+
+					SupportLeaderRelation slrelation = new SupportLeaderRelation();
 					slrelation.setStId(st.getId());
 					slrelation.setSupportLeaderId(sl.getUserid());
-					//添加部门ID
+					// 添加部门ID
 					slrelation.setDepartid(sl.getDepartid());
-					
-//					SupportLeaderRelation check_slrelation=null;
-//					try{
-//						check_slrelation = this.supportLeaderRelationDao.query(slrelation).get(0);
-//					}catch (Exception e) {
-//						log.debug(e,e.fillInStackTrace());
-//					}
-//					if(check_slrelation==null)
-						this.supportLeaderRelationDao.insert(slrelation);
+
+					// SupportLeaderRelation check_slrelation=null;
+					// try{
+					// check_slrelation =
+					// this.supportLeaderRelationDao.query(slrelation).get(0);
+					// }catch (Exception e) {
+					// log.debug(e,e.fillInStackTrace());
+					// }
+					// if(check_slrelation==null)
+					this.supportLeaderRelationDao.insert(slrelation);
 				}
 			}
-			
-			//保存附件信息
-			if(st.getAttachment_list()!=null && st.getAttachment_list().size()>0){
-				for(Attachment attachment : st.getAttachment_list()){
+
+			// 保存附件信息
+			if (st.getAttachment_list() != null
+					&& st.getAttachment_list().size() > 0) {
+				for (Attachment attachment : st.getAttachment_list()) {
 					attachment.setStId(st.getId());
-					
-					//关联数据到支持单信息
+
+					// 关联数据到支持单信息
 					attachmentService.updateAttachment(attachment);
 				}
 			}
@@ -260,7 +289,7 @@ public class SupportTicketServiceImpl extends BaseService implements
 	}
 
 	public String generateSupportTicketCode() {
-		
+
 		// 河北-20110113-01
 		return null;
 	}
@@ -277,22 +306,23 @@ public class SupportTicketServiceImpl extends BaseService implements
 
 	public Page getListSupportTicketForPage(Map<String, Object> map,
 			int pageNo, int pageSize, String sort, String desc) {
-		
-		return this.supportTicketDao.getSupportTicketListForPage(map, pageNo, pageSize, sort, desc);
+
+		return this.supportTicketDao.getSupportTicketListForPage(map, pageNo,
+				pageSize, sort, desc);
 	}
 
-	@Resource(name="departmentService")
+	@Resource(name = "departmentService")
 	public void setDepartmentService(IDepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
 
-	@Resource(name="supportLeaderDaoImpl")
+	@Resource(name = "supportLeaderDaoImpl")
 	public void setSupportLeaderRelationDao(
 			ISupportLeaderRelationDao supportLeaderRelationDao) {
 		this.supportLeaderRelationDao = supportLeaderRelationDao;
 	}
 
-	@Resource(name="attachmentServiceImpl")
+	@Resource(name = "attachmentServiceImpl")
 	public void setAttachmentService(IAttachmentService attachmentService) {
 		this.attachmentService = attachmentService;
 	}
