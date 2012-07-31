@@ -100,7 +100,7 @@
    <java name="updateStatusToGoing" g="139,143,168,52" class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" method="updateStatus" >
    	  <description>在完成部门审批后把支持单状态改为进行中</description>
    	  <arg>
-   	  	<string value="going"/>
+   	  	<object expr="#{worksheetno}"/>
    	  </arg>
    	  <field name="st_status" type="java.lang.String">
    	  	<string value="going"/>
