@@ -45,6 +45,7 @@
 			<tx:method name="deploy*" />
 			<tx:method name="start*" />
 			<tx:method name="stop*" />
+			<tx:method name="change*" />
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
