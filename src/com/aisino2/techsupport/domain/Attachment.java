@@ -14,7 +14,7 @@ public class Attachment {
 //	附件备注
 	private String attachmentComment;
 //	附件大小
-	private Long attachmentSize;
+	private String attachmentSize;
 //	关联支持单ID
 	private Integer stId;
 //	附件内容
@@ -32,6 +32,14 @@ public class Attachment {
 	//查询用上传时间断
 	private Date uploadTimeF;
 	private Date uploadTimeT;
+	
+
+	public String getAttachmentSize() {
+		return attachmentSize;
+	}
+	public void setAttachmentSize(String attachmentSize) {
+		this.attachmentSize = attachmentSize;
+	}
 	public Integer getAttachmentId() {
 		return attachmentId;
 	}
@@ -49,12 +57,6 @@ public class Attachment {
 	}
 	public void setAttachmentComment(String attachmentComment) {
 		this.attachmentComment = attachmentComment;
-	}
-	public Long getAttachmentSize() {
-		return attachmentSize;
-	}
-	public void setAttachmentSize(Long attachmentSize) {
-		this.attachmentSize = attachmentSize;
 	}
 	public Integer getStId() {
 		return stId;

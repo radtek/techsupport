@@ -315,12 +315,15 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 			throw new RuntimeException("文件不存在，可能被别人或者自动清理程序删除");
 		String real_filename = uploadId+"__"+System.currentTimeMillis();
 		
+		
+		FileInputStream fis = new FileInputStream(upload_file);
+		
 		Attachment attachment = new Attachment();
 		attachment.setAttachmentContentType(uploadContentType);
 		attachment.setAttachmentName(uploadFileName);
 		attachment.setBatchNumber(uploadId);
 		attachment.setUploadTime(new Date());
-		attachment.setAttachmentSize(upload_file.getTotalSpace());
+		attachment.setAttachmentSize(String.valueOf(fis.available()));
 		attachment.setAttachmentPath(uploadTempPath + "/" + real_filename);
 		
 		attachmentService.insertAttachment(attachment);
@@ -328,7 +331,7 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		//存放文件到指定地点
 		byte[] buff = new byte[8192];
 		int len = 0;
-		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(upload_file));
+		BufferedInputStream bis = new BufferedInputStream(fis);
 		BufferedOutputStream bos = new BufferedOutputStream(
 				new FileOutputStream(this.getUploadTempPath()+"/"+real_filename));
 		while((len = bis.read(buff, 0, buff.length)) > -1){
