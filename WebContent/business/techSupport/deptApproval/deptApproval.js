@@ -50,8 +50,16 @@ function attachment_query(pageno,url){
                                       	ingridPageParams:sXML,
                                       	onRowSelect:null,
 										pageNumber: pageno,
+										changeHref:function($table){
+											$table.find('tr').each(function(){
+												var $file_size_td = $(this).find('td').eq(1);
+												var file_size = ($file_size_td.text() / 1024 / 1024).toFixed(1) +'k';
+												$file_size_td.text(file_size);
+											});
+										},
 										noSortColIndex:[3],
-										colWidths: ["60%","10%","10%","20%"]				
+										hideColIndex:[2],
+										colWidths: ["70%","10%","10%","20%"]
 									});
 		}
 }

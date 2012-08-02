@@ -43,7 +43,15 @@ function attachment_query(pageno,url){
                                       	ingridPageParams:sXML,
                                       	onRowSelect:null,
 										pageNumber: pageno,
-										colWidths: ["60%","10%","10%","20%"]				
+										changeHref:function($table){
+											$table.find('tr').each(function(){
+												var $file_size_td = $(this).find('td').eq(1);
+												var file_size = ($file_size_td.text() / 1024 / 1024).toFixed(1) +'k';
+												$file_size_td.text(file_size);
+											});
+										},
+										hideColIndex:[2],
+										colWidths: ["70%","10%","10%","20%"]				
 									});
 		}
 }
@@ -163,13 +171,13 @@ $(function(){
                   'queueID' : queue_id,
                   'folder': upload_folder,
                   //解决中文按钮名的好方式  
-                  //'buttonImg' : 'common/javascript/uploadify/select.jpg',  
+                  'buttonImg' : 'business/techSupport/common/javascript/uploadify/select_file.png',  
                   //可选  
-//                  'height'    : 20,  
+                  'height'    : 22,  
                   //可选  
-//                  'width'     : 50,  
+                  'width'     : 61,  
                   //设置允许上传的文件格式  
-//                  'fileExt'   : '*;',  
+                  'fileExt'   : '*;',  
                   //设置允许上传的文件格式后，必须加上下面这行代码才能帮你过滤  
 //                  'fileDesc'    : 'txt',  
                   //允许连续上传多个文件  

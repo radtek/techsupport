@@ -55,7 +55,15 @@ function attachment_query(pageno,url){
                                       	onRowSelect:null,
 										pageNumber: pageno,
 										noSortColIndex:[3],
-										colWidths: ["70%","10%","10%","10%"]				
+										changeHref:function($table){
+											$table.find('tr').each(function(){
+												var $file_size_td = $(this).find('td').eq(1);
+												var file_size = ($file_size_td.text() / 1024 / 1024).toFixed(1) +'k';
+												$file_size_td.text(file_size);
+											});
+										},
+										hideColIndex:[2],
+										colWidths: ["70%","10%","10%","20%"]	
 									});
 		}
 }
