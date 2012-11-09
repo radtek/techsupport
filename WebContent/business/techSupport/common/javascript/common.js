@@ -113,11 +113,13 @@ function getDictitem(config) {
  *            对话框加载的内容地址
  * @param config
  *            需要传递给对话框的参数，使用JSON格式
+ * @param callback
+ * 			  加载后的回调函数
  */
-function detailDialog(detailid, width, url, config) {
+function detailDialog(detailid, width, url, config, callback) {
 	setWidth(detailid, width);
 	$("#" + detailid).empty();
-	$("#" + detailid).load(url, config);
+	$("#" + detailid).load(url, config, callback);
 	$("#" + detailid).show("slow");
 	upAllPage(detailid);
 	bindDocument(detailid);
@@ -519,4 +521,11 @@ function getRoleByUserid(userid){
 	});
 	
 	return userroles;
+}
+
+/**
+ * 自动关闭
+ */
+function close_dialog(el){
+	$(el).parents('div.page-layout').eq(0).hideAndRemove("show");
 }
