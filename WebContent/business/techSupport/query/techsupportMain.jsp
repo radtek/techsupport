@@ -9,9 +9,10 @@
 	<meta http-equiv="pragma" content="no-cache" />
 		<title>技术支持单查询统计</title>
 		<script type="text/javascript" src="<%=tsBase %>/common/javascript/common.js"></script>
-
+		<script type="text/javascript" src="<%=tsBase%>/common/javascript/uploadify/jquery.uploadify.v2.1.4.js"></script> 
+		<script type="text/javascript" src="<%=tsBase%>/common/javascript/uploadify/swfobject.js"></script>
 <link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
-
+<link href="<%=tsBase%>/common/javascript/uploadify/uploadify.css"  rel="stylesheet" type="text/css"/>
 <style>
 <!--
 #title {
@@ -101,6 +102,90 @@ function lazyLoad(){
 		//导出按钮
 		$('#export_btn').attr("disabled",true);
 		
+		//上传地址
+		var uploadURL="techsupport/common_upload.action?"+'uploadId='+$('#att_batchNumber').val();
+		//上传队列容器id
+		var queue_id = 'fileUploadPanel';
+		//上传组件名字
+		var upload_name = 'upload';
+		//上传文件存放地址
+		var upload_folder = '/upload';
+		//允许上传大小 字节
+		var allow_max_size = 20971520;
+		
+		
+		
+		//20121109 支持单未完成导入
+		daggleDiv('import_detail_div');
+		$('#import_btn').click(function(){
+			detailDialog('import_detail_div',480,'#',null,function(json){
+				var html= '<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">'+
+				'		    <tr>'+
+				'		      <td align="left" class="title1">未完成支持单导入</td>'+
+				'		      <td align="right"><a href="#" id="closeDiv" onclick="close_dialog(this);" class="close"></a></td>'+
+				'		    </tr>'+
+				'		</table>'+
+				'		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top:10px;">'+
+				'			<tr>'+
+				'				<td align="right">文件：</td>'+	
+				'				<td>'+
+				'					<div id="fileUploadPanel" style="width:260px;text-align:center;">请选择一个上传的文件</div>'+
+				'				</td>'+
+				'				<td>'+
+				'					<input type="file" id="uploadFile">'+
+				'				</td>'+
+				'			</tr>'+
+				'			<tr>'+
+				'				<td colspan="2"></td>'+	
+				'				<td>'+
+				'					<a href="#" class="addbutton" id="uploadButton">确认</a>'+
+				'				</td>'+
+				'			</tr>'+
+				'		</table>';
+				$('#import_detail_div').html(html);
+				//设置上传
+				$('#uploadFile').uploadify({
+							  'uploader'  : 'business/techSupport/common/javascript/uploadify/uploadify.swf',  
+			                  'script'    : uploadURL,  
+			                  'cancelImg' : 'business/techSupport/common/javascript/uploadify/cancel.png',  
+			                  'fileDataName':upload_name,
+			                  'queueID' : queue_id,
+			                  'folder': upload_folder,
+			                  //解决中文按钮名的好方式  
+			                  'buttonImg' : 'business/techSupport/common/javascript/uploadify/select_file.png',  
+			                  //可选  
+			                  'height'    : 22,  
+			                  //可选  
+			                  'width'     : 61,  
+			                  //设置允许上传的文件格式  
+			                  'fileExt'   : 'xls;xlsx;',  
+			                  //设置允许上传的文件格式后，必须加上下面这行代码才能帮你过滤  
+			                  //'fileDesc'    : '*.xls,*.xlsx',  
+			                  //允许连续上传多个文件  
+			                  'multi':false,  
+			                  //一次性最多允许上传多少个,不设置的话默认为999个  
+//			                  'queueSizeLimit' : 3,  
+			                  //每个文件允许上传的大小(字节)  
+			                  'sizeLimit'   : allow_max_size,
+			                  'onAllComplete'  : function(event,data) {
+			                	  $('#import_detail_div').hideAndRemove("show");
+			                  },
+			                  'onSelect':function(file){
+			                	  if(file)
+			                		  $('#'+queue_id).text('');
+			                	  
+			                  },
+//			                  'onComplete'  : function(event,data) {
+//			                	  alert(2)
+//			                   },
+			                  auto:false
+				});
+				$('#uploadButton').click(function(){
+					$('#uploadFile').uploadifyUpload();
+				});
+				$('#import_detail_div').css('top',document.body.offsetHeight/2-30+'px');
+			});
+		});
  		
 		var roleURL="sysadmin/queryUsreRoleList_user.action"
 		setParams('t_');
@@ -175,6 +260,9 @@ function lazyLoad(){
  	 	 				window.open(BUSNEISS_PATH+'/export_excel_supportTicket.action');
 						
  	 	 			});
+ 	 				
+ 	 				//20121109添加未完成支持单导入
+ 	 				$('#import_panel').show();
  	 			}
  	 			//区总
  				else if (data.userRoleList[i].rolename.indexOf('区总') != -1){
@@ -390,6 +478,13 @@ function lazyLoad(){
 						<a href="#" class="item searchbutton " id="queryBtn">查  询</a>
 						<div class="clear-column"></div>
 					</div>
+					<%--
+					添加未完成导入功能, 默认不显示
+					 --%>
+					<div class="column" style="display: none;" id="import_panel">
+						<a href="#" class="item submitbutton " id="import_btn" style="margin-left: 10px;">导  入</a>
+						<div class="clear-column"></div>
+					</div>
 					<div class="column">
 						<a href="#" class="item submitbutton" id="export_btn" style="margin-left: 10px;">全部导出</a>
 						<div class="clear-column"></div>
@@ -419,5 +514,6 @@ function lazyLoad(){
 	</div>
 <div id="detailCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 <div id="supervision_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
+<div id="import_detail_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 	</body>
 </html>
