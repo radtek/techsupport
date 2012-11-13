@@ -1,6 +1,5 @@
 package com.aisino2.techsupport.workflow;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.jbpm.api.IdentityService;
 import org.jbpm.api.ProcessDefinition;
 import org.jbpm.api.ProcessDefinitionQuery;
 import org.jbpm.api.ProcessEngine;
+import org.jbpm.api.ProcessInstance;
 import org.jbpm.api.RepositoryService;
 import org.jbpm.api.TaskService;
 import org.jbpm.pvm.internal.repository.DeploymentImpl;
@@ -85,7 +85,7 @@ public class WorkflowUtil {
 	 * @param var
 	 *            流程变量
 	 */
-	public  void workflowStart(Map<String, Object> var) {
+	public  ProcessInstance workflowStart(Map<String, Object> var) {
 
 		List<ProcessDefinition> pdList = getRepositoryService()
 				.createProcessDefinitionQuery()
@@ -104,7 +104,7 @@ public class WorkflowUtil {
 //		}
 
 		ProcessDefinition pd = pdList.get(0);
-		getExecutionService().startProcessInstanceById(pd.getId(), var);
+		return getExecutionService().startProcessInstanceById(pd.getId(), var);
 	}
 
 	/**

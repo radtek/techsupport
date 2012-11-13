@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.management.RuntimeErrorException;
 
+import org.jbpm.api.ProcessInstance;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.service.BaseService;
@@ -36,7 +37,7 @@ public class ApplyServiceImpl extends BaseService implements ApplyService {
 	 */
 	private WorkflowUtil workflow;
 	
-	public void insertApplyAndGo(SupportTicket st) {
+	public String insertApplyAndGo(SupportTicket st) {
 		SupportTicket supportTicket = null;
 		//设置支持单流程状态 为 待公司审批
 //		st.setStStatus(Constants.ST_STATUS_GOING);
@@ -158,8 +159,9 @@ public class ApplyServiceImpl extends BaseService implements ApplyService {
 //			审核标志通过
 			params.put("approvalCodePassed", Constants.ST_APPR_TYPE_APPR_PASSED);
 			//流程启动
-			workflow.workflowStart(workflow.setVariable(null, null,
+			ProcessInstance newpi = workflow.workflowStart(workflow.setVariable(null, null,
 					candidateUsers, params));
+			return newpi.getId();
 //			throw new RuntimeException("test");
 		}catch (RuntimeException e) {
 			log.error(e);

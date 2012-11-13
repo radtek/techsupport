@@ -27,11 +27,15 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.aisino2.cache.CacheManager;
+import com.aisino2.common.ItemChange;
 import com.aisino2.common.PageUtil;
+import com.aisino2.common.StringUtil;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.web.PageAction;
 import com.aisino2.sysadmin.Constants;
 import com.aisino2.sysadmin.domain.Department;
+import com.aisino2.sysadmin.domain.Dict;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
@@ -40,6 +44,7 @@ import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.domain.Attachment;
 import com.aisino2.techsupport.service.IAttachmentService;
 import com.aisino2.techsupport.service.WorksheetService;
+import com.lowagie.text.pdf.PRAcroForm;
 
 /**
  * 
@@ -52,6 +57,7 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	private IDepartmentService departmentService;
 	private IUserService userService;
 	private WorksheetService sheet_service;
+	
 	private List<User> userList;
 	private User user;
 	private Department dept;
@@ -129,6 +135,36 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		this.departcode_list = departcode_list;
 	}
 
+	//+++++++++++++++未完成支持单导入++++++++++++++++
+	public void importTechSupport() throws Exception {
+		File excelFile = new File(upload);
+		
+		Map<String,Object> var = new HashMap<String, Object>();
+		//状态字典
+		Map<String,String> stStatusDict = new HashMap<String,String>();
+		Dict_item paramDictItem = new Dict_item();
+		paramDictItem.setDict_code(com.aisino2.techsupport.common.Constants.ST_STATUS_DICT_CODE);
+		List<Dict_item> item_list = CacheManager.getCacheDictitem(paramDictItem);
+		for(Dict_item item: item_list)
+			stStatusDict.put(item.getFact_value(), item.getDisplay_name());
+		var.put("stStatus", stStatusDict);
+		//区域字典
+		Map<String,String> regionDict = new HashMap<String, String>();
+		paramDictItem.setDict_code(com.aisino2.techsupport.common.Constants.ST_REGION_DICT_CODE);
+		item_list = CacheManager.getCacheDictitem(paramDictItem);
+		for(Dict_item item : item_list)
+			regionDict.put(item.getFact_value(), item.getDisplay_name());
+		var.put("region", regionDict);
+		try{
+			sheet_service.importTechSupport(excelFile, var);
+			this.result = SUCCESS;
+		}catch(RuntimeException e){
+			log.error(e);
+			log.debug(e.fillInStackTrace());
+			this.result = e.getMessage();
+		}
+	}
+	//---------------未完成支持单导入-----------------
 	// ++ 通过角色筛选用户
 	
 	public String querylistUserofDept() throws Exception {

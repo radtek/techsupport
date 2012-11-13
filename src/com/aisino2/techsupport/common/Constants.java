@@ -127,6 +127,10 @@ public class Constants {
 	public static final String ST_PROCESS_CE_APPROVAL = "ce_appr";
 	// 部门审批或者公司二级审批
 	public static final String ST_PROCESS_DEPARTMENT_APPROVAL = "department_appr";
+	// 技术部门审批
+	public static final String ST_PROCESS_TECH_DEPARTMENT_APPROVAL = "tech_department_appr";
+	// 产品部门审批
+	public static final String ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL = "product_department_appr";
 	// 追踪批复
 	public static final String ST_PROCESS_TRACKING = "tracking_appr";
 	// 反馈确认
@@ -147,6 +151,10 @@ public class Constants {
 	// 反馈更新间隔代码
 	public static final String ST_FEEDBACK_UPDATE_INTERVAL_DAY = "st_feedback_update_interval_day";
 
+	// 默认导入审批用户
+	public static String ST_DEFAULT_IMPORT_APPROVAL_USER;
+	// 默认导入审批内容
+	public static String ST_DEFAULT_IMPORT_APPROVAL_CONTENT;
 	static {
 		util = new CommonUtil();
 		try {
@@ -177,6 +185,13 @@ public class Constants {
 					.getTechSupportEnvConfig("techsupport.role.tech_dept_approval_type");
 			ST_ROLE_PRODUCT_DEPT_APPR_TYPE = util
 					.getTechSupportEnvConfig("techsupport.role.product_dept_approval_type");
+
+			// 默认导入审批用户
+			ST_DEFAULT_IMPORT_APPROVAL_USER = util
+					.getTechSupportEnvConfig("techsupport.worksheet.import.default_user");
+			ST_DEFAULT_IMPORT_APPROVAL_CONTENT = util
+					.getTechSupportEnvConfig("techsupport.worksheet.import.default_approval_content");
+
 		} catch (IOException e) {
 			log.error(e);
 			log.debug(e, e.fillInStackTrace());

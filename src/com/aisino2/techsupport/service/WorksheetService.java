@@ -1,5 +1,8 @@
 package com.aisino2.techsupport.service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -66,4 +69,10 @@ public interface WorksheetService {
 	void removeDeployment(String deploy_id);
 	
 	void startWorkflow(String process_id,Map<String, Object> var);
+	/**
+	 * 未完成支持单导入
+	 * @param excelFile
+	 * @return
+	 */
+	void importTechSupport(File excelFile,Map<String, Object> var) throws IOException;
 }
