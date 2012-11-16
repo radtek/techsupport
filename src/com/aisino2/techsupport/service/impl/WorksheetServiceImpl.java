@@ -7,15 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.drools.lang.DRLParser.constraint_expression_return;
 import org.jbpm.api.JbpmException;
 import org.jbpm.api.TaskService;
 import org.jbpm.api.task.Participation;
@@ -29,6 +30,7 @@ import com.aisino2.core.service.BaseService;
 import com.aisino2.sysadmin.domain.Department;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
+import com.aisino2.sysadmin.service.IDepartmentService;
 import com.aisino2.sysadmin.service.IDict_itemService;
 import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.techsupport.common.CommonUtil;
@@ -57,11 +59,18 @@ public class WorksheetServiceImpl extends BaseService implements
 	private IDeptApprovalService productDeptApprovalService;
 	private TrackingService trackingService;
 	private ICeApprovalService ceApprovalService;
+	private IDepartmentService departmentService;
+	
 	/**
 	 * 流程服务
 	 */
 	private WorkflowUtil workflow;
 	private CommonUtil util;
+
+	@Resource(name="departmentService")
+	public void setDepartmentService(IDepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
 
 	@Resource(name="CeApprovalServiceImpl")
 	public void setCeApprovalService(ICeApprovalService ceApprovalService) {
@@ -476,7 +485,7 @@ public class WorksheetServiceImpl extends BaseService implements
 	 */
 	@Override
 	public void importTechSupport(File excelFile, Map<String, Object> var)
-			throws IOException {
+			throws IOException,RuntimeException {
 		if (excelFile == null || !excelFile.exists())
 			throw new RuntimeException("导入的excel文件上传失败");
 		FileInputStream fis = new FileInputStream(excelFile);
@@ -488,7 +497,8 @@ public class WorksheetServiceImpl extends BaseService implements
 				.get("stStatus");
 		Map<String, String> regionDict = (Map<String, String>) var
 				.get("region");
-
+		Map<String,String> approvalDepartmentDict = (Map<String, String>) var
+				.get("approvalDepartment");
 		// 键值颠倒的字典
 		Map<String, String> stStatusReverseDict = new HashMap<String, String>();
 		for (String key : stStatusDict.keySet())
@@ -514,14 +524,43 @@ public class WorksheetServiceImpl extends BaseService implements
 			String supportContent = util.getCellString(row.getCell(3));
 			if (!StringUtil.isNotEmpty(supportContent))
 				throw new RuntimeException("支持单内容为必填");
-			String status = util.getCellString(row.getCell(6));
+			String status = util.getCellString(row.getCell(7));
 			if (!StringUtil.isNotEmpty(status))
 				throw new RuntimeException("状态为必填");
+			Date scheDate = null;
+			try{
+				scheDate = row.getCell(5).getDateCellValue();
+			}catch(Exception e){
+				try{
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					scheDate =sdf.parse(util.getCellString(row.getCell(5)));
+				}catch(Exception e1){
+					try{
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+						scheDate =sdf.parse(util.getCellString(row.getCell(5)));
+					}catch(Exception e2){
+						try{
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+							scheDate =sdf.parse(util.getCellString(row.getCell(5)));
+						}catch(Exception e3){
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+							try{
+								scheDate =sdf.parse(util.getCellString(row.getCell(5)));
+							}catch(java.text.ParseException e4){
+								log.debug(e4);
+								throw new RuntimeException("计划时间格式正确");
+							}
+						}
+					}
+				}
+			}
+			if(scheDate==null)
+				throw new RuntimeException("计划时间为必填");
 			// -----------------选填内容------------------
 			String approvalContent = util.getCellString(row.getCell(4));
 			approvalContent = StringUtil.isNotEmpty(approvalContent) ? approvalContent
 					: Constants.ST_DEFAULT_IMPORT_APPROVAL_CONTENT;
-			String supportLeaderName = util.getCellString(row.getCell(5));
+			String supportLeaderName = util.getCellString(row.getCell(6));
 
 			// ---------------处理对象数据------------------
 			st.setStNo(stNo);
@@ -533,14 +572,17 @@ public class WorksheetServiceImpl extends BaseService implements
 
 			String datetext = null;
 			Date operateDate = null;
+			String serialNumber = null;
 			try {
 				datetext = stNo.split("-")[1];
+				serialNumber = stNo.split("-")[2];
 				operateDate = sdf.parse(datetext);
 			} catch (Exception e) {
 				log.debug(e, e.fillInStackTrace());
 				throw new RuntimeException("支持单编号输入错误");
 			}
-
+			st.setSerialNumber(Integer.parseInt(serialNumber));
+			
 			User approvalUser = new User();
 			approvalUser
 					.setUseraccount(Constants.ST_DEFAULT_IMPORT_APPROVAL_USER);
@@ -554,7 +596,7 @@ public class WorksheetServiceImpl extends BaseService implements
 			User applicant = new User();
 			applicant.setUsername(regionLeaderName);
 			try {
-				approvalUser = (User) userService.getListUser(approvalUser)
+				applicant = (User) userService.getListUser(applicant)
 						.get(0);
 			} catch (Exception e) {
 				log.debug(e, e.fillInStackTrace());
@@ -564,19 +606,38 @@ public class WorksheetServiceImpl extends BaseService implements
 
 			if (StringUtil.isNotEmpty(supportLeaderName)) {
 				String[] supportLeaderNames = supportLeaderName.split(",");
+				Set<Department> departmentSet = new HashSet<Department>();
+				Set<User> sleaderSet = new HashSet<User>();
 				for (String name : supportLeaderNames) {
 					User supportLeader = new User();
 					supportLeader.setUsername(name);
 					try {
 						supportLeader = (User) userService.getListUser(
 								supportLeader).get(0);
+						Department department = supportLeader.getDepartment();
+						while(department!=null && !approvalDepartmentDict.keySet().contains(department.getDepartcode())){
+							department = departmentService.getParentDepart(department);
+						}
+						if(department==null)
+							throw new RuntimeException("无法找到符合负责人的审批部门");
+						else{
+							departmentSet.add(department);
+							if(Constants.ST_APPROVAL_DEPARTMENT_CODE_TECH.equals(department.getDepartcode())){
+								st.setDevScheDate(scheDate);
+							}
+							else if (Constants.ST_APPROVAL_DEPARTMENT_CODE_PRODUCT.equals(department.getDepartcode())){
+								st.setPsgScheDate(scheDate);
+							}
+						}
 					} catch (Exception e) {
 						log.debug(e, e.fillInStackTrace());
 						throw new RuntimeException("支持单负责人在系统中不存在");
 					}
-					st.getLstSupportLeaders().add(supportLeader);
+					sleaderSet.add(supportLeader);
+					
 				}
-
+				st.getLstSupportLeaders().addAll(sleaderSet);
+				st.getSupportDeptList().addAll(departmentSet);
 			}
 
 			if (Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL.equals(st
@@ -613,34 +674,39 @@ public class WorksheetServiceImpl extends BaseService implements
 		for (SupportTicket st : lstSupportTicket) {
 			if (Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL.equals(st
 					.getStStatus())) {
+				st.setTrackList(null);
 				applyService.insertApplyAndGo(st);
 			} else if (Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL.equals(st
 					.getStStatus())) {
+				List<Tracking> trackList = st.getTrackList();
+				st.setTrackList(null);
 				String piid = applyService.insertApplyAndGo(st);
 				Task ceTask = workflow.getTaskService().createTaskQuery()
-						.processInstanceId(piid)
+						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
 						.uniqueResult();
-				ceApprovalService.insertCeApproval(ceTask.getId(), st, st.getTrackList().get(0));
+				ceApprovalService.insertCeApproval(ceTask.getId(), st, trackList.get(0));
 			} else if(Constants.ST_STATUS_GOING.equals(st.getStStatus())){
+				List<Tracking> trackList = st.getTrackList();
+				st.setTrackList(null);
 				String piid = applyService.insertApplyAndGo(st);
 				Task ceTask = workflow.getTaskService().createTaskQuery()
-						.processInstanceId(piid)
+						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
 						.uniqueResult();
-				ceApprovalService.insertCeApproval(ceTask.getId(), st, st.getTrackList().get(0));
+				ceApprovalService.insertCeApproval(ceTask.getId(), st, trackList.get(0));
 				Task techTask = workflow.getTaskService().createTaskQuery()
-						.processDefinitionId(piid)
+						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL)
 						.uniqueResult();
 				if(techTask!=null)
-					techDeptApprovalService.insertDeptApproval(techTask.getId(), st, st.getTrackList().get(1));
+					techDeptApprovalService.insertDeptApproval(techTask.getId(), st, trackList.get(1));
 				Task productTask = workflow.getTaskService().createTaskQuery()
-						.processDefinitionId(piid)
+						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL)
 						.uniqueResult();
 				if(productTask!=null)
-					productDeptApprovalService.insertDeptApproval(productTask.getId(), st, st.getTrackList().get(1));
+					productDeptApprovalService.insertDeptApproval(productTask.getId(), st, trackList.get(1));
 			} 
 			
 			//for import process end

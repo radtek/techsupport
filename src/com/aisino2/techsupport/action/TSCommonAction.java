@@ -39,6 +39,7 @@ import com.aisino2.sysadmin.domain.Dict;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
+import com.aisino2.sysadmin.service.IDict_itemService;
 import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.domain.Attachment;
@@ -57,6 +58,8 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	private IDepartmentService departmentService;
 	private IUserService userService;
 	private WorksheetService sheet_service;
+	private IDict_itemService dict_itemService;
+	private IUser_roleService userrole_service;
 	
 	private List<User> userList;
 	private User user;
@@ -84,7 +87,6 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	private IAttachmentService attachmentService;
 	//机构代码列表
 	private List departcode_list;
-	private IUser_roleService userrole_service;
 	
 	private int totalrows;
 	
@@ -98,6 +100,11 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	 */
 	private HttpServletResponse response;
 	
+	@Resource(name="dict_itemService")
+	public void setDict_itemService(IDict_itemService dict_itemService) {
+		this.dict_itemService = dict_itemService;
+	}
+
 	public Attachment getAttachment() {
 		return attachment;
 	}
@@ -144,25 +151,30 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		Map<String,String> stStatusDict = new HashMap<String,String>();
 		Dict_item paramDictItem = new Dict_item();
 		paramDictItem.setDict_code(com.aisino2.techsupport.common.Constants.ST_STATUS_DICT_CODE);
-		List<Dict_item> item_list = CacheManager.getCacheDictitem(paramDictItem);
+		List<Dict_item> item_list = dict_itemService.getListDict_item(paramDictItem);
 		for(Dict_item item: item_list)
 			stStatusDict.put(item.getFact_value(), item.getDisplay_name());
 		var.put("stStatus", stStatusDict);
 		//区域字典
 		Map<String,String> regionDict = new HashMap<String, String>();
-		paramDictItem.setDict_code(com.aisino2.techsupport.common.Constants.ST_REGION_DICT_CODE);
-		item_list = CacheManager.getCacheDictitem(paramDictItem);
+		Dict_item paramDictItem2 =  new Dict_item();
+		paramDictItem2.setDict_code(com.aisino2.techsupport.common.Constants.ST_REGION_DICT_CODE);
+		item_list = dict_itemService.getListDict_item(paramDictItem2);
 		for(Dict_item item : item_list)
 			regionDict.put(item.getFact_value(), item.getDisplay_name());
 		var.put("region", regionDict);
-		try{
-			sheet_service.importTechSupport(excelFile, var);
-			this.result = SUCCESS;
-		}catch(RuntimeException e){
-			log.error(e);
-			log.debug(e.fillInStackTrace());
-			this.result = e.getMessage();
-		}
+		//可以审批的部门字典
+		Map<String,String> approvalDepartmentDict = new HashMap<String, String>();
+		Dict_item paramDictItem3 =  new Dict_item();
+		paramDictItem2.setDict_code(com.aisino2.techsupport.common.Constants.ST_REGION_DICT_CODE);
+		item_list = dict_itemService.getListDict_item(paramDictItem3);
+		for(Dict_item item : item_list)
+			approvalDepartmentDict.put(item.getFact_value(), item.getDisplay_name());
+		var.put("approvalDepartment", approvalDepartmentDict);
+		
+		
+		sheet_service.importTechSupport(excelFile, var);
+		this.result = SUCCESS;
 	}
 	//---------------未完成支持单导入-----------------
 	// ++ 通过角色筛选用户
