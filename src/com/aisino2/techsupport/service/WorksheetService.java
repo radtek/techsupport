@@ -74,5 +74,5 @@ public interface WorksheetService {
 	 * @param excelFile
 	 * @return
 	 */
-	void importTechSupport(File excelFile,Map<String, Object> var) throws IOException;
+	void importTechSupport(File excelFile,Map<String, Object> var) throws IOException,RuntimeException;
 }
