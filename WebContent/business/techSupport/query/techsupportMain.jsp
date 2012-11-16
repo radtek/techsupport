@@ -103,7 +103,7 @@ function lazyLoad(){
 		$('#export_btn').attr("disabled",true);
 		
 		//上传地址
-		var uploadURL="techsupport/common_upload.action?"+'uploadId='+$('#att_batchNumber').val();
+		var uploadURL="techsupport/importTechSupport_tscommon.action";
 		//上传队列容器id
 		var queue_id = 'fileUploadPanel';
 		//上传组件名字
@@ -144,6 +144,7 @@ function lazyLoad(){
 				'		</table>';
 				$('#import_detail_div').html(html);
 				//设置上传
+				
 				$('#uploadFile').uploadify({
 							  'uploader'  : 'business/techSupport/common/javascript/uploadify/uploadify.swf',  
 			                  'script'    : uploadURL,  
@@ -158,31 +159,34 @@ function lazyLoad(){
 			                  //可选  
 			                  'width'     : 61,  
 			                  //设置允许上传的文件格式  
-			                  'fileExt'   : 'xls;xlsx;',  
+			                  'fileExt'   : '*.xls;*.xlsx',  
 			                  //设置允许上传的文件格式后，必须加上下面这行代码才能帮你过滤  
-			                  //'fileDesc'    : '*.xls,*.xlsx',  
+			                  'fileDesc'    : ['请选择xls,xlsx文件'],  
 			                  //允许连续上传多个文件  
 			                  'multi':false,  
 			                  //一次性最多允许上传多少个,不设置的话默认为999个  
 //			                  'queueSizeLimit' : 3,  
 			                  //每个文件允许上传的大小(字节)  
 			                  'sizeLimit'   : allow_max_size,
-			                  'onAllComplete'  : function(event,data) {
-			                	  $('#import_detail_div').hideAndRemove("show");
+			                  'onAllComplete'  :  function(event,data) {
+			                	  if(data.filesUploaded)
+			                		  jAlert("导入成功","提示");
+			                	  $('#import_detail_div').hide();
+			                	  $('#jquery-overlay').hide();
 			                  },
 			                  'onSelect':function(file){
 			                	  if(file)
 			                		  $('#'+queue_id).text('');
-			                	  
 			                  },
-//			                  'onComplete'  : function(event,data) {
-//			                	  alert(2)
-//			                   },
+			                  onError: function(event,queueId,fileObj,errorObj){
+			                	  jAlert(fileObj.name+"导入错误，请联系管理员","警告");
+			                  },
 			                  auto:false
 				});
 				$('#uploadButton').click(function(){
 					$('#uploadFile').uploadifyUpload();
 				});
+				
 				$('#import_detail_div').css('top',document.body.offsetHeight/2-30+'px');
 			});
 		});
