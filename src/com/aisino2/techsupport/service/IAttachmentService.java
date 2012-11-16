@@ -29,4 +29,5 @@ public interface IAttachmentService {
 	
 	Attachment getAttachment(Attachment attachment);
 	
+	void removeInvailAttachment();
 }

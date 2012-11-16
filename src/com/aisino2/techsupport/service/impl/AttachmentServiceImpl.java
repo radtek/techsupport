@@ -1,12 +1,16 @@
 package com.aisino2.techsupport.service.impl;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.dao.Page;
@@ -67,6 +71,21 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	@Resource(name="attachmentDaoImpl")
 	public void setAttachment_dao(IAttachmentDao attachment_dao) {
 		this.attachment_dao = attachment_dao;
+	}
+
+	@Override
+	public void removeInvailAttachment() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.HOUR_OF_DAY, -1 );
+		map.put("uploadF",cal.getTime());
+		map.put("stId", null);
+		Page page = queryAttachmentForPage(map,1,99999,null,"desc");
+		HttpServletRequest req = ServletActionContext.getRequest();
+		for(Attachment at : (List<Attachment>)page.getData()){
+			removeAttachment(at, req);
+		}
 	}
 
 }
