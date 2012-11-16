@@ -155,6 +155,16 @@ public class Constants {
 	public static String ST_DEFAULT_IMPORT_APPROVAL_USER;
 	// 默认导入审批内容
 	public static String ST_DEFAULT_IMPORT_APPROVAL_CONTENT;
+
+	/**
+	 * 技术部门审批机构代码
+	 */
+	public static String ST_APPROVAL_DEPARTMENT_CODE_TECH;
+
+	/**
+	 * 产品部门审批机构代码
+	 */
+	public static String ST_APPROVAL_DEPARTMENT_CODE_PRODUCT;
 	static {
 		util = new CommonUtil();
 		try {
@@ -192,6 +202,11 @@ public class Constants {
 			ST_DEFAULT_IMPORT_APPROVAL_CONTENT = util
 					.getTechSupportEnvConfig("techsupport.worksheet.import.default_approval_content");
 
+			// 部门审批机构代码
+			ST_APPROVAL_DEPARTMENT_CODE_TECH = util
+					.getTechSupportEnvConfig("techsupport.worksheet.approval_department.tech");
+			ST_APPROVAL_DEPARTMENT_CODE_PRODUCT = util
+					.getTechSupportEnvConfig("techsupport.worksheet.approval_department.product");
 		} catch (IOException e) {
 			log.error(e);
 			log.debug(e, e.fillInStackTrace());
