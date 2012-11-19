@@ -5,6 +5,14 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 public class Constants {
+	/**
+	 * 应用服务器真实地址
+	 */
+	public static String APPLICATION_SERVERCONTEXT_REALPATH;
+	/**
+	 * 服务器上传地址
+	 */
+	public static String APPLICATION_UPLOAD_DIR = "/upload";
 	// 进行中
 	public static String ST_STATUS_GOING = "going";
 	// 带公司审批
