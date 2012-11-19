@@ -455,8 +455,8 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		
 		if(attachment == null || attachment.getAttachmentId() == null)
 			throw new RuntimeException("附件ID为空。");
-		
-		attachmentService.removeAttachment(attachment, getRequest());
+		String upload_dir = com.aisino2.techsupport.common.Constants.APPLICATION_SERVERCONTEXT_REALPATH + com.aisino2.techsupport.common.Constants.APPLICATION_UPLOAD_DIR;
+		attachmentService.removeAttachment(attachment, upload_dir);
 		return SUCCESS;
 	}
 	

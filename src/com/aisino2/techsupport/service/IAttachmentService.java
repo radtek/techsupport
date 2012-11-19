@@ -22,8 +22,8 @@ public interface IAttachmentService {
 	void insertAttachment(Attachment attachment);
 	void updateAttachment(Attachment attachment);
 	void removeAttachment(Attachment attachment);
-	void removeAttachment(Attachment attachment, HttpServletRequest request);
-	
+	void removeAttachment(Attachment attachment, 
+			String upload_dir);
 	List<Attachment> queryAttachment(Attachment attachment);
 	Page queryAttachmentForPage(Map<String,Object> map,int pageno,int pagesize,String sort,String desc);
 	

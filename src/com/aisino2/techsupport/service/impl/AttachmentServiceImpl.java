@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.dao.Page;
+import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.dao.IAttachmentDao;
 import com.aisino2.techsupport.domain.Attachment;
 import com.aisino2.techsupport.service.IAttachmentService;
@@ -39,13 +38,11 @@ public class AttachmentServiceImpl implements IAttachmentService {
 		attachment_dao.delete(attachment);
 	}
 
-	public void removeAttachment(Attachment attachment, HttpServletRequest request){
+	public void removeAttachment(Attachment attachment, String upload_dir){
 		attachment = attachment_dao.get(attachment);
 		attachment_dao.delete(attachment);
 		
-		File upload_file = new File(request.getSession()
-				.getServletContext()
-				.getRealPath("/")+attachment.getAttachmentPath());
+		File upload_file = new File(upload_dir + "/" + attachment.getAttachmentPath());
 		if(upload_file.exists()){
 			upload_file.delete();
 		}
@@ -76,15 +73,11 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	@Override
 	public void removeInvailAttachment() {
 		Map<String,Object> map = new HashMap<String, Object>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		cal.add(Calendar.HOUR_OF_DAY, -1 );
-		map.put("uploadF",cal.getTime());
-		map.put("stId", null);
+		map.put("junkAttachment", 1);
 		Page page = queryAttachmentForPage(map,1,99999,null,"desc");
-		HttpServletRequest req = ServletActionContext.getRequest();
+		String upload_dir = Constants.APPLICATION_SERVERCONTEXT_REALPATH + Constants.APPLICATION_UPLOAD_DIR;
 		for(Attachment at : (List<Attachment>)page.getData()){
-			removeAttachment(at, req);
+			removeAttachment(at, upload_dir);
 		}
 	}
 
