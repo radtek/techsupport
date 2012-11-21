@@ -529,3 +529,13 @@ function getRoleByUserid(userid){
 function close_dialog(el){
 	$(el).parents('div.page-layout').eq(0).hideAndRemove("show");
 }
+/**
+ * 生成附件大小
+ * */
+function render_attachment_filesize($table){
+	$table.find('tr').each(function(){
+		var $file_size_td = $(this).find('td').eq(1);
+		var file_size = ($file_size_td.text() / 1024 / 1024).toFixed(1) +'m';
+		$file_size_td.text(file_size);
+	});
+}
