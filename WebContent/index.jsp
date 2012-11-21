@@ -609,7 +609,11 @@ function ceshi(yiDongWay){
             //公安段
             if(usertype=='14'){
                 $("#help").attr("href", "help/Ylygad_help.jsp");
-			}else{
+			}
+            else if(usertype=='99'){
+            	$("#help").attr("href", "help/help_ts.jsp");
+            }
+            else{
 				$("#help").attr("href", "help/help_gad.jsp");
 			}
                 if(usertype == "11" || usertype == "12"){//制卡和采集
