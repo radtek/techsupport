@@ -60,6 +60,10 @@ var supervision_detail_url = BUSNEISS_PATH +"/query_supervision.action";
 
 var supervision_width = 690;
 
+
+// 申请人修改页面
+var applicant_page = "";
+
 // 延迟加载
 function lazyLoad(){
 	queryPanelHeight = $("#queryPanel").outerHeight(true);
@@ -360,30 +364,23 @@ function lazyLoad(){
 											noSortColIndex:[6],
 											changeHref:function(table){
 												$("tr",table).each(function(){
-													__tr = $(this);
+													var __tr = $(this);
 													$(this).find("a[title=督办]").each(function(){
 														var text = __tr.find('td').eq(5).text();
 														if(text == '已完成' || text == '已中止'){
-															/*
-															$(this).removeAttr('href').css('color','gray');
-															$(this).unbind('click');
-															this.onclick=null;
-															*/
 															$(this).remove();
 														}
 															
 													});
+													//控制:只有申请人在待公司审批的时候才能够修改和删除
+													__tr.find('a[title="删除"]|a[title="修改"]').each(function(){
+														if(userid != __tr.find('td:nth(6)').text())
+															$(this).remove();
+													});
 												});
 											},
-											colWidths: function(){
-												var a_col_widths=[];
-												var ths = $('#queryContentTable th');
-												for(i=0;i<ths.length;i++){
-													a_col_widths[i]=100/ths.length+'%';
-												}
-												
-												return a_col_widths;
-											}()				
+											colWidths: ['12.5%','12.5%','12.5%','12.5%','12.5%','12.5%','0','12.5%'],
+											hideColIndex:[6]
 										});				
 			}
 	}
@@ -402,7 +399,18 @@ function lazyLoad(){
 	function set_supervision(id){
 		dataid=id;
 		detailDialog(supervision_div,supervision_width,supervision_page);
-	}	
+	}
+	
+	///////////////////////添加申请人修改和删除////////////////////////////
+	/** 删除 */
+	function setDelete(id){
+		
+	}
+	/** 修改 */
+	function setModify(id){
+		detailDialog(detailid,detailWidth,applicant_page);
+	}
+	////////////////////////////////////////////////////////////////////
 </script>
 	</head>
 	<body>
@@ -509,6 +517,8 @@ function lazyLoad(){
 			     	<th name="l_supportLeader">技术支持单负责人</th>
 			     	<th name="l_supportDept">技术支持部门</th>
 			     	<th name="l_supportStatus">状态</th>
+			     	<%-- 申请人修改删除用 --%>
+			     	<th name="l_applicantId">申请人ID</th> 
 			     	<th name="">操作</th>
 			    </tr>
 			  </thead>

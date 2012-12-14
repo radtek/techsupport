@@ -290,45 +290,48 @@ public class SupportTicketAction extends PageAction implements
 		params.put("trackDateTo", tracking.getTrackingDateTo());
 		params.put("applyDateFrom", supportTicket.getApplyDateFrom());
 		params.put("applyDateTo", supportTicket.getApplyDateTo());
-		if (limitDeparement.getDepartcode() != null && limitDeparement.getDepartcode().trim().length() > 0) {
+		if (limitDeparement.getDepartcode() != null
+				&& limitDeparement.getDepartcode().trim().length() > 0) {
 			// 单位筛选
 			params.put("limitUserDeparement", 1);
 			params.put("limitDeparement", limitDeparement.getDepartcode());
 		}
 
 		// ++ 最后更改时间天数
-		
+
 		params.put("use_last_update_day", supportTicket.getUseLastUpdateDate());
-		if(supportTicket.getUseLastUpdateDate()!=null && supportTicket.getUseLastUpdateDate().trim().length() > 0)
-		{
-			
+		if (supportTicket.getUseLastUpdateDate() != null
+				&& supportTicket.getUseLastUpdateDate().trim().length() > 0) {
+
 			int lastUpdateIntervalDay = Constants.LAST_UPDATE_DAY;
-			
-			try{
+
+			try {
 				Globalpar gp = new Globalpar();
-				if(Constants.ST_STATUS_GOING.equals(supportTicket.getStStatus()))
-				{
+				if (Constants.ST_STATUS_GOING.equals(supportTicket
+						.getStStatus())) {
 					gp.setGlobalparcode(Constants.ST_TRACKING_UPDATE_INTERVAL_DAY);
 					gp = globalparService.getGlobalpar(gp);
-					lastUpdateIntervalDay = Integer.parseInt(gp.getGlobalparvalue());
-				}
-				else if (Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL.equals(supportTicket.getStStatus())
-						||Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL.equals(supportTicket.getStStatus()))
-				{
+					lastUpdateIntervalDay = Integer.parseInt(gp
+							.getGlobalparvalue());
+				} else if (Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL
+						.equals(supportTicket.getStStatus())
+						|| Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL
+								.equals(supportTicket.getStStatus())) {
 					gp.setGlobalparcode(Constants.ST_APPRAVAL_UPDATE_INTERVAL_DAY);
 					gp = globalparService.getGlobalpar(gp);
-					lastUpdateIntervalDay = Integer.parseInt(gp.getGlobalparvalue());
-				}
-				else if (Constants.ST_STATUS_WAIT_FEEDBACK.equals(supportTicket.getStStatus()))
-				{
+					lastUpdateIntervalDay = Integer.parseInt(gp
+							.getGlobalparvalue());
+				} else if (Constants.ST_STATUS_WAIT_FEEDBACK
+						.equals(supportTicket.getStStatus())) {
 					gp.setGlobalparcode(Constants.ST_FEEDBACK_UPDATE_INTERVAL_DAY);
 					gp = globalparService.getGlobalpar(gp);
-					lastUpdateIntervalDay = Integer.parseInt(gp.getGlobalparvalue());
+					lastUpdateIntervalDay = Integer.parseInt(gp
+							.getGlobalparvalue());
 				}
-				
-			}catch (Exception e) {
+
+			} catch (Exception e) {
 				log.error(e);
-				log.debug(e,e.fillInStackTrace());
+				log.debug(e, e.fillInStackTrace());
 			}
 			params.put("last_update_day", lastUpdateIntervalDay);
 		}
@@ -347,8 +350,9 @@ public class SupportTicketAction extends PageAction implements
 		params.put("user_region_list", region_list);
 		// -- 默认用户管辖范围
 		// 设置TRACKING关联标识
-		if ((params.get("type") != null && !params.get("type").equals("")) 
-				|| (params.get("tracking_person") != null && !params.get("tracking_person").equals("")))
+		if ((params.get("type") != null && !params.get("type").equals(""))
+				|| (params.get("tracking_person") != null && !params.get(
+						"tracking_person").equals("")))
 			params.put("join_tracking", true);
 		Page page = stService.getListSupportTicketForPage(params,
 				this.pagesize, this.pagerow, this.sort, this.dir);
@@ -412,7 +416,9 @@ public class SupportTicketAction extends PageAction implements
 		lPro.add("supportLeaderName");
 		lPro.add("supportDeptName");
 		lPro.add("stStatusName");
-
+		//添加填报人ID为隐藏字段
+		lPro.add("applicantId");
+		
 		List lCol = new ArrayList();
 		List lDetail = new ArrayList();
 		lDetail.add("setDetail");
@@ -440,6 +446,21 @@ public class SupportTicketAction extends PageAction implements
 		}
 
 		// -- 督办角色的操作
+
+		// ////////////////新增填报人修改与删除//////////////////////
+		// 从页面上通过applicaintId 来控制,有对应的显示修改删除,没有的不显示
+		//删除
+		List lDelete = new ArrayList();
+		lDelete.add("setDelete");
+		lDelete.add("删除");
+		lCol.add(lDelete);
+		//修改
+		List lModify = new ArrayList();
+		lModify.add("setModify");
+		lModify.add("修改");
+		lCol.add(lModify);
+		// //////////////////////////////////////////////////////
+
 		for (SupportTicket st : (List<SupportTicket>) ldata) {
 			st.setStStatusName(ItemChange.codeChange(
 					Constants.ST_STATUS_DICT_CODE, st.getStStatus()));
