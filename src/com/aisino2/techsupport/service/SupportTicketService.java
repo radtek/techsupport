@@ -23,5 +23,10 @@ public interface SupportTicketService {
 	
 	Page getListSupportTicketForPage(Map<String, Object> map, int pageNo,int pageSize,String sort,String desc);
 	
+	/**
+	 * @新增 申请人删除
+	 * @param st
+	 */
+	void deleteSupportTicketByApplicant(SupportTicket st);
 	
 }

@@ -62,7 +62,7 @@ var supervision_width = 690;
 
 
 // 申请人修改页面
-var applicant_page = "";
+var applicant_page = "business/techSupport/query/techsupportModify.jsp";
 
 // 延迟加载
 function lazyLoad(){
@@ -365,22 +365,21 @@ function lazyLoad(){
 											changeHref:function(table){
 												$("tr",table).each(function(){
 													var __tr = $(this);
-													$(this).find("a[title=督办]").each(function(){
-														var text = __tr.find('td').eq(5).text();
-														if(text == '已完成' || text == '已中止'){
-															$(this).remove();
-														}
-															
-													});
+													var text = __tr.find('td').eq(7).text();
+													//督办控制
+													if(text == ST_STATUS_COMPLETE || text == ST_STATUS_STOP){
+														__tr.find("a[title=督办]").remove();
+													}
 													//控制:只有申请人在待公司审批的时候才能够修改和删除
-													__tr.find('a[title="删除"]|a[title="修改"]').each(function(){
-														if(userid != __tr.find('td:nth(6)').text())
-															$(this).remove();
-													});
+													if(userid != __tr.find('td:nth(6)').text() || text != ST_STATUS_WAIT_COMPANY_APPRAVAL){
+														__tr.find('a[title="删除"]').remove();
+														__tr.find('a[title="修改"]').remove();
+													}
+														
 												});
 											},
-											colWidths: ['12.5%','12.5%','12.5%','12.5%','12.5%','12.5%','0','12.5%'],
-											hideColIndex:[6]
+											colWidths: ['14.2%','14.2%','14.2%','14.2%','14.2%','14.2%','0','0','14.2%'],
+											hideColIndex:[6,7]
 										});				
 			}
 	}
@@ -404,10 +403,21 @@ function lazyLoad(){
 	///////////////////////添加申请人修改和删除////////////////////////////
 	/** 删除 */
 	function setDelete(id){
+		var delete_url = "techsupport/remove_supportTicket.action";
+		var params = {"supportTicket.id":id};
+		if(confirm("确认删除支持单记录?")){
+			$.post(delete_url,params,function(data){
+				if(data.result == "success")
+					SupportTicketQuery(1);
+				else
+					jAlert(data.result,"警告");
+			});
+		}
 		
 	}
 	/** 修改 */
 	function setModify(id){
+		dataid=id;
 		detailDialog(detailid,detailWidth,applicant_page);
 	}
 	////////////////////////////////////////////////////////////////////
@@ -516,9 +526,11 @@ function lazyLoad(){
 			     	<th name="l_applicant">申请人</th>
 			     	<th name="l_supportLeader">技术支持单负责人</th>
 			     	<th name="l_supportDept">技术支持部门</th>
-			     	<th name="l_supportStatus">状态</th>
+			     	<th name="l_supportStatusnName">状态</th>
 			     	<%-- 申请人修改删除用 --%>
-			     	<th name="l_applicantId">申请人ID</th> 
+			     	<th name="l_applicantId">申请人ID</th>
+			     	<%--支持单状态代码 --%> 
+			     	<th name="l_stStatus">状态代码</th>
 			     	<th name="">操作</th>
 			    </tr>
 			  </thead>

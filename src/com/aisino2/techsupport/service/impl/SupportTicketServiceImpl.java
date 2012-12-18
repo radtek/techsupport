@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.jbpm.api.task.Task;
+import org.jbpm.pvm.internal.task.TaskImpl;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.dao.Page;
@@ -17,6 +19,8 @@ import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
 import com.aisino2.sysadmin.service.IDict_itemService;
 import com.aisino2.sysadmin.service.IUserService;
+import com.aisino2.techsupport.common.CommonUtil;
+import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.dao.ISupportDeptDao;
 import com.aisino2.techsupport.dao.ISupportLeaderRelationDao;
 import com.aisino2.techsupport.dao.SupportTicketDao;
@@ -28,6 +32,7 @@ import com.aisino2.techsupport.domain.Tracking;
 import com.aisino2.techsupport.service.IAttachmentService;
 import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.service.TrackingService;
+import com.aisino2.techsupport.workflow.WorkflowUtil;
 
 /**
  * 
@@ -55,6 +60,23 @@ public class SupportTicketServiceImpl extends BaseService implements
 	private IUserService user_service;
 
 	private IDict_itemService dictitem_service;
+
+	private CommonUtil util;
+
+	/**
+	 * 流程控制服务
+	 */
+	private WorkflowUtil workflow;
+
+	@Resource(name = "CommonUtil")
+	public void setUtil(CommonUtil util) {
+		this.util = util;
+	}
+
+	@Resource(name = "WorkflowUtil")
+	public void setWorkflow(WorkflowUtil workflow) {
+		this.workflow = workflow;
+	}
 
 	@Resource(name = "dict_itemService")
 	public void setDictitem_service(IDict_itemService dictitem_service) {
@@ -200,20 +222,21 @@ public class SupportTicketServiceImpl extends BaseService implements
 			if (st.getLstSupportLeaders() != null
 					&& st.getLstSupportLeaders().size() > 0) {
 
-				//装载所有审批部门
+				// 装载所有审批部门
 				Dict_item dict_item = new Dict_item();
 				List<Dict_item> department_approval_items = dictitem_service
 						.getListDict_item(dict_item);
 				List<Department> dept_approval_departments = new ArrayList<Department>();
-				for(Dict_item item : department_approval_items){
+				for (Dict_item item : department_approval_items) {
 					Department approval_department = new Department();
 					approval_department.setDepartcode(item.getFact_value());
-					approval_department = departmentService.getDepartment(approval_department);
-					if(approval_department!=null){
+					approval_department = departmentService
+							.getDepartment(approval_department);
+					if (approval_department != null) {
 						dept_approval_departments.add(approval_department);
 					}
 				}
-				
+
 				for (User sl : st.getLstSupportLeaders()) {
 					if (sl.getUserid() == null || sl.getUserid() == 0)
 						continue;
@@ -222,23 +245,24 @@ public class SupportTicketServiceImpl extends BaseService implements
 
 					SupportLeaderRelation check_slrelation = new SupportLeaderRelation();
 					check_slrelation.setStId(st.getId());
-					
+
 					sl = user_service.getUser(sl);
 
 					List<Department> old_sl_department_list = new ArrayList<Department>();
-					
-					for(Department d : dept_approval_departments){
-						if(sl.getDepartment().getDepartfullcode().contains(d.getDepartfullcode())){
+
+					for (Department d : dept_approval_departments) {
+						if (sl.getDepartment().getDepartfullcode()
+								.contains(d.getDepartfullcode())) {
 							old_sl_department_list.add(d);
-							old_sl_department_list.addAll(departmentService.getAllChildDepart(d));
+							old_sl_department_list.addAll(departmentService
+									.getAllChildDepart(d));
 						}
 					}
-					
+
 					for (Department guess_sl_dept : old_sl_department_list) {
 						check_slrelation.setDepartid(guess_sl_dept
 								.getDepartid());
-						this.supportLeaderRelationDao
-								.delete(check_slrelation);
+						this.supportLeaderRelationDao.delete(check_slrelation);
 					}
 
 					SupportLeaderRelation slrelation = new SupportLeaderRelation();
@@ -325,6 +349,35 @@ public class SupportTicketServiceImpl extends BaseService implements
 	@Resource(name = "attachmentServiceImpl")
 	public void setAttachmentService(IAttachmentService attachmentService) {
 		this.attachmentService = attachmentService;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.aisino2.techsupport.service.SupportTicketService#
+	 * deleteSupportTicketByApplicant
+	 * (com.aisino2.techsupport.domain.SupportTicket)
+	 */
+	public void deleteSupportTicketByApplicant(SupportTicket st) {
+		if (st == null || st.getId() == null)
+			throw new RuntimeException("支持单删除的支持单ID不能为空");
+		st = getSupportTicket(st);
+		if (!Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL.equals(st.getStStatus()))
+			throw new RuntimeException("只能删除在待公司审批的支持单");
+		deleteSupportTicket(st);
+		// 处理支持单流程关联的部分,删除活动流程
+		// 从当前激活的任务列表中找到这条ST的任务.
+		List<Task> tasklist = workflow.getTaskService().createTaskQuery()
+				.activityName(Constants.ST_PROCESS_CE_APPROVAL).list();
+		for (Task task : tasklist) {
+			TaskImpl real_task = (TaskImpl) task;
+			int st_id = (Integer) real_task.getVariable("worksheetno");
+			if (st_id == st.getId()) {
+				workflow.getExecutionService().deleteProcessInstanceCascade(
+						real_task.getExecution().getProcessInstance().getId());
+				break;
+			}
+		}
 	}
 
 }

@@ -99,6 +99,40 @@ public class SupportTicketAction extends PageAction implements
 	}
 
 	/**
+	 * 支持单删除
+	 * @return
+	 * @throws Exception
+	 */
+	public String remove() throws Exception{
+		try{
+			if(supportTicket == null || supportTicket.getId() == null)
+				throw new RuntimeException("支持单删除参数传递错误");
+			stService.deleteSupportTicketByApplicant(supportTicket);
+			this.result = SUCCESS;
+		}catch (RuntimeException e) {
+			log.error(e);
+			log.debug(e,e.fillInStackTrace());
+			this.result = e.getMessage();
+		}
+		return SUCCESS;
+	}
+	/**
+	 * 支持单修改
+	 * @return 
+	 * @throws Exception
+	 */
+	public String modify() throws Exception{
+		try{
+			if(supportTicket == null || supportTicket.getId() == null)
+				throw new RuntimeException("支持单修改参数传输错误");
+			stService.updateSupportTicket(supportTicket);
+			this.result = SUCCESS;
+		}catch (RuntimeException e) {
+			this.result = e.getMessage();
+		}
+		return SUCCESS;
+	}
+	/**
 	 * 导出excel
 	 * 
 	 * @return
@@ -418,6 +452,8 @@ public class SupportTicketAction extends PageAction implements
 		lPro.add("stStatusName");
 		//添加填报人ID为隐藏字段
 		lPro.add("applicantId");
+		//添加支持单状态为隐藏字段
+		lPro.add("stStatus");
 		
 		List lCol = new ArrayList();
 		List lDetail = new ArrayList();
@@ -485,6 +521,12 @@ public class SupportTicketAction extends PageAction implements
 			applicantNames = st.getApplicant() != null ? st.getApplicant()
 					.getUsername() : applicantNames;
 			st.setApplicantName(applicantNames);
+			
+			//添加申请人ID
+			//用于申请人删除与修改
+			st.setApplicantId(st.getApplicant() != null ? st.getApplicant()
+					.getUserid() : 0);
+			
 		}
 		SupportTicket supportTicket = new SupportTicket();
 		this.setData(supportTicket, ldata, lPro, lCol);
