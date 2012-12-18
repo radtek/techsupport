@@ -83,7 +83,7 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	 */
 	private Attachment attachment;
 	private String uploadId;
-	
+	private Integer stId;
 	private IAttachmentService attachmentService;
 	//机构代码列表
 	private List departcode_list;
@@ -100,6 +100,15 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	 */
 	private HttpServletResponse response;
 	
+	
+	public Integer getStId() {
+		return stId;
+	}
+
+	public void setStId(Integer stId) {
+		this.stId = stId;
+	}
+
 	@Resource(name="dict_itemService")
 	public void setDict_itemService(IDict_itemService dict_itemService) {
 		this.dict_itemService = dict_itemService;
@@ -367,6 +376,7 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		FileInputStream fis = new FileInputStream(upload_file);
 		
 		Attachment attachment = new Attachment();
+		attachment.setStId(stId);
 		attachment.setAttachmentContentType(uploadContentType);
 		attachment.setAttachmentName(uploadFileName);
 		attachment.setBatchNumber(uploadId);
