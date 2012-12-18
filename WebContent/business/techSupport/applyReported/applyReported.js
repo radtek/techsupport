@@ -130,8 +130,6 @@ $(function(){
 			
 			if(dataobj.returnNo==0){
 				jAlert(dataobj.returnMsg,"提示 ");
-//				fieldreset();
-//				generateBatchNumber();
 				//重载本页面获取新的UPLOADID，UPLOADID不能通过JS方式更新,uploadify组件无法获取到动态更新后的属性
 				$('#iframes').load("business/techSupport/applyReported/applyReported.jsp");
 			}
