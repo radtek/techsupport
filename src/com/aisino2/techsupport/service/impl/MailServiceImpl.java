@@ -1,7 +1,6 @@
 package com.aisino2.techsupport.service.impl;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -18,14 +17,14 @@ import javax.mail.Transport;
 import javax.mail.URLName;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import org.springframework.stereotype.Component;
 
 import com.aisino2.techsupport.domain.Mail;
 import com.aisino2.techsupport.service.MailService;
-import javax.mail.internet.MimeBodyPart;
-
-import org.springframework.stereotype.Component;
 @Component
 public class MailServiceImpl implements MailService {
 
@@ -47,7 +46,6 @@ public class MailServiceImpl implements MailService {
 	public Boolean send(Mail mail, String subject, String to, String cc,
 			Boolean pgp, Boolean signature, String text, String attach,
 			Boolean html) throws Exception {
-		// TODO Auto-generated method stub
 		Boolean isSend = false;
 		if(isConnected()){
 			Multipart mp = new MimeMultipart();
@@ -71,9 +69,12 @@ public class MailServiceImpl implements MailService {
 				message.setSubject(subject);
 			}
 			// 设置发件人
-			message.setFrom(new InternetAddress(
+			InternetAddress address = new InternetAddress(
 					mail.getEmail().indexOf("@") > 0 ? mail.getEmail() : mail
-							.getEmail() + "@" + mail.getHost()));
+							.getEmail() + "@" + mail.getHost());
+			address.setPersonal(mail.getUser());
+			message.setFrom(address);
+			
 			// 邮件类型
 			if (html) {
 				MimeBodyPart mBody = new MimeBodyPart();
@@ -262,5 +263,38 @@ public class MailServiceImpl implements MailService {
 	public void useSignature() {
 
 	}
+
+
+	public void sendByDaemon(Mail mail, String subject, String to, String cc,
+			String text, String attach, boolean html) throws Exception {
+		sendByDaemon(mail, subject, to, cc, text, attach, html);
+	}
+
+
+	public void sendByDaemon(Mail mail, String subject, String to, String cc,
+			String text, boolean html) throws Exception {
+		sendByDaemon(mail, subject, to, cc, false, false, text, null, html);
+	}
+
+
+	public void sendByDaemon(final Mail mail, final String subject, final String to, final String cc,
+			final Boolean pgp, final Boolean signature, final String text, final String attach,
+			final Boolean html) throws Exception {
+		Thread t = new Thread(){
+			public void run() {
+				try {
+					connect(mail, true, true, false);
+					send(mail,subject,to,cc,pgp,signature,text,attach,html);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				close();
+			}
+		};
+		t.start();
+
+	}
+
+
 
 }

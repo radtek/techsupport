@@ -66,4 +66,46 @@ public interface MailService {
 	 */
 	public void close();
 
+	/**
+	 * 线程方式发送
+	 * @param mail
+	 * @param subject
+	 * @param to
+	 * @param cc
+	 * @param text
+	 * @param attach
+	 * @param html
+	 * @return
+	 * @throws Exception
+	 */
+	public void sendByDaemon(Mail mail,String subject, String to, String cc, String text,String attach,boolean html) throws Exception;
+	
+	/**
+	 * 发送邮件（短版）,默认不使用 PGP加密和数字签名(线程方式)
+	 * @param mail
+	 * @param subject
+	 * @param to
+	 * @param cc
+	 * @param text
+	 * @param html
+	 * @return
+	 * @throws Exception
+	 */
+	public void sendByDaemon(Mail mail,String subject, String to, String cc, String text,boolean html) throws Exception;
+	
+	/**
+	 * 单独发送邮件(线程方式)
+	 * @param mail
+	 * @param subject
+	 * @param to
+	 * @param cc
+	 * @param pgp
+	 * @param signature
+	 * @param text
+	 * @param attach
+	 * @param html
+	 * @return
+	 * @throws Exception
+	 */
+	public void sendByDaemon(Mail mail,String subject,String to,String cc,Boolean pgp,Boolean signature,String text,String attach,Boolean html) throws Exception;
 }
