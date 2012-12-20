@@ -10,14 +10,16 @@
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
     >
-       
+    
+    <aop:aspectj-autoproxy/>
+    
     <!--技术支持单-->
     <context:annotation-config/>
     <!-- 组件来源 -->
     <context:component-scan base-package="com.aisino2.techsupport"></context:component-scan>
     
     
-<!--     垃圾附件处理 -->
+<!-- ++++++++++++++++++++++++++++++ 垃圾附件处理 +++++++++++++++++++++++++++++++++++-->
     <bean id="methodJunkAttachmentClean"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
  		<property name="targetObject">
@@ -40,11 +42,42 @@
  		</property>
  	</bean>
  
-   <bean id="startJunkAttachmentClean" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+   	<bean id="startJunkAttachmentClean" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
  		<property name="triggers">
  			<list>
  				<ref bean="scheduledJunkAttachmentClean"/>
  			</list>
 	 	</property>
  	</bean>
+ 	
+ 	
+<!--  	aop测试 -->
+ 	<bean id="bindTestBean" class="com.aisino2.techsupport.test.BindTest">
+ 	
+ 	</bean>
+ 	<bean id="bindArg" class="com.aisino2.techsupport.test.BindArg">
+ 	
+ 	</bean>
+ 	<bean id="bindArg2" class="com.aisino2.techsupport.test.BindArg2">
+ 	
+ 	</bean>
+ 	<bean id="bindArg3" class="com.aisino2.techsupport.test.BindArg3">
+ 	
+ 	</bean>
+ 	<!-- ++++++++++++++++++++++++++++++ 切片插入配置 ++++++++++++++++++++++++++++++++ -->
+ 	<aop:config>
+<!--  		aop测试切片 -->
+	    <aop:aspect  id="bindTestAspect" ref="bindTestBean">
+	        <aop:after-returning  method="testBind" arg-names="st" pointcut="execution( * com.aisino2.techsupport.test.*.invok*(..)) and args(st)" />
+	        <aop:after  method="testBind2" arg-names="taskId,st" pointcut="execution( * com.aisino2.techsupport.test.*.invoke(..)) and args(taskId,st)" />
+	        <aop:after  method="testBind3" arg-names="taskId,st,track" pointcut="execution( * com.aisino2.techsupport.test.*.invoke(..)) and args(taskId,st,track)" /> 
+	    </aop:aspect>
+	    
+<!-- 	    自动环节提示切片 -->
+	    <aop:aspect id="promptProcessAutoAspect" ref="WorksheetServiceImpl">
+	    	<aop:after-returning method="promptProcessAuto" arg-names="st" pointcut="execution( * com.aisino2.techsupport.service.*.insertApplyAndGo(..)) and args(st)"/>
+	    	<aop:after-returning method="promptProcessAuto2" arg-names="taskId,st" pointcut="execution( * com.aisino2.techsupport.service.*.insert*(..)) and args(taskId,st)"/>
+	    	<aop:after-returning method="promptProcessAuto3" arg-names="taskId,st,tracking" pointcut="execution( * com.aisino2.techsupport.service.*.insert*(..)) and args(taskId,st,tracking)"/>
+	    </aop:aspect>
+  	</aop:config>
 </beans>

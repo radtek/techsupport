@@ -1,7 +1,11 @@
 package com.aisino2.techsupport.test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,11 +33,22 @@ public class AopTest {
 		BindArg3 arg3 = (BindArg3) context.getBean("bindArg3");
 		arg3.invoke("2", st, null);
 	}
+	
+	@Test
+	public void testSet() {
+		Set<String> to = new HashSet<String>();
+		to.add("usa");
+		to.add("chn");
+		to.add("jpn");
+		System.out.println(to.toString());
+		
+	}
 }
 
 class BindArg{
 	public void invoke(SupportTicket st){
 		st.setId(1);
+		throw new RuntimeException("test exception");
 	}
 }
 

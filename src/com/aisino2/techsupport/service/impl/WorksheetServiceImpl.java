@@ -3,6 +3,7 @@ package com.aisino2.techsupport.service.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -19,8 +21,10 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jbpm.api.JbpmException;
 import org.jbpm.api.TaskService;
+import org.jbpm.api.history.HistoryTask;
 import org.jbpm.api.task.Participation;
 import org.jbpm.api.task.Task;
+import org.jbpm.pvm.internal.task.ParticipationImpl;
 import org.jbpm.pvm.internal.task.TaskImpl;
 import org.springframework.stereotype.Component;
 
@@ -36,17 +40,23 @@ import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.techsupport.common.CommonUtil;
 import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.dao.WorksheetDao;
+import com.aisino2.techsupport.domain.Mail;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;
 import com.aisino2.techsupport.domain.Worksheet;
 import com.aisino2.techsupport.service.ApplyService;
 import com.aisino2.techsupport.service.ICeApprovalService;
 import com.aisino2.techsupport.service.IDeptApprovalService;
+import com.aisino2.techsupport.service.MailService;
 import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.service.TrackingService;
 import com.aisino2.techsupport.service.WorksheetService;
 import com.aisino2.techsupport.workflow.WorkflowUtil;
 
+/**
+ * @author hooxin
+ * 
+ */
 @Component("WorksheetServiceImpl")
 public class WorksheetServiceImpl extends BaseService implements
 		WorksheetService {
@@ -60,19 +70,42 @@ public class WorksheetServiceImpl extends BaseService implements
 	private TrackingService trackingService;
 	private ICeApprovalService ceApprovalService;
 	private IDepartmentService departmentService;
-	
+
 	/**
 	 * 流程服务
 	 */
 	private WorkflowUtil workflow;
 	private CommonUtil util;
 
-	@Resource(name="departmentService")
+	private MailService mailService;
+
+	private Map<String, String> userEmailMap;
+
+	public Map<String, String> getUserEmailMap() {
+		if (userEmailMap == null) {
+			userEmailMap = new HashMap<String, String>();
+			Dict_item item = new Dict_item();
+			item.setDict_code(Constants.ST_USER_EMAIL_MAP_DICT_CODE);
+			List<Dict_item> itemlist = dicItemService.getListDict_item(item);
+			for (Dict_item item1 : itemlist) {
+				userEmailMap
+						.put(item1.getDisplay_name(), item1.getFact_value());
+			}
+		}
+		return userEmailMap;
+	}
+
+	@Resource(name = "mailServiceImpl")
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+
+	@Resource(name = "departmentService")
 	public void setDepartmentService(IDepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
 
-	@Resource(name="CeApprovalServiceImpl")
+	@Resource(name = "CeApprovalServiceImpl")
 	public void setCeApprovalService(ICeApprovalService ceApprovalService) {
 		this.ceApprovalService = ceApprovalService;
 	}
@@ -485,7 +518,7 @@ public class WorksheetServiceImpl extends BaseService implements
 	 */
 	@Override
 	public void importTechSupport(File excelFile, Map<String, Object> var)
-			throws IOException,RuntimeException {
+			throws IOException, RuntimeException {
 		if (excelFile == null || !excelFile.exists())
 			throw new RuntimeException("导入的excel文件上传失败");
 		FileInputStream fis = new FileInputStream(excelFile);
@@ -497,7 +530,7 @@ public class WorksheetServiceImpl extends BaseService implements
 				.get("stStatus");
 		Map<String, String> regionDict = (Map<String, String>) var
 				.get("region");
-		Map<String,String> approvalDepartmentDict = (Map<String, String>) var
+		Map<String, String> approvalDepartmentDict = (Map<String, String>) var
 				.get("approvalDepartment");
 		// 键值颠倒的字典
 		Map<String, String> stStatusReverseDict = new HashMap<String, String>();
@@ -528,25 +561,31 @@ public class WorksheetServiceImpl extends BaseService implements
 			if (!StringUtil.isNotEmpty(status))
 				throw new RuntimeException("状态为必填");
 			Date scheDate = null;
-			try{
+			try {
 				scheDate = row.getCell(5).getDateCellValue();
-			}catch(Exception e){
-				try{
+			} catch (Exception e) {
+				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					scheDate =sdf.parse(util.getCellString(row.getCell(5)));
-				}catch(Exception e1){
-					try{
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-						scheDate =sdf.parse(util.getCellString(row.getCell(5)));
-					}catch(Exception e2){
-						try{
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-							scheDate =sdf.parse(util.getCellString(row.getCell(5)));
-						}catch(Exception e3){
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-							try{
-								scheDate =sdf.parse(util.getCellString(row.getCell(5)));
-							}catch(java.text.ParseException e4){
+					scheDate = sdf.parse(util.getCellString(row.getCell(5)));
+				} catch (Exception e1) {
+					try {
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy年MM月dd日");
+						scheDate = sdf
+								.parse(util.getCellString(row.getCell(5)));
+					} catch (Exception e2) {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat(
+									"yyyy/MM/dd");
+							scheDate = sdf.parse(util.getCellString(row
+									.getCell(5)));
+						} catch (Exception e3) {
+							SimpleDateFormat sdf = new SimpleDateFormat(
+									"yyyyMMdd");
+							try {
+								scheDate = sdf.parse(util.getCellString(row
+										.getCell(5)));
+							} catch (java.text.ParseException e4) {
 								log.debug(e4);
 								throw new RuntimeException("计划时间格式正确");
 							}
@@ -554,7 +593,7 @@ public class WorksheetServiceImpl extends BaseService implements
 					}
 				}
 			}
-			if(scheDate==null)
+			if (scheDate == null)
 				throw new RuntimeException("计划时间为必填");
 			// -----------------选填内容------------------
 			String approvalContent = util.getCellString(row.getCell(4));
@@ -582,7 +621,7 @@ public class WorksheetServiceImpl extends BaseService implements
 				throw new RuntimeException("支持单编号输入错误");
 			}
 			st.setSerialNumber(Integer.parseInt(serialNumber));
-			
+
 			User approvalUser = new User();
 			approvalUser
 					.setUseraccount(Constants.ST_DEFAULT_IMPORT_APPROVAL_USER);
@@ -596,8 +635,7 @@ public class WorksheetServiceImpl extends BaseService implements
 			User applicant = new User();
 			applicant.setUsername(regionLeaderName);
 			try {
-				applicant = (User) userService.getListUser(applicant)
-						.get(0);
+				applicant = (User) userService.getListUser(applicant).get(0);
 			} catch (Exception e) {
 				log.debug(e, e.fillInStackTrace());
 				throw new RuntimeException("大区总在系统中不存在");
@@ -615,17 +653,21 @@ public class WorksheetServiceImpl extends BaseService implements
 						supportLeader = (User) userService.getListUser(
 								supportLeader).get(0);
 						Department department = supportLeader.getDepartment();
-						while(department!=null && !approvalDepartmentDict.keySet().contains(department.getDepartcode())){
-							department = departmentService.getParentDepart(department);
+						while (department != null
+								&& !approvalDepartmentDict.keySet().contains(
+										department.getDepartcode())) {
+							department = departmentService
+									.getParentDepart(department);
 						}
-						if(department==null)
+						if (department == null)
 							throw new RuntimeException("无法找到符合负责人的审批部门");
-						else{
+						else {
 							departmentSet.add(department);
-							if(Constants.ST_APPROVAL_DEPARTMENT_CODE_TECH.equals(department.getDepartcode())){
+							if (Constants.ST_APPROVAL_DEPARTMENT_CODE_TECH
+									.equals(department.getDepartcode())) {
 								st.setDevScheDate(scheDate);
-							}
-							else if (Constants.ST_APPROVAL_DEPARTMENT_CODE_PRODUCT.equals(department.getDepartcode())){
+							} else if (Constants.ST_APPROVAL_DEPARTMENT_CODE_PRODUCT
+									.equals(department.getDepartcode())) {
 								st.setPsgScheDate(scheDate);
 							}
 						}
@@ -634,7 +676,7 @@ public class WorksheetServiceImpl extends BaseService implements
 						throw new RuntimeException("支持单负责人在系统中不存在");
 					}
 					sleaderSet.add(supportLeader);
-					
+
 				}
 				st.getLstSupportLeaders().addAll(sleaderSet);
 				st.getSupportDeptList().addAll(departmentSet);
@@ -670,7 +712,7 @@ public class WorksheetServiceImpl extends BaseService implements
 			// for end
 		}
 
-		//环节导入
+		// 环节导入
 		for (SupportTicket st : lstSupportTicket) {
 			if (Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL.equals(st
 					.getStStatus())) {
@@ -685,8 +727,9 @@ public class WorksheetServiceImpl extends BaseService implements
 						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
 						.uniqueResult();
-				ceApprovalService.insertCeApproval(ceTask.getId(), st, trackList.get(0));
-			} else if(Constants.ST_STATUS_GOING.equals(st.getStStatus())){
+				ceApprovalService.insertCeApproval(ceTask.getId(), st,
+						trackList.get(0));
+			} else if (Constants.ST_STATUS_GOING.equals(st.getStStatus())) {
 				List<Tracking> trackList = st.getTrackList();
 				st.setTrackList(null);
 				String piid = applyService.insertApplyAndGo(st);
@@ -694,23 +737,321 @@ public class WorksheetServiceImpl extends BaseService implements
 						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
 						.uniqueResult();
-				ceApprovalService.insertCeApproval(ceTask.getId(), st, trackList.get(0));
-				Task techTask = workflow.getTaskService().createTaskQuery()
+				ceApprovalService.insertCeApproval(ceTask.getId(), st,
+						trackList.get(0));
+				Task techTask = workflow
+						.getTaskService()
+						.createTaskQuery()
 						.executionId(piid)
-						.activityName(Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL)
+						.activityName(
+								Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL)
 						.uniqueResult();
-				if(techTask!=null)
-					techDeptApprovalService.insertDeptApproval(techTask.getId(), st, trackList.get(1));
-				Task productTask = workflow.getTaskService().createTaskQuery()
+				if (techTask != null)
+					techDeptApprovalService.insertDeptApproval(
+							techTask.getId(), st, trackList.get(1));
+				Task productTask = workflow
+						.getTaskService()
+						.createTaskQuery()
 						.executionId(piid)
-						.activityName(Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL)
+						.activityName(
+								Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL)
 						.uniqueResult();
-				if(productTask!=null)
-					productDeptApprovalService.insertDeptApproval(productTask.getId(), st, trackList.get(1));
-			} 
-			
-			//for import process end
+				if (productTask != null)
+					productDeptApprovalService.insertDeptApproval(
+							productTask.getId(), st, trackList.get(1));
+			}
+
+			// for import process end
 		}
 		// import end
+	}
+
+	/**
+	 * 自动环节提示,匹配1个参数
+	 * 
+	 * @throws Exception
+	 */
+	public void promptProcessAuto(SupportTicket st) throws Exception {
+		// 根据支持单ID,找到的当前需要提示的环节,然后根据环节填写邮件发送给环节接收者.
+		if (st == null || st.getId() == null)
+			throw new RuntimeException("自动提示支持单ID为空");
+		List<?> ceApprovalTasklist = workflow.getTaskService()
+				.createTaskQuery()
+				.activityName(Constants.ST_PROCESS_CE_APPROVAL).list();
+		TaskImpl showtipTask = null;
+		for (TaskImpl task : (List<TaskImpl>) ceApprovalTasklist) {
+			int stId = (Integer) workflow.getExecutionService().getVariable(
+					task.getExecutionId(), "worksheetno");
+			if (stId == st.getId()) {
+				showtipTask = task;
+				break;
+			}
+		}
+
+		if (showtipTask != null) {
+
+			Mail mail = new Mail();
+			// 读取邮件内容信息
+			InputStream in = this.getClass().getClassLoader()
+					.getResourceAsStream("mailContent.properties");
+			Properties properties = new Properties();
+			properties.load(in);
+			// 读取邮件配置信息
+			Properties mailConfig = new Properties();
+			InputStream config = this.getClass().getClassLoader()
+					.getResourceAsStream("mailConfig.properties");
+			mailConfig.load(config);
+			mail.setUser(properties.getProperty("company_send_name"));
+			mail.setEmail(properties.getProperty("company_Address"));
+			mail.setPassword(properties.getProperty("compnay_password"));
+			// mail.setEmail(email);
+			mail.setProtocol(mailConfig.getProperty("protocol"));
+			mail.setSmtphost(mailConfig.getProperty("smtphost"));
+			mail.setHost(mailConfig.getProperty("host"));
+
+			// 获取收件人email
+			List<Participation> candidateSet = workflow.getTaskService()
+					.getTaskParticipations(showtipTask.getId());
+
+			for (Participation candidate : candidateSet) {
+				if (candidate.getType().equals(Participation.CANDIDATE)) {
+					User user = new User();
+					user.setUserid(Integer.parseInt(candidate.getUserId()));
+					user = userService.getUser(user);
+					String email = getUserEmailMap().get(user.getUsername());
+					String mailContent = properties
+							.getProperty("automessage.approval_content");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					mailContent = util.getMsg(
+							mailContent,
+							new String[] { user.getUsername(),
+									sdf.format(new Date()) });
+					mailService.sendByDaemon(mail, properties
+							.getProperty("automessage.approval_subject"),
+							email, null, mailContent, false);
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * 自动环节提示,匹配2个参数
+	 * 
+	 * @param taskId
+	 * @param st
+	 * @throws Exception
+	 */
+	public void promptProcessAuto2(String taskId, SupportTicket st)
+			throws Exception {
+		// 根据历史的TASKID,找出支持单的实例ID,居于实例ID查询当前的任务,再根据环节信息发送邮件给接收者
+		if (taskId == null)
+			throw new RuntimeException("自动环节提示历史工作单任务号为空");
+		if (st == null || st.getId() == null)
+			throw new RuntimeException("自动环节提示支持单实体或者支持单ID为空");
+		HistoryTask previousTask = workflow.getHistoryService()
+				.createHistoryTaskQuery().taskId(taskId).uniqueResult();
+		List<Task> currentTaskList = workflow.getTaskService()
+				.createTaskQuery().executionId(previousTask.getExecutionId())
+				.list();
+		for (Task task : currentTaskList) {
+			// 部门审批
+			if (Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL.equals(task
+					.getActivityName())
+					|| Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL
+							.equals(task.getActivityName())) {
+				Mail mail = new Mail();
+				// 读取邮件内容信息
+				InputStream in = this.getClass().getClassLoader()
+						.getResourceAsStream("mailContent.properties");
+				Properties properties = new Properties();
+				properties.load(in);
+				// 读取邮件配置信息
+				Properties mailConfig = new Properties();
+				InputStream config = this.getClass().getClassLoader()
+						.getResourceAsStream("mailConfig.properties");
+				mailConfig.load(config);
+				mail.setUser(properties.getProperty("company_send_name"));
+				mail.setEmail(properties.getProperty("company_Address"));
+				mail.setPassword(properties.getProperty("compnay_password"));
+				// mail.setEmail(email);
+				mail.setProtocol(mailConfig.getProperty("protocol"));
+				mail.setSmtphost(mailConfig.getProperty("smtphost"));
+				mail.setHost(mailConfig.getProperty("host"));
+
+				// 获取收件人email
+				List<Participation> candidateSet = workflow.getTaskService()
+						.getTaskParticipations(task.getId());
+
+				for (Participation candidate : candidateSet) {
+					if (candidate.getType().equals(Participation.CANDIDATE)) {
+						User user = new User();
+						user.setUserid(Integer.parseInt(candidate.getUserId()));
+						user = userService.getUser(user);
+						String email = getUserEmailMap()
+								.get(user.getUsername());
+						String mailContent = properties
+								.getProperty("automessage.approval_content");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						mailContent = util.getMsg(mailContent, new String[] {
+								user.getUsername(), sdf.format(new Date()) });
+						mailService.sendByDaemon(mail, properties
+								.getProperty("automessage.approval_subject"),
+								email, null, mailContent, false);
+					}
+				}
+			}
+			// 进展提示/追踪批复
+			else if (Constants.ST_PROCESS_TRACKING.equals(task
+					.getActivityName())) {
+				Mail mail = new Mail();
+				// 读取邮件内容信息
+				InputStream in = this.getClass().getClassLoader()
+						.getResourceAsStream("mailContent.properties");
+				Properties properties = new Properties();
+				properties.load(in);
+				// 读取邮件配置信息
+				Properties mailConfig = new Properties();
+				InputStream config = this.getClass().getClassLoader()
+						.getResourceAsStream("mailConfig.properties");
+				mailConfig.load(config);
+				mail.setUser(properties.getProperty("company_send_name"));
+				mail.setEmail(properties.getProperty("company_Address"));
+				mail.setPassword(properties.getProperty("compnay_password"));
+				// mail.setEmail(email);
+				mail.setProtocol(mailConfig.getProperty("protocol"));
+				mail.setSmtphost(mailConfig.getProperty("smtphost"));
+				mail.setHost(mailConfig.getProperty("host"));
+
+				// 获取收件人email
+				List<Participation> candidateSet = workflow.getTaskService()
+						.getTaskParticipations(task.getId());
+
+				for (Participation candidate : candidateSet) {
+					if (candidate.getType().equals(Participation.CANDIDATE)) {
+						User user = new User();
+						user.setUserid(Integer.parseInt(candidate.getUserId()));
+						user = userService.getUser(user);
+						String email = getUserEmailMap()
+								.get(user.getUsername());
+						String mailContent = properties
+								.getProperty("automessage.tracking_content");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						mailContent = util.getMsg(mailContent, new String[] {
+								user.getUsername(), sdf.format(new Date()) });
+						mailService.sendByDaemon(mail, properties
+								.getProperty("automessage.tracking_subject"),
+								email, null, mailContent, false);
+					}
+				}
+			}
+			// 反馈确认
+			else if (Constants.ST_PROCESS_FEEDBACK.equals(task
+					.getActivityName())) {
+				Mail mail = new Mail();
+				// 读取邮件内容信息
+				InputStream in = this.getClass().getClassLoader()
+						.getResourceAsStream("mailContent.properties");
+				Properties properties = new Properties();
+				properties.load(in);
+				// 读取邮件配置信息
+				Properties mailConfig = new Properties();
+				InputStream config = this.getClass().getClassLoader()
+						.getResourceAsStream("mailConfig.properties");
+				mailConfig.load(config);
+				mail.setUser(properties.getProperty("company_send_name"));
+				mail.setEmail(properties.getProperty("company_Address"));
+				mail.setPassword(properties.getProperty("compnay_password"));
+				// mail.setEmail(email);
+				mail.setProtocol(mailConfig.getProperty("protocol"));
+				mail.setSmtphost(mailConfig.getProperty("smtphost"));
+				mail.setHost(mailConfig.getProperty("host"));
+
+				// 获取收件人email
+				List<Participation> candidateSet = workflow.getTaskService()
+						.getTaskParticipations(task.getId());
+
+				for (Participation candidate : candidateSet) {
+					if (candidate.getType().equals(Participation.CANDIDATE)) {
+						User user = new User();
+						user.setUserid(Integer.parseInt(candidate.getUserId()));
+						user = userService.getUser(user);
+						String email = getUserEmailMap()
+								.get(user.getUsername());
+						String mailContent = properties
+								.getProperty("automessage.feedback_content");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						mailContent = util.getMsg(mailContent, new String[] {
+								user.getUsername(), sdf.format(new Date()) });
+						mailService.sendByDaemon(mail, properties
+								.getProperty("automessage.feedback_subject"),
+								email, null, mailContent, false);
+					}
+				}
+			}
+			// 归档
+			else if (Constants.ST_PROCESS_ARCHIVE
+					.equals(task.getActivityName())) {
+				Mail mail = new Mail();
+				// 读取邮件内容信息
+				InputStream in = this.getClass().getClassLoader()
+						.getResourceAsStream("mailContent.properties");
+				Properties properties = new Properties();
+				properties.load(in);
+				// 读取邮件配置信息
+				Properties mailConfig = new Properties();
+				InputStream config = this.getClass().getClassLoader()
+						.getResourceAsStream("mailConfig.properties");
+				mailConfig.load(config);
+				mail.setUser(properties.getProperty("company_send_name"));
+				mail.setEmail(properties.getProperty("company_Address"));
+				mail.setPassword(properties.getProperty("compnay_password"));
+				// mail.setEmail(email);
+				mail.setProtocol(mailConfig.getProperty("protocol"));
+				mail.setSmtphost(mailConfig.getProperty("smtphost"));
+				mail.setHost(mailConfig.getProperty("host"));
+
+				// 获取收件人email
+				List<Participation> candidateSet = workflow.getTaskService()
+						.getTaskParticipations(task.getId());
+
+				for (Participation candidate : candidateSet) {
+					if (candidate.getType().equals(Participation.CANDIDATE)) {
+						User user = new User();
+						user.setUserid(Integer.parseInt(candidate.getUserId()));
+						user = userService.getUser(user);
+						String email = getUserEmailMap()
+								.get(user.getUsername());
+						String mailContent = properties
+								.getProperty("automessage.archive_content");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						mailContent = util.getMsg(mailContent, new String[] {
+								user.getUsername(), sdf.format(new Date()) });
+						mailService.sendByDaemon(mail, properties
+								.getProperty("automessage.archive_subject"),
+								email, null, mailContent, false);
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * 自动环节提示,匹配3个参数
+	 * 
+	 * @param taskId
+	 * @param st
+	 * @param tracking
+	 * @throws Exception
+	 */
+	public void promptProcessAuto3(String taskId, SupportTicket st,
+			Tracking tracking) throws Exception {
+		// 除了TASKID以外的参数无意义
+		promptProcessAuto2(taskId, st);
 	}
 }
