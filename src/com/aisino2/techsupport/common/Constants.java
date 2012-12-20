@@ -173,6 +173,12 @@ public class Constants {
 	 * 产品部门审批机构代码
 	 */
 	public static String ST_APPROVAL_DEPARTMENT_CODE_PRODUCT;
+	
+	/**
+	 * 用户邮件字典代码
+	 */
+	public static String ST_USER_EMAIL_MAP_DICT_CODE = "dm_userAndEmail_tech";
+	
 	static {
 		util = new CommonUtil();
 		try {
