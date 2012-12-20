@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.jbpm.api.Configuration;
 import org.jbpm.api.Deployment;
 import org.jbpm.api.ExecutionService;
+import org.jbpm.api.HistoryService;
 import org.jbpm.api.IdentityService;
 import org.jbpm.api.ProcessDefinition;
 import org.jbpm.api.ProcessDefinitionQuery;
@@ -38,6 +39,8 @@ public class WorkflowUtil {
 	private  ExecutionService executionService;
 	private  TaskService taskService;
 	private  IdentityService identityService;
+	private HistoryService historyService;
+	
 
 	/**
 	 * 设置日志记录器
@@ -77,6 +80,13 @@ public class WorkflowUtil {
 		if (identityService == null)
 			identityService = getProcessEngine().getIdentityService();
 		return identityService;
+	}
+
+	
+	public HistoryService getHistoryService() {
+		if (historyService == null)
+			historyService = getProcessEngine().getHistoryService();
+		return historyService;
 	}
 
 	/**
