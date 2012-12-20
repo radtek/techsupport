@@ -53,7 +53,7 @@ public class MailTest {
 		mailService.connect(mail, true, true, false);
 		String mailContent = properties.getProperty("automessage.tracking_content");
 		mailContent = util.getMsg(mailContent, new String[]{"ffmmx","2012-12-21"});
-		mailService.sendByDaemon(mail, properties.getProperty("automessage.tracking_subject"), "firefoxmmx@gmail.com", null, mailContent, false);
+		mailService.sendByDaemon(mail, properties.getProperty("automessage.tracking_subject"), "firefoxmmx@gmail.com,huxin@aisino.com", null, mailContent, false);
 		Thread.sleep(8000);
 	}
 	
