@@ -1054,4 +1054,58 @@ public class WorksheetServiceImpl extends BaseService implements
 		// 除了TASKID以外的参数无意义
 		promptProcessAuto2(taskId, st);
 	}
+	
+	/**
+	 * 对超过7天的没有对支持单做进展填写的负责人进行邮件提示
+	 * @throws Exception 
+	 */
+	public void promptTrackingAuto() throws Exception{
+		List<SupportTicket> stList = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+//		使用最后更新时间
+		map.put("use_last_update_day",1);
+		//最后更新超过时间
+		map.put("last_update_day",7);
+		//状态
+		map.put("stStatus", Constants.ST_STATUS_GOING);
+		
+		Page page = stService.getListSupportTicketForPage(map, 1, 999999, null, null);
+		stList = page.getData();
+		
+		for(SupportTicket st : stList){
+			Mail mail = new Mail();
+			// 读取邮件内容信息
+			InputStream in = this.getClass().getClassLoader()
+					.getResourceAsStream("mailContent.properties");
+			Properties properties = new Properties();
+			properties.load(in);
+			// 读取邮件配置信息
+			Properties mailConfig = new Properties();
+			InputStream config = this.getClass().getClassLoader()
+					.getResourceAsStream("mailConfig.properties");
+			mailConfig.load(config);
+			mail.setUser(properties.getProperty("company_send_name"));
+			mail.setEmail(properties.getProperty("company_Address"));
+			mail.setPassword(properties.getProperty("compnay_password"));
+			// mail.setEmail(email);
+			mail.setProtocol(mailConfig.getProperty("protocol"));
+			mail.setSmtphost(mailConfig.getProperty("smtphost"));
+			mail.setHost(mailConfig.getProperty("host"));
+
+			// 获取收件人email
+			for (User candidate : st.getLstSupportLeaders()) {
+					String email = getUserEmailMap()
+							.get(candidate.getUsername());
+					String mailContent = properties
+							.getProperty("automessage.tracking_content");
+					SimpleDateFormat sdf = new SimpleDateFormat(
+							"yyyy-MM-dd");
+					mailContent = util.getMsg(mailContent, new String[] {
+							candidate.getUsername(),st.getStNo(), sdf.format(new Date()) });
+					mailService.sendByDaemon(mail, properties
+							.getProperty("automessage.tracking_subject"),
+							email, null, mailContent, false);
+			}
+		}
+	}
 }

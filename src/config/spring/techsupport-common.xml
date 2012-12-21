@@ -80,4 +80,35 @@
 	    	<aop:after-returning method="promptProcessAuto3" arg-names="taskId,st,tracking" pointcut="execution( * com.aisino2.techsupport.service.*.insert*(..)) and args(taskId,st,tracking)"/>
 	    </aop:aspect>
   	</aop:config>
+  	
+  	<!-- 进展填写环节自动提示计时器  -->
+  	<bean id="methodPromptTrackingAuto"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+ 		<property name="targetObject">
+ 			<ref bean="WorksheetServiceImpl"/>
+ 		</property>
+ 		<!-- 调用类中的方法 -->
+ 		<property name="targetMethod">
+ 			<value>promptTrackingAuto</value>
+ 		</property>
+    </bean>
+    
+    <!-- 定义触发时间 -->
+ 	<bean id="scheduledPromptTrackingAuto" class="org.springframework.scheduling.quartz.CronTriggerBean">	
+ 		<property name="jobDetail">
+ 			<ref bean="methodPromptTrackingAuto"/>
+ 		</property>
+ 		<!-- cron表达式 -->
+ 		<property name="cronExpression">
+ 			<value>0 0/1 * ? * *</value>
+ 		</property>
+ 	</bean>
+ 
+   <bean id="startPromptTrackingAuto" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+ 		<property name="triggers">
+ 			<list>
+ 				<ref bean="scheduledPromptTrackingAuto"/>
+ 			</list>
+	 	</property>
+ 	</bean>
 </beans>
