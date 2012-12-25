@@ -70,7 +70,8 @@ function showContent(obj)
                 <table>
                     <tr>
                         <td style="white-space:nowrap;">当前用户：<span class="yhxx"><%=username %>(<%=gxdwmc%>)</span></td>
-                        <td id="loginInfoTD" style="white-space:nowrap;">今日共有<span class="yhxx" id="loginNum"></span>个，全部共有<span class="yhxx" id="loginSum"></span>个用户登录</td>
+                        <%-- 去掉用户数显示 --%>
+                        <td id="loginInfoTD" style="white-space:nowrap;visibility: hidden;">今日共有<span class="yhxx" id="loginNum"></span>个，全部共有<span class="yhxx" id="loginSum"></span>个用户登录</td>
                     </tr>
                  </table>
             </td>
