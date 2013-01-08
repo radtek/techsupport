@@ -1,9 +1,17 @@
 <%@page import="com.aisino2.techsupport.common.Constants"%>
 <%@ page language="java" pageEncoding="utf8"%>
-
+<%
+	String stId = request.getParameter("stId") != null? request.getParameter("stId") : "";
+	
+%>
 <!DOCTYPE script PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<script language="javascript" type="text/javascript" src="../common/javascript/uploadify/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="../../../javascript/htmlConfig.js"></script>
 		<%@include file="../../../public/common.jsp"%>
 		<%@include file="../common/base.jsp" %>
 		<link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
@@ -22,30 +30,127 @@
 				margin-right: 10%;					
 			}
 		</style>
+		
+		<script type="text/javascript">
+			var printControl = null;//打印控件
+			
+			/**
+				load,入口
+			*/
+			$(function(){
+				<%-- 加载数据 --%>
+				loadData();
+			});
+			
+			/**
+			*
+			* 初始化数据
+			*/
+			function loadData(){
+				var url = getContextPath()+ "/techsupport/query_supportTicket.action";
+				var params = {'supportTicket.id':$('#stId').val()};
+				$.post(url,params,function(json){
+					//初始化表单数据
+					$('[name*=st.]').each(function(idx){
+						var _obj = $(this);
+						try{
+							
+							if(_obj.attr('tagName').toLowerCase() == 'input')
+								_obj.val(setNull(eval("json.supportTicket."+_obj.attr('name').split('st.')[1])));
+							else
+								_obj.text(setNull(eval("json.supportTicket."+_obj.attr('name').split('st.')[1])));
+						}catch(e){
+							//alert(e);
+						}
+					});
+					
+					//进展提示
+					var _tracking_content_d = {};
+					var _tracking_a = json.supportTicket.trackList;
+					for(var i=0;i<_tracking_a.length;i++){
+						if(_tracking_a[i].type == TRACKING_TYPE_TRACKING){
+							_tracking_content_d[_tracking_a[i].processor.username] = _tracking_a[i].newProcess;
+						}
+					}
+				
+					var _tracking_content_a = [];
+					for(var i in _tracking_content_d){
+						_tracking_content_a.push(_tracking_content_d[i]);
+					}
+						
+					$('#tracking').text(_tracking_content_a.join(','));
+					delete _tracking_content_a;
+					delete _tracking_content_d;
+					delete _tracking_a;
+					
+					//实际完成时间
+					var _compDate_a = [];
+					if(json.supportTicket.psgCompDate)
+						_compDate_a.push("产品部:"+setNull(json.supportTicket.psgCompDate));
+					if(json.supportTicket.devCompDate)
+						_compDate_a.push("技术部:"+setNull(json.supportTicket.devCompDate));
+					$('#compDate').text(_compDate_a.join(','));
+				},'json');
+				
+			}
+			
+			function dayin(){
+				if(onbeforeprint()){
+					window.print();
+					onafterprint();
+				}
+					
+			}
+			
+			var onbeforeprint = function(){
+				if(!$('#stId').val()){
+					alert('无法获取到支持单唯一编号');
+					return false;
+				}
+				
+				return true;
+			}
+			
+			var onafterprint = function(){
+			}
+			
+			//选打印机后，点击取消按钮触发事件
+			function printcannal(){
+	
+			}
+			function shezhi(){
+				printControl.showSet();//弹出设置窗口
+			}
+		</script>
 	</head>
 	<body>
+		<input type="hidden" id="stId" value="<%=stId%>">
+		<div id="print_div">
+			<input id="printPage" type="button" value="打印" onclick="dayin();" />
+		</div>
+		<div id="printResultHtml_td">
 		<table border="0" cellpadding="0" cellspacing="0" align="center" width="860">
 			<tr>
 				<td align="center"><h1>北京航天金盾科技有限公司</h1></td>
 			</tr>
 			<tr>
-				<td align="center"><h2>技术支持申请表</h2></td>
+				<td align="center"><h2>技术支持反馈表</h2></td>
 			</tr>
 			<tr>
 				<td>
 					<table border="1" cellpadding="0" cellspacing="0" align="center" bordercolor="black">
 						<tr>
-							<td width="40" rowspan="10" align="center">技<br>术<br>支<br>持<br>单<br>信<br>息</td>
-							<td>申请人姓名:</td>
-							<td><span name="">填写申请人</span></td>
-							<td>申请日期:</td>
-							<td><span>填写申请日期</span></td>
+							<td width="6%" rowspan="10" align="center">技<br>术<br>支<br>持<br>单<br>信<br>息</td>
+							<td width="21%">申请人姓名:</td>
+							<td width="21%">&nbsp;<span name="st.applicant.username">填写申请人</span></td>
+							<td width="21%">申请日期:</td>
+							<td width="21%">&nbsp;<span name="st.applyDate">填写申请日期</span></td>
 						</tr>
 						<tr>
 							<td>大区/区域:</td>
-							<td><span>大区</span></td>
+							<td>&nbsp;<span name="st.regionName">大区</span></td>
 							<td>支持单编号:</td>
-							<td><span>编号</span></td>
+							<td>&nbsp;<span name="st.stNo">编号</span></td>
 						</tr>
 						<tr>
 							<td>产品（项目）名称:</td>
@@ -67,18 +172,18 @@
 						<tr>
 							<td colspan="4">
 								具体工作内容:<br>
-								<p>内容</p>
+								<p name="st.supportContent">内容</p>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="4">
 								技术支持工作日程:
-								<p>进展信息</p>
+								<p id="tracking">进展信息</p>
 								<div>
 									服务方式:<label>□远程</label><label>□现场</label><label>□电话</label><label>□其它：<input type="text" class="document_field" value=""></label>
 								</div>
-								<div>实际完成时间:<span>完成时间</span></div>
-								<div>服务时间投入:<input type="text" class="document_field" value="5">小时/天</div>
+								<div>实际完成时间:<span id="compDate">完成时间</span></div>
+								<div>服务时间投入:<input type="text" class="document_field" value="" style="width:20px;">小时/天</div>
 							</td>
 						</tr>
 						<tr>
@@ -100,13 +205,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td align="center">客户评价</td>
+							<td align="center">客<br>户<br>评<br>价</td>
 							<td colspan="4">客户评价及建议:<div>暂留</div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
 						</tr>
 						<tr>
-							<td rowspan="3" align="center">公司内部评价</td>
+							<td rowspan="3" align="center">公<br>司<br>内<br>部<br>评<br>价</td>
 							<td colspan="4">申请人评价: <div>暂留</div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
@@ -125,5 +230,6 @@
 				</td>
 			</tr>
 		</table>
+		</div>
 	</body>
 </html>
