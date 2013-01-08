@@ -361,7 +361,7 @@ function lazyLoad(){
 	                                       	ingridPageParams:sXML,
 	                                       	onRowSelect:null,
 											pageNumber: pageno,
-											noSortColIndex:[6],
+											noSortColIndex:[3,4,6,7,8],
 											changeHref:function(table){
 												$("tr",table).each(function(){
 													var __tr = $(this);

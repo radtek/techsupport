@@ -52,8 +52,16 @@ public class SupportTicketDaoImpl extends TechSupportBaseDao implements SupportT
 				sCol = " t.region "+ desc;
 			else if(sort.equals("2"))
 				sCol = " t.applicant "+ desc;
-			else if(sort.equals("3"))
+			else if(sort.equals("3")){
+				map.put("sl_order", 1);
 				sCol = " ssmap.sl_id "+ desc;
+			}
+			else if(sort.equals("4")){
+				map.put("dept_order", 1);
+				sCol = " std.dept_id "+ desc;
+			}
+			else if(sort.equals("5"))
+				sCol = " t.st_status " + desc;
 			else
 				sCol = " t.st_no ";
 		}else{

@@ -436,14 +436,11 @@
 		<isNotEmpty prepend="and" property="applyDateTo">
 			trunc(apply_date,'dd') &lt;= #applyDateTo#
 		</isNotEmpty>
-		<isNotEmpty prepend="and" property="lstSupportLeaders">
-			ssmap.ST_ID=t.id
-			<isNotEmpty prepend="and"  property="lstSupportLeaders">
-				
-					<iterate prepend="ssmap.SL_ID in " open="(" close=")" property="lstSupportLeaders">
-						#lstSupportLeaders[].userid#
-					</iterate>
-			</isNotEmpty>
+		
+		<isNotEmpty prepend="and"  property="lstSupportLeaders">
+				<iterate prepend="ssmap.SL_ID in " open="(" close=")" property="lstSupportLeaders">
+					#lstSupportLeaders[].userid#
+				</iterate>
 		</isNotEmpty>
 		
 <!-- 		<isNotEmpty prepend="and" property="limitUserDeparement"> -->
@@ -452,9 +449,6 @@
 <!-- 			a.departid=#limitDeparement# -->
 <!-- 		</isNotEmpty> -->
 		<isNotEmpty prepend="and" property="limitUserDeparement">
-			std.st_id = t.id
-			and
-			std.DEPT_ID= d.departid
 			and d.departcode = #limitDeparement#
 		</isNotEmpty>
 		<isNotEmpty prepend="and" property="applicant.userid" open="(" close=")">
@@ -481,21 +475,48 @@
 	</sql>
 
 	<sql id="SupportTicketFrom">
-		<isNotEmpty prepend="," property="join_tracking">
-		 		T_TS_TRACKING tr
+		<isNotEmpty prepend=" " property="join_tracking">
+		 		join T_TS_TRACKING tr
 		 </isNotEmpty>
 		 
-		 <isNotEmpty prepend="," property="lstSupportLeaders">
-		 	T_TS_STSL_MAP ssmap
+		 <isNotEmpty prepend=" " property="lstSupportLeaders">
+		 	join T_TS_STSL_MAP ssmap on ssmap.ST_ID=t.id
 		 </isNotEmpty>
-		 <isNotEmpty prepend="," property="limitUserDeparement">
-<!-- 		 	t_user a -->
-<!-- 	 	<isEmpty prepend="," property="lstSupportLeaders"> -->
-<!-- 		 	T_TS_STSL_MAP ssmap -->
-<!-- 		 </isEmpty> -->
-			T_TS_STDEPT_MAPPING std,
-			t_department d
+		 <isEmpty property="lstSupportLeaders">
+		 	<isNotEmpty prepend=" " property="sl_order">
+		 		join T_TS_STSL_MAP ssmap on ssmap.ST_ID=t.id
+		 	</isNotEmpty>
+		 </isEmpty>
+		 <isNotEmpty prepend=" " property="limitUserDeparement">
+			join T_TS_STDEPT_MAPPING std  on std.st_id = t.id
+			join t_department d on std.DEPT_ID= d.departid
 		 </isNotEmpty>
+		 <isEmpty property="limitUserDeparement">
+		 	<isNotEmpty prepend=" " property="dept_order">
+		 		join T_TS_STDEPT_MAPPING std  on std.st_id = t.id
+		 	</isNotEmpty>
+		 </isEmpty>
+		 
+	</sql>
+	
+	<sql id="SupportTicketForPageColumn">
+		<isNotEmpty prepend=" " property="lstSupportLeaders">
+		 	join T_TS_STSL_MAP ssmap on ssmap.ST_ID=t.id
+		 </isNotEmpty>
+		 <isEmpty property="lstSupportLeaders">
+		 	<isNotEmpty prepend=" " property="sl_order">
+		 		join T_TS_STSL_MAP ssmap on ssmap.ST_ID=t.id
+		 	</isNotEmpty>
+		 </isEmpty>
+		 <isNotEmpty prepend=" " property="limitUserDeparement">
+			join T_TS_STDEPT_MAPPING std  on std.st_id = t.id
+			join t_department d on std.DEPT_ID= d.departid
+		 </isNotEmpty>
+		 <isEmpty property="limitUserDeparement">
+		 	<isNotEmpty prepend=" " property="dept_order">
+		 		join T_TS_STDEPT_MAPPING std  on std.st_id = t.id
+		 	</isNotEmpty>
+		 </isEmpty>
 	</sql>
 	<!-- 获取支持单列表 不分页 -->
 	<select id="SupportTicket.getList" parameterClass="SupportTicket"
@@ -577,7 +598,6 @@
 				t.archive_code,
 				t.apply_date
 
-
 <!-- 		, -->
 <!-- 			<isNotEmpty property="supportLeader.userid"> -->
 <!-- 			u.username  SUPPORT_LEADER_NAME , -->
@@ -598,13 +618,6 @@
 		 from T_TS_TECH_SUPPORT t 
 		
 		 <dynamic prepend="">
-		 	
-<!-- 		 	 <isNotEmpty prepend="," property="supportLeader.userid"> -->
-<!-- 		 	 t_user u -->
-<!-- 			 </isNotEmpty> -->
-<!-- 			 <isNotEmpty prepend="," property="applicant.userid"> -->
-<!-- 			 	t_user a  -->
-<!-- 			 </isNotEmpty> -->
 			<include refid="SupportTicketFrom"/>
 		 </dynamic>
 		where 1=1
@@ -619,12 +632,6 @@
 		select count(distinct t.st_no) from T_TS_TECH_SUPPORT t
 		<dynamic prepend="">
 		 	<include refid="SupportTicketFrom"/>
-<!-- 		 	 <isNotEmpty prepend="," property="supportLeader.userid"> -->
-<!-- 		 		 t_user u -->
-<!-- 			 </isNotEmpty> -->
-<!-- 			 <isNotEmpty prepend="," property="applicant.userid"> -->
-<!-- 			 	t_user a  -->
-<!-- 			 </isNotEmpty> -->
 		 </dynamic>
 		where 1=1 
 		<dynamic prepend="">
