@@ -371,11 +371,13 @@ function lazyLoad(){
 														__tr.find("a[title=督办]").remove();
 													}
 													//控制:只有申请人在待公司审批的时候才能够修改和删除
-													if(userid != __tr.find('td:nth(6)').text() || text != ST_STATUS_WAIT_COMPANY_APPRAVAL){
-														__tr.find('a[title="删除"]').remove();
-														__tr.find('a[title="修改"]').remove();
+													if(userid == __tr.find('td:nth(6)').text() && text == ST_STATUS_WAIT_COMPANY_APPRAVAL){
+														__tr.find('td:last').append('<a title="删除" class="fontbutton" href="#" onclick="setDelete('+__tr.attr('id')+')" style="margin-right:5px;">删除</a>');
+														__tr.find('td:last').append('<a title="修改" class="fontbutton" href="#" onclick="setModify('+__tr.attr('id')+')" style="margin-right:5px;">修改</a>');
 													}
-														
+													
+													__tr.find('td:last').append('<a title="打印申请单" class="fontbutton" href="#" onclick="setPrintApply('+__tr.attr('id')+')" style="margin-right:5px;">打印申请单</a>');
+													__tr.find('td:last').append('<a title="打印反馈单" class="fontbutton" href="#" onclick="setPrintFeedback('+__tr.attr('id')+')" style="margin-right:5px;">打印反馈单</a>');
 												});
 											},
 											colWidths: ['14.2%','14.2%','14.2%','14.2%','14.2%','14.2%','0','0','14.2%'],
@@ -419,6 +421,16 @@ function lazyLoad(){
 	function setModify(id){
 		dataid=id;
 		detailDialog(detailid,detailWidth,applicant_page);
+	}
+	////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////打印///////////////////////////////////
+	function setPrintApply(id){
+		window.open('business/techSupport/query/techsupportApplyPrintViewer.jsp?stId='+id,'printWindow');
+	}
+	
+	function setPrintFeedback(id) {
+		window.open('business/techSupport/query/techsupportFeedbackPrintViewer.jsp?stId='+id,'printWindow');
 	}
 	////////////////////////////////////////////////////////////////////
 </script>
