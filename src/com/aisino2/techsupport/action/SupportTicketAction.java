@@ -25,6 +25,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.aisino2.cache.CacheManager;
 import com.aisino2.common.ItemChange;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.web.PageAction;
@@ -73,6 +74,11 @@ public class SupportTicketAction extends PageAction implements
 	private IDict_itemService dict_item_service;
 	private IGlobalparService globalparService;
 
+	//地区字典
+	private Map<String, String> regionDict;
+	//支持单状态字典
+	private Map<String,String> stStatusDict;
+	
 	@Resource(name = "globalparService")
 	public void setGlobalparService(IGlobalparService globalparService) {
 		this.globalparService = globalparService;
@@ -429,6 +435,8 @@ public class SupportTicketAction extends PageAction implements
 					.getTrackingListForPage(1, 999, tracking, "99", "desc")
 					.getData();
 			supportTicket.setTrackList(lstTracking);
+			
+			dictForDisplay(supportTicket);
 		}
 		this.result = "success";
 		return SUCCESS;
@@ -483,20 +491,8 @@ public class SupportTicketAction extends PageAction implements
 
 		// -- 督办角色的操作
 
-		// ////////////////新增填报人修改与删除//////////////////////
-		// 从页面上通过applicaintId 来控制,有对应的显示修改删除,没有的不显示
-		//删除
-		List lDelete = new ArrayList();
-		lDelete.add("setDelete");
-		lDelete.add("删除");
-		lCol.add(lDelete);
-		//修改
-		List lModify = new ArrayList();
-		lModify.add("setModify");
-		lModify.add("修改");
-		lCol.add(lModify);
-		// //////////////////////////////////////////////////////
 
+		
 		for (SupportTicket st : (List<SupportTicket>) ldata) {
 			st.setStStatusName(ItemChange.codeChange(
 					Constants.ST_STATUS_DICT_CODE, st.getStStatus()));
@@ -593,6 +589,36 @@ public class SupportTicketAction extends PageAction implements
 		totalrows = this.getTotalrows();
 	}
 
+	private void dictForDisplay(SupportTicket st){
+		if(regionDict==null){
+			regionDict = new HashMap<String,String>();
+			Dict_item dict_item = new Dict_item();
+			dict_item.setDict_code(Constants.ST_REGION_DICT_CODE);
+			List<Dict_item> item_list = dict_item_service.getListDict_item(dict_item);
+			for(Dict_item item : item_list){
+				regionDict.put(item.getFact_value(), item.getDisplay_name());
+			}
+		}
+		
+		if(stStatusDict==null){
+			stStatusDict = new HashMap<String,String>();
+			Dict_item dict_item = new Dict_item();
+			dict_item.setDict_code(Constants.ST_STATUS_DICT_CODE);
+			List<Dict_item> item_list = dict_item_service.getListDict_item(dict_item);
+			for(Dict_item item : item_list){
+				stStatusDict.put(item.getFact_value(), item.getDisplay_name());
+			}
+		}
+		
+		if(st==null)
+			return;
+		
+		//转义字典代码
+		//地区代码
+		st.setRegionName(regionDict.get(st.getRegion()));
+		//状态代码
+		st.setStStatusName(stStatusDict.get(st.getStStatus()));
+	}
 	@Resource(name = "SupportTicketServiceImpl")
 	public void setStService(SupportTicketService stService) {
 		this.stService = stService;
