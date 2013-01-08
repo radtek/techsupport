@@ -20,34 +20,34 @@
 	因此部署时可以删掉此文件。-->
 	
 	<!-- 处理IC卡芯片号负号问题-->
-    <bean id="methodUpdateIckh"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <!-- 调用的类 -->
- 		<property name="targetObject">
- 			<ref bean="tjfxService"/>
- 		</property>
+<!--     <bean id="methodUpdateIckh"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
+<!--         调用的类 -->
+<!--  		<property name="targetObject"> -->
+<!--  			<ref bean="tjfxService"/> -->
+<!--  		</property> -->
  		<!-- 调用类中的方法 -->
- 		<property name="targetMethod">
- 			<value>updateIckh</value>
- 		</property>
-    </bean>
+<!--  		<property name="targetMethod"> -->
+<!--  			<value>updateIckh</value> -->
+<!--  		</property> -->
+<!--     </bean> -->
     
-    <!-- 定义触发时间 -->
- 	<bean id="scheduledUpdateIckh" class="org.springframework.scheduling.quartz.CronTriggerBean">	
- 		<property name="jobDetail">
- 			<ref bean="methodUpdateIckh"/>
- 		</property>
+<!--     定义触发时间 -->
+<!--  	<bean id="scheduledUpdateIckh" class="org.springframework.scheduling.quartz.CronTriggerBean">	 -->
+<!--  		<property name="jobDetail"> -->
+<!--  			<ref bean="methodUpdateIckh"/> -->
+<!--  		</property> -->
  		<!-- cron表达式 -->
- 		<property name="cronExpression">
- 			<value>0 00 09 ? * *</value>
- 		</property>
- 	</bean>
+<!--  		<property name="cronExpression"> -->
+<!--  			<value>0 00 09 ? * *</value> -->
+<!--  		</property> -->
+<!--  	</bean> -->
  
-   <bean id="startUpdateIckh" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
- 		<property name="triggers">
- 			<list>
- 				<ref bean="scheduledUpdateIckh"/>
- 			</list>
-	 	</property>
- 	</bean>
+<!--    <bean id="startUpdateIckh" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> -->
+<!--  		<property name="triggers"> -->
+<!--  			<list> -->
+<!--  				<ref bean="scheduledUpdateIckh"/> -->
+<!--  			</list> -->
+<!-- 	 	</property> -->
+<!--  	</bean> -->
     
 </beans>
