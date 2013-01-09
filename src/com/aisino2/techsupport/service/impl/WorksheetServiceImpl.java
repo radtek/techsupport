@@ -723,6 +723,10 @@ public class WorksheetServiceImpl extends BaseService implements
 				List<Tracking> trackList = st.getTrackList();
 				st.setTrackList(null);
 				String piid = applyService.insertApplyAndGo(st);
+
+				for(Tracking tr : trackList)
+					tr.setStId(st.getId());
+				
 				Task ceTask = workflow.getTaskService().createTaskQuery()
 						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
@@ -733,6 +737,9 @@ public class WorksheetServiceImpl extends BaseService implements
 				List<Tracking> trackList = st.getTrackList();
 				st.setTrackList(null);
 				String piid = applyService.insertApplyAndGo(st);
+				
+				for(Tracking tr : trackList)
+					tr.setStId(st.getId());
 				Task ceTask = workflow.getTaskService().createTaskQuery()
 						.executionId(piid)
 						.activityName(Constants.ST_PROCESS_CE_APPROVAL)
