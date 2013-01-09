@@ -370,11 +370,11 @@ public class SupportTicketServiceImpl extends BaseService implements
 		List<Task> tasklist = workflow.getTaskService().createTaskQuery()
 				.activityName(Constants.ST_PROCESS_CE_APPROVAL).list();
 		for (Task task : tasklist) {
-			TaskImpl real_task = (TaskImpl) task;
-			int st_id = (Integer) real_task.getVariable("worksheetno");
+			int st_id = (Integer) workflow.getExecutionService().getVariable(
+					task.getExecutionId(), "worksheetno");;
 			if (st_id == st.getId()) {
 				workflow.getExecutionService().deleteProcessInstanceCascade(
-						real_task.getExecution().getProcessInstance().getId());
+						workflow.getExecutionService().findExecutionById(task.getExecutionId()).getId());
 				break;
 			}
 		}
