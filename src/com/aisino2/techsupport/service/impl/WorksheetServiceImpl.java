@@ -690,6 +690,7 @@ public class WorksheetServiceImpl extends BaseService implements
 				companyApprovalTrack.setTrackingDate(operateDate);
 				companyApprovalTrack.setNewProcess(approvalContent);
 				companyApprovalTrack.setProcessor(approvalUser);
+				companyApprovalTrack.setType(Constants.TRACKING_TYPE_CEREPLY);
 				st.getTrackList().add(companyApprovalTrack);
 			} else if (Constants.ST_STATUS_GOING.equals(st.getStStatus())) {
 				Tracking companyApprovalTrack = new Tracking();
@@ -698,6 +699,7 @@ public class WorksheetServiceImpl extends BaseService implements
 				companyApprovalTrack.setTrackingDate(operateDate);
 				companyApprovalTrack.setNewProcess(approvalContent);
 				companyApprovalTrack.setProcessor(approvalUser);
+				companyApprovalTrack.setType(Constants.TRACKING_TYPE_CEREPLY);
 				Tracking departmentApprovalTrack = new Tracking();
 				departmentApprovalTrack
 						.setApprovalCode(Constants.ST_APPR_TYPE_APPR_PASSED);
@@ -753,9 +755,11 @@ public class WorksheetServiceImpl extends BaseService implements
 						.activityName(
 								Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL)
 						.uniqueResult();
-				if (techTask != null)
+				if (techTask != null){
+					trackList.get(1).setType(Constants.TRACKING_TYPE_HDEVREPLY);
 					techDeptApprovalService.insertDeptApproval(
 							techTask.getId(), st, trackList.get(1));
+				}
 				Task productTask = workflow
 						.getTaskService()
 						.createTaskQuery()
@@ -763,9 +767,11 @@ public class WorksheetServiceImpl extends BaseService implements
 						.activityName(
 								Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL)
 						.uniqueResult();
-				if (productTask != null)
+				if (productTask != null){
+					trackList.get(1).setType(Constants.TRACKING_TYPE_PGMREPLY);
 					productDeptApprovalService.insertDeptApproval(
 							productTask.getId(), st, trackList.get(1));
+				}
 			}
 
 			// for import process end

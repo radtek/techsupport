@@ -61,27 +61,38 @@
 					}
 				});
 				
-				//一级审批
-				var _1lvlappr_person = $('#1lvlappr_person').val(); 
-				$('#1lvlappr_person').val((_1lvlappr_person ? _1lvlappr_person+" / "+setNull(json.supportTicket.trackList[0].trackingDate) : ''));
-				//二级审批内容
-				var _2lvlappr_arr = [];
-				var _2lvlappr_parr = [];
-				var _2lvlappr_datearr = [];
-				for(var i=0;i<json.supportTicket.trackList.length;i++){
-					if(json.supportTicket.trackList[i].type == TRACKING_TYPE_PGMREPLY
-							|| json.supportTicket.trackList[i].type == TRACKING_TYPE_HDEVREPLY){
-						_2lvlappr_arr.push(json.supportTicket.trackList[i].newProcess);
-						if(!_2lvlappr_parr.hasOwnProperty(json.supportTicket.trackList[i].processor.username)){
-							_2lvlappr_parr.push(setNull(json.supportTicket.trackList[i].processor.username));
-							_2lvlappr_datearr.push(setNull(json.supportTicket.trackList[i].trackingDate));
+				
+				if(json.supportTicket.trackList.length){
+					//一级审批
+					var _1lvlappr_person = '';
+					var _1lvlappr_content= '';
+					for(var i=0;i<json.supportTicket.trackList.length;i++)
+						if(json.supportTicket.trackList[i].type == TRACKING_TYPE_CEREPLY){
+							_1lvlappr_person = json.supportTicket.trackList[i].processor.username + " / "+setNull(json.supportTicket.trackList[i].trackingDate);
+							_1lvlappr_content = json.supportTicket.trackList[i].newProcess;
+							break;
+						}
+					$('#1lvlappr_person').val(_1lvlappr_person);
+					$('#1lvlappr_content').val(_1lvlappr_content);
+					//二级审批内容
+				
+					var _2lvlappr_arr = [];
+					var _2lvlappr_parr = [];
+					var _2lvlappr_datearr = [];
+					for(var i=json.supportTicket.trackList.length-1;i>=0;i--){
+						if(json.supportTicket.trackList[i].type == TRACKING_TYPE_PGMREPLY
+								|| json.supportTicket.trackList[i].type == TRACKING_TYPE_HDEVREPLY){
+							_2lvlappr_arr.push(json.supportTicket.trackList[i].newProcess);
+							if(!_2lvlappr_parr.hasOwnProperty(json.supportTicket.trackList[i].processor.username)){
+								_2lvlappr_parr.push(setNull(json.supportTicket.trackList[i].processor.username));
+								_2lvlappr_datearr.push(setNull(json.supportTicket.trackList[i].trackingDate));
+							}
 						}
 					}
+					
+					$('#2lvlappr').text(_2lvlappr_arr.join(","));
+					$('#2lvlappr_person').val(_2lvlappr_parr.length > 0 ? _2lvlappr_parr.join(",")+" / "+ _2lvlappr_datearr.join(","): "");
 				}
-				
-				$('#2lvlappr').text(_2lvlappr_parr.join(","));
-				$('#2lvlappr_person').val(_2lvlappr_parr.length > 0 ? _2lvlappr_parr.join(",")+"/"+ _2lvlappr_datearr.join(","): "");
-				
 				//负责人
 				var _stleader_a = [];
 				for(var i=0;i<json.supportTicket.lstSupportLeaders.length;i++){
@@ -238,9 +249,9 @@
 									<label>□其它:
 										<span name="support_type_value" class="document_field"></span>
 									</label>
-									<div name="st.trackList[0].newProcess">一级审批意见</div>
+									<div id="1lvlappr_content">一级审批意见</div>
 									<label class="signature">一级审批人/日期: 
-										<input type="text" id="1lvlappr_person" name="st.trackList[0].processor.username"  class="document_field"> 
+										<input type="text" id="1lvlappr_person"  class="document_field"> 
 									</label>
 								 </td>
 							</tr>
