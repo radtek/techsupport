@@ -73,7 +73,7 @@
 							break;
 						}
 					$('#1lvlappr_person').val(_1lvlappr_person);
-					$('#1lvlappr_content').val(_1lvlappr_content);
+					$('#1lvlappr_content').text(_1lvlappr_content);
 					//二级审批内容
 				
 					var _2lvlappr_arr = [];
