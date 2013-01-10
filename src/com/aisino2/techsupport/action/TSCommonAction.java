@@ -152,7 +152,7 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 	}
 
 	//+++++++++++++++未完成支持单导入++++++++++++++++
-	public void importTechSupport() throws Exception {
+	public String importTechSupport() throws Exception {
 		File excelFile = new File(upload);
 		
 		Map<String,Object> var = new HashMap<String, Object>();
@@ -184,6 +184,8 @@ public class TSCommonAction extends PageAction implements ServletResponseAware {
 		
 		sheet_service.importTechSupport(excelFile, var);
 		this.result = SUCCESS;
+		
+		return SUCCESS;
 	}
 	//---------------未完成支持单导入-----------------
 	// ++ 通过角色筛选用户
