@@ -173,10 +173,14 @@ function lazyLoad(){
 			                  //每个文件允许上传的大小(字节)  
 			                  'sizeLimit'   : allow_max_size,
 			                  'onAllComplete'  :  function(event,data) {
-			                	  if(data.filesUploaded)
-			                		  jAlert("导入成功","提示");
-			                	  $('#import_detail_div').hide();
-			                	  $('#jquery-overlay').hide();
+			                	  if(data.filesUploaded){
+			                		  SupportTicketQuery($('#pageNo').val());
+			                		  alert("导入成功");
+			                	  }
+			                		  
+			                	  try{
+			                		  $('#import_detail_div').hideAndRemove("show");
+			                	  }catch (e) {}
 			                  },
 			                  'onSelect':function(file){
 			                	  if(file)
@@ -410,7 +414,7 @@ function lazyLoad(){
 		if(confirm("确认删除支持单记录?")){
 			$.post(delete_url,params,function(data){
 				if(data.result == "success")
-					SupportTicketQuery(1);
+					SupportTicketQuery($('#pageNo').val());
 				else
 					jAlert(data.result,"警告");
 			});
