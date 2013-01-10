@@ -225,7 +225,6 @@ function applicant_modify(){
 	$.post("techsupport/modify_supportTicket.action",
 			{'supportTicket.supportContent':$('#supportContent').val(),'supportTicket.id':$('#id').val()},
 			function(data){
-				alert(data.result);
 				if(data.result == "success")
 					$("#detailCt").hideAndRemove("show");
 				else
