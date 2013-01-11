@@ -67,18 +67,14 @@ var applicant_page = "business/techSupport/query/techsupportModify.jsp";
 // 延迟加载
 function lazyLoad(){
 	queryPanelHeight = $("#queryPanel").outerHeight(true);
-	if(window.screen.height > 768 )
-		ingridHeight=$('#iframes').height()-queryPanelHeight
-		-$('#title').outerHeight(true)-80 - 35;
-	else
 		ingridHeight=document.body.clientHeight -$('#allDiv').outerHeight(true) -queryPanelHeight
-		-$('#title').outerHeight(true)-80;
+		-$('#title').outerHeight(true)-70;
 	loadPageSupportTicketQuery(divnid);
 	
 }
 //初始化加载
 	$(function(){
-		setTimeout(lazyLoad,10);
+		setTimeout(lazyLoad,5);
 		divnid="queryContent";//查询内容容器ID
 		tableid="queryContentTable";//查询内容格式表格ID
 		pageUrl=BUSNEISS_PATH+ "/querylist_supportTicket.action";

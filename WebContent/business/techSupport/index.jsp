@@ -31,6 +31,9 @@ function showContent(obj)
         reloadHyIndex(10,5);
         helpContr();
         loadXtgl();
+        var iframe_height = document.body.clientHeight -$("#allDiv").outerHeight(true);
+        $('#iframes').height(iframe_height);
+        $('#iframes').show()
     });
     
     function loadOther(){
@@ -111,7 +114,7 @@ function showContent(obj)
       </div>
       <div id="div_moveMenu" style="float:right;margin-top: -21" ></div>
 <div id="div_menumain" style="margin-top: -28"><ul id='menumain' class='jd_menu jd_menu_jdsharp'></ul></div>
-<div id=iframes onload='$("iframes").show("slow");' style="top:128px; width:1020px;height:602px; background-color:#cae4ff; background:url(images/jszc_bg.jpg) no-repeat center;   padding: 0px; "></div>
+<div id="iframes"  style="top:128px; width:1020px;background-color:#cae4ff; background:url(images/jszc_bg.jpg) no-repeat center;   padding: 0px; "></div>
 <div id="password_modify" class="page-layout" src="#" style="display: none; top: 110px; left: 350px; width: 300px;"></div>
 
     </td>

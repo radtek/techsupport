@@ -32,7 +32,7 @@
         </div>
         
         <div class="row">
-            <div class="column pagedistd"  style="line-height: 78px;">
+            <div class="column pagedistd">
                 <label class="label red">技术支持单内容:</label>
                 <textarea style="width:627px !important;height: 78px;" class=" item inputstyle genStNo" name="st.supportContent" id="supportContent"></textarea>
                 <div class="clear-column"></div>
