@@ -8,6 +8,10 @@ var windowClientHeight = $(window).height();
 var attachment_div_id="attachment_list_div";
 var attachment_table_id="attachment_list_table";
 var attachment_tables;
+var attachment_height = parseInt(($('#iframes').height()
+		- $('#title').outerHeight(true)-$('.row').eq(0).outerHeight(true)
+		- $('.row').eq(1).outerHeight(true)-$('.row').eq(3).outerHeight(true)
+		- $('#footerCt').outerHeight(true)) * 0.4 - 35 );
 //附件查询路径
 var attachment_query_url = BUSNEISS_PATH +"/querylistAttachment_tscommon.action";
 
@@ -36,7 +40,7 @@ function attachment_query(pageno,url){
 		// returns a jQ object with a 'g' property - that's ingrid
 		var mygrid2 = $("#"+attachment_table_id).ingrid({ 
 										url: url,	
-										height:60,
+										height:attachment_height,
 										ingridPageWidth:627,
 										isPlayResultNull: false,
 										havaWaiDivGunDong: true,
@@ -51,15 +55,14 @@ function attachment_query(pageno,url){
 									});
 		}
 }
+
 //onload
 
 $(function(){
 	
 	//设置内容自动高度
-	//setTimeout(autoHeight,5);
-	var supportContentHeight = 140;
-	$('#supportContent').height(supportContentHeight);
-	$('#supportContent').parent().css('line-height',supportContentHeight+"px");
+	setTimeout(autoHeight,5);
+	
 	//设置所有日期参数
 	$('.datero').each(function(){
 		$(this).attr('readonly',true);
@@ -207,10 +210,11 @@ $(function(){
 
 function autoHeight(){
 	//设置内容自动高度
-	$('#applyReportedCt').height(windowClientHeight
-		-$('#allDiv').height());
-	$('#contentCt').height($('#applyReportedCt').height()
-		-$('#title').outerHeight(true)-$('#footerCt').outerHeight(true));
+	var supportContentHeight = parseInt(($('#iframes').height()
+		- $('#title').outerHeight(true)-$('.row').eq(0).outerHeight(true)
+		- $('.row').eq(1).outerHeight(true)-$('.row').eq(3).outerHeight(true)
+		- $('#footerCt').outerHeight(true)) * 0.5 -35);
+	$('#supportContent').height(supportContentHeight);
 }
 //序列号生成器
 function snGenerater(obj,func){
