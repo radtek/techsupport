@@ -61,7 +61,7 @@ public class DepartmentApprovalDecisionHandler implements DecisionHandler {
 				boolean found = false;
 				for(Dict_item di : deparment_approval_dict_items){
 					if(role_under_d.getRolename().equals(di.getFact_value())){
-						assign_roles.add(role_under_d.getRolename());
+						assign_roles.add(di.getDisplay_name());
 						found = true;
 						break;
 					}
