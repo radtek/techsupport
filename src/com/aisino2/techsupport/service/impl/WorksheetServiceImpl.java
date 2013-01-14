@@ -33,9 +33,11 @@ import com.aisino2.core.dao.Page;
 import com.aisino2.core.service.BaseService;
 import com.aisino2.sysadmin.domain.Department;
 import com.aisino2.sysadmin.domain.Dict_item;
+import com.aisino2.sysadmin.domain.Globalpar;
 import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
 import com.aisino2.sysadmin.service.IDict_itemService;
+import com.aisino2.sysadmin.service.IGlobalparService;
 import com.aisino2.sysadmin.service.IUserService;
 import com.aisino2.techsupport.common.CommonUtil;
 import com.aisino2.techsupport.common.Constants;
@@ -70,7 +72,8 @@ public class WorksheetServiceImpl extends BaseService implements
 	private TrackingService trackingService;
 	private ICeApprovalService ceApprovalService;
 	private IDepartmentService departmentService;
-
+	private IGlobalparService globalparService;
+	
 	/**
 	 * 流程服务
 	 */
@@ -80,6 +83,11 @@ public class WorksheetServiceImpl extends BaseService implements
 	private MailService mailService;
 
 	private Map<String, String> userEmailMap;
+
+	@Resource(name="globalparService")
+	public void setGlobalparService(IGlobalparService globalparService) {
+		this.globalparService = globalparService;
+	}
 
 	public Map<String, String> getUserEmailMap() {
 		if (userEmailMap == null) {
@@ -1077,8 +1085,12 @@ public class WorksheetServiceImpl extends BaseService implements
 		Map<String, Object> map = new HashMap<String, Object>();
 //		使用最后更新时间
 		map.put("use_last_update_day",1);
+		
 		//最后更新超过时间
-		map.put("last_update_day",7);
+		Globalpar st_tracking_update_interval_day = new Globalpar();
+		st_tracking_update_interval_day.setGlobalparcode("st_tracking_update_interval_day");
+		st_tracking_update_interval_day = globalparService.getGlobalpar(st_tracking_update_interval_day);
+		map.put("last_update_day",st_tracking_update_interval_day.getGlobalparvalue());
 		//状态
 		map.put("stStatus", Constants.ST_STATUS_GOING);
 		
