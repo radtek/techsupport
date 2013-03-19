@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qyscbcf  {
 
 	/** @param 企业上传不充分(t_qyscbcf) */

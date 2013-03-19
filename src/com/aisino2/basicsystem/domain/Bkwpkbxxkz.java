@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Bkwpkbxxkz  {
 
 	/** @param 布控物品基本信息快照(t_bkwpkbxxkz) */

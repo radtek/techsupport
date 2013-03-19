@@ -5,9 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,8 +15,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.mail.internet.MimeUtility;
-import javax.management.RuntimeErrorException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,15 +23,11 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.aisino2.cache.CacheManager;
-import com.aisino2.common.ItemChange;
 import com.aisino2.common.PageUtil;
-import com.aisino2.common.StringUtil;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.web.PageAction;
 import com.aisino2.sysadmin.Constants;
 import com.aisino2.sysadmin.domain.Department;
-import com.aisino2.sysadmin.domain.Dict;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
 import com.aisino2.sysadmin.service.IDepartmentService;
@@ -45,7 +37,6 @@ import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.domain.Attachment;
 import com.aisino2.techsupport.service.IAttachmentService;
 import com.aisino2.techsupport.service.WorksheetService;
-import com.lowagie.text.pdf.PRAcroForm;
 
 /**
  * 

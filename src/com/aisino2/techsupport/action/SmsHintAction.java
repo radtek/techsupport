@@ -8,11 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.web.BaseAction;
-import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
-import com.aisino2.sysadmin.domain.User_role;
-import com.aisino2.sysadmin.service.IDict_itemService;
-import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.service.ISmsService;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.management.RuntimeErrorException;
 
 import org.jbpm.api.ProcessInstance;
 import org.springframework.stereotype.Component;

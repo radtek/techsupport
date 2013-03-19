@@ -2,7 +2,6 @@ package com.aisino2.basicsystem.test;
 
 import com.aisino2.basicsystem.domain.Xctb_fj;
 import com.aisino2.basicsystem.service.IXctb_fjService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class Xctb_fjTest {
 

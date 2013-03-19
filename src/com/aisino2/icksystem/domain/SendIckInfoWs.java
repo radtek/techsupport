@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class SendIckInfoWs  {
 	private int ickslid; //制卡记录编号   icksl
 	private String cjdbm;//采集点编码  t_cyryxx

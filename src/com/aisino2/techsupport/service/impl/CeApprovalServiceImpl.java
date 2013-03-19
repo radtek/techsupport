@@ -2,7 +2,6 @@ package com.aisino2.techsupport.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.service.BaseService;
-import com.aisino2.sysadmin.domain.Department;
 import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;

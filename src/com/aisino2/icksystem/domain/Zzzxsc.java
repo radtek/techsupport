@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Zzzxsc  {
 
 	/** @param 制证中心上传(t_zzzxsc) */

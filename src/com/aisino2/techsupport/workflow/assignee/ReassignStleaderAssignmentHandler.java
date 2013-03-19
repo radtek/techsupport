@@ -2,17 +2,9 @@ package com.aisino2.techsupport.workflow.assignee;
 
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import org.jbpm.api.model.OpenExecution;
 import org.jbpm.api.task.Assignable;
 import org.jbpm.api.task.AssignmentHandler;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import com.aisino2.sysadmin.service.IDepartmentService;
-import com.aisino2.sysadmin.service.IUserService;
-import com.aisino2.techsupport.service.SupportTicketService;
 
 /**
  * 重新选择负责人指派监听

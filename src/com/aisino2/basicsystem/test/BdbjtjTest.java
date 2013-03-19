@@ -9,7 +9,6 @@ import org.apache.log4j.PropertyConfigurator;
 import com.aisino2.basicsystem.domain.Bdbjtj;
 import com.aisino2.basicsystem.service.IBdbjtjService;
 import com.aisino2.core.dao.Page;
-import com.aisino2.core.test.BaseTestCase;
 
 
 public class BdbjtjTest {

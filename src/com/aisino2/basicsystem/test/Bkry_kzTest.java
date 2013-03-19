@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Bkry_kz;
 import com.aisino2.basicsystem.service.IBkry_kzService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class Bkry_kzTest {
 

@@ -10,7 +10,6 @@ import com.aisino2.core.service.BaseService;
 import com.aisino2.techsupport.common.Constants;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.service.ArchiveSerivce;
-import com.aisino2.techsupport.service.IAttachmentService;
 import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.workflow.WorkflowUtil;
 

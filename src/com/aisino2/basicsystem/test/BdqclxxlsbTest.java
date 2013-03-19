@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Bdqclxxlsb;
 import com.aisino2.basicsystem.service.IBdqclxxlsbService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class BdqclxxlsbTest {
 

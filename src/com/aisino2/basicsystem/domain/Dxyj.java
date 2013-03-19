@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Dxyj  {
 
 	/** @param 短信预警(t_dxyj) */

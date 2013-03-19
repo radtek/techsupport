@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qybgxx  {
 
 	/** @param 企业变更信息(t_qybgxx) */

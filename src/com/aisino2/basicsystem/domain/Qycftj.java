@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qycftj  {
 
 	/** @param 企业处罚统计表(t_qycftj) */

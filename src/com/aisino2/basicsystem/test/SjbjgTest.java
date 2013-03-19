@@ -2,7 +2,6 @@ package com.aisino2.basicsystem.test;
 
 import com.aisino2.basicsystem.domain.Sjbjg;
 import com.aisino2.basicsystem.service.ISjbjgService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class SjbjgTest {
 

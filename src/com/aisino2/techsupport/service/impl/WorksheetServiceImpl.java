@@ -24,7 +24,6 @@ import org.jbpm.api.TaskService;
 import org.jbpm.api.history.HistoryTask;
 import org.jbpm.api.task.Participation;
 import org.jbpm.api.task.Task;
-import org.jbpm.pvm.internal.task.ParticipationImpl;
 import org.jbpm.pvm.internal.task.TaskImpl;
 import org.springframework.stereotype.Component;
 

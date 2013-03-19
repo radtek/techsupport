@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.aisino2.basicsystem.service.IAsjtjService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class AsjtjTest {
 

@@ -1,6 +1,5 @@
 package com.aisino2.publicsystem.domain;
 
-import com.aisino2.core.domain.BaseObject;
 /**
  * 企业帐号同步
  * @author mds

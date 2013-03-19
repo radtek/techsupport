@@ -2,7 +2,6 @@ package com.aisino2.basicsystem.test;
 
 import com.aisino2.basicsystem.domain.Wbjkczrzmx;
 import com.aisino2.basicsystem.service.IWbjkczrzmxService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class WbjkczrzmxTest {
 

@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Map;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Khxx  {
 
 	/** @param 客户信息表(t_khxx) */

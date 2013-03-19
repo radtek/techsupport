@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Gatztb  {
 
 	/** @param 公安通知通报(t_gatztb) */

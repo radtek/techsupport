@@ -25,7 +25,6 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.aisino2.cache.CacheManager;
 import com.aisino2.common.ItemChange;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.web.PageAction;

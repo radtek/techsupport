@@ -1,7 +1,6 @@
 package com.aisino2.techsupport.workflow.autotask;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;

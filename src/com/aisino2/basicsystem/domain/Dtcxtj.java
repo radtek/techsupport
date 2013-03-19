@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Dtcxtj  {
 
 	/** @param 动态查询条件(t_dtcxtj) */

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Bkwpkbxx;
 import com.aisino2.basicsystem.service.IBkwpkbxxService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class BkwpkbxxTest {
 

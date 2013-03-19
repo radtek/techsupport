@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class St_device  {
 
 	/** @param 无线终端设备(ST_DEVICE) */

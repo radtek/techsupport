@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Sjbdqxx  {
 
 	/** @param 手机被盗抢信息(t_sjbdqxx) */

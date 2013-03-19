@@ -2,8 +2,6 @@ package com.aisino2.sysadmin.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Param  {
 
 	/** @param 参数设置(t_param) */

@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Ryjcxx  {
 
 	/** @param 人员奖惩信息(t_ryjcxx) */

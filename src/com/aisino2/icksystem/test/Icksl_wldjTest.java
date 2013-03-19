@@ -1,6 +1,5 @@
 package com.aisino2.icksystem.test;
 
-import com.aisino2.core.test.BaseTestCase;
 import com.aisino2.icksystem.domain.Icksl_wldj;
 import com.aisino2.icksystem.service.IIcksl_wldjService;
 

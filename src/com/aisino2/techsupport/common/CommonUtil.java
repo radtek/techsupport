@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.springframework.stereotype.Component;
 
-import com.aisino2.sysadmin.dao.IDict_itemDao;
 import com.aisino2.sysadmin.service.IDict_itemService;
 
 @Component("CommonUtil")

@@ -2,8 +2,6 @@ package com.aisino2.sysadmin.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Role_func  {
 
 	/** @param 角色功能(t_role_func) */

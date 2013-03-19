@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.jbpm.api.task.Task;
-import org.jbpm.pvm.internal.task.TaskImpl;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.dao.Page;

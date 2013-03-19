@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Xctbhf;
 import com.aisino2.basicsystem.service.IXctbhfService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class XctbhfTest {
 

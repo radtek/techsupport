@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Dxbj;
 import com.aisino2.basicsystem.service.IDxbjService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class DxbjTest {
 

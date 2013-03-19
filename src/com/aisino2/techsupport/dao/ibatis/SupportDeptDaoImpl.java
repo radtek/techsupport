@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.aisino2.core.dao.BaseDao;
 import com.aisino2.techsupport.dao.ISupportDeptDao;
 import com.aisino2.techsupport.domain.SupportDept;
 

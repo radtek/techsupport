@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.aisino2.core.dao.BaseDao;
 import com.aisino2.core.dao.Page;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.techsupport.dao.WorksheetDao;

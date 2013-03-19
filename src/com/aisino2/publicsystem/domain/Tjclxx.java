@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Tjclxx  {
 
 	/** @param 提交材料信息(t_tjclxx) */

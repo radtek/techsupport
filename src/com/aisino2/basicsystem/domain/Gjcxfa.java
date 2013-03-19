@@ -3,8 +3,6 @@ package com.aisino2.basicsystem.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Gjcxfa  {
 
 	/** @param 高级查询方案(t_gjcxfa) */

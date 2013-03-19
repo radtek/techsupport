@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qyyyzttj  {
 
 	/** @param 企业营业状态统计(t_qyyyzttj) */

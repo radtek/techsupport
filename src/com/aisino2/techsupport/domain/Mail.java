@@ -2,8 +2,6 @@ package com.aisino2.techsupport.domain;
 
 import java.util.List;
 
-import javax.mail.Store;
-
 public class Mail {
 	// IMAP协议
 	final static public String PROTOCOL_IMAP = "imap";

@@ -1,6 +1,5 @@
 package com.aisino2.sysadmin.domain;
 
-import com.aisino2.core.domain.BaseObject;
 
 public class Role_param  {
 

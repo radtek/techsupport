@@ -1,6 +1,5 @@
 package com.aisino2.icksystem.domain;
 
-import com.aisino2.core.domain.BaseObject;
 
 public class Icksl_wldj  {
 

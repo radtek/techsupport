@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Gzdx_kz  {
 
 	/** @param 关注对象快照(t_gzdx_kz) */

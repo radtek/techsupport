@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Clyjxx  {
 
 	/** @param 车辆预警信息(t_clyjxx) */

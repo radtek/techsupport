@@ -3,8 +3,6 @@ package com.aisino2.techsupport.service;
 import java.util.List;
 import java.util.Map;
 
-import org.drools.lang.dsl.DSLMapParser.mapping_file_return;
-
 import com.aisino2.core.dao.Page;
 import com.aisino2.techsupport.domain.SupportTicket;
 

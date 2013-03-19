@@ -9,7 +9,6 @@ import org.apache.log4j.PropertyConfigurator;
 import com.aisino2.basicsystem.domain.Qycftj;
 import com.aisino2.basicsystem.service.IQycftjService;
 import com.aisino2.core.dao.Page;
-import com.aisino2.core.test.BaseTestCase;
 
 
 public class QycftjTest {

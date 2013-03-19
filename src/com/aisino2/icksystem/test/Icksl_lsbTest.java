@@ -2,7 +2,6 @@ package com.aisino2.icksystem.test;
 
 import java.util.Date;
 
-import com.aisino2.core.test.BaseTestCase;
 import com.aisino2.icksystem.domain.Icksl_lsb;
 import com.aisino2.icksystem.service.IIcksl_lsbService;
 

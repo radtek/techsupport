@@ -4,8 +4,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class QyjbxxModel  {
 
 	/** @param 企业基本信息(t_qyjbxx) */

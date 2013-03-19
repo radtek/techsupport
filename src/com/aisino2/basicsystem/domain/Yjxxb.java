@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Yjxxb  {
 
 	/** @param 预警信息表(t_yjxxb) */

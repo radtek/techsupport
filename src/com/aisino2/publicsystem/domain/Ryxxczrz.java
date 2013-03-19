@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Ryxxczrz  {
 
 	/** @param 人员信息操作日志(t_ryxxczrz) */

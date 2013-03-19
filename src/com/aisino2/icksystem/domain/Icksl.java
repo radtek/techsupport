@@ -3,7 +3,6 @@ package com.aisino2.icksystem.domain;
 import java.util.Date;
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
 import com.aisino2.publicsystem.domain.Qyryxx;
 
 public class Icksl  {

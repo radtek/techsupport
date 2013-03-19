@@ -22,7 +22,6 @@ import com.aisino2.techsupport.domain.SmsBoxSending;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;
 import com.aisino2.techsupport.service.ISmsService;
-import com.aisino2.techsupport.service.SupportTicketService;
 import com.aisino2.techsupport.service.TrackingService;
 
 /**

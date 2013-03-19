@@ -1,21 +1,15 @@
 package com.aisino2.techsupport.action;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.core.web.BaseAction;
-import com.aisino2.techsupport.common.CommonUtil;
 import com.aisino2.techsupport.domain.Attachment;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.service.ApplyService;

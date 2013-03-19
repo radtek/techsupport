@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Icksl_lsb  {
 
 	/** @param IC卡受理临时表(t_icksl_lsb) */

@@ -1,7 +1,5 @@
 package com.aisino2.techsupport.action;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
@@ -12,10 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.aisino2.core.web.BaseAction;
-import com.aisino2.sysadmin.Constants;
-import com.aisino2.sysadmin.domain.User;
-import com.aisino2.sysadmin.domain.User_role;
-import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.service.IDeptApprovalService;
 import com.aisino2.techsupport.service.WorksheetService;

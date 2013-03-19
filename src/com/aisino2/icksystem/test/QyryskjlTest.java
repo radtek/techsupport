@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.aisino2.core.test.BaseTestCase;
 import com.aisino2.icksystem.domain.Qyryskjl;
 import com.aisino2.icksystem.service.IQyryskjlService;
 

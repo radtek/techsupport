@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Cjdtjrb  {
 
 	/** @param 采集端统计日报(t_cjdtjrb) */

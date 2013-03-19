@@ -1,6 +1,5 @@
 package com.aisino2.basicsystem.domain;
 
-import com.aisino2.core.domain.BaseObject;
 
 public class Zdycxtj  {
 

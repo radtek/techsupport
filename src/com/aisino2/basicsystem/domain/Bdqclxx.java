@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Bdqclxx  {
 
 	/** @param 被盗抢车辆信息(t_bdqclxx) */

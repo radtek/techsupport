@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Ycskqy  {
 
 	/** @param 异常刷卡企业(t_ycskqy) */

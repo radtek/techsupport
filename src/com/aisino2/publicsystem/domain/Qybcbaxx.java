@@ -3,8 +3,6 @@ package com.aisino2.publicsystem.domain;
 import java.util.Date;
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qybcbaxx  {
 
 	/** @param 企业补充备案信息(t_qybcbaxx) */

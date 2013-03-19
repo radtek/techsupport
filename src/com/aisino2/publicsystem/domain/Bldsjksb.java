@@ -3,8 +3,6 @@ package com.aisino2.publicsystem.domain;
 import java.util.Date;
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Bldsjksb  {
 
 	/** @param 闭路电视监控设备(t_bldsjksb) */

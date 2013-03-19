@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Gzdx_kz;
 import com.aisino2.basicsystem.service.IGzdx_kzService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class Gzdx_kzTest {
 

@@ -11,7 +11,6 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

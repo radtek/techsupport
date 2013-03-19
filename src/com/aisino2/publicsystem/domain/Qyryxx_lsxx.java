@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qyryxx_lsxx  {
 
 	/** @param 企业人员历史信息(t_qyryxx_lsxx) */

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.aisino2.basicsystem.domain.Qycf;
 import com.aisino2.basicsystem.service.IQycfService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class QycfTest {
 

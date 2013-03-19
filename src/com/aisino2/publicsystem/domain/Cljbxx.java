@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Cljbxx  {
 
 	/** @param 车辆基本信息(t_cljbxx) */

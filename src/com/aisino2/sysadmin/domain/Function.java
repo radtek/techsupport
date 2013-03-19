@@ -2,8 +2,6 @@ package com.aisino2.sysadmin.domain;
 
 import java.io.Serializable;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Function  implements Serializable{
 
 	/** @param 功能(t_function) */

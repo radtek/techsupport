@@ -1,11 +1,5 @@
 package com.aisino2.techsupport.service;
 
-import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.internet.AddressException;
-
 import com.aisino2.techsupport.domain.Mail;
 
 public interface MailService {

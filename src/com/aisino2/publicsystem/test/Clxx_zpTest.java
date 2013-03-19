@@ -1,6 +1,5 @@
 package com.aisino2.publicsystem.test;
 
-import com.aisino2.core.test.BaseTestCase;
 import com.aisino2.publicsystem.domain.Clxx_zp;
 import com.aisino2.publicsystem.service.IClxx_zpService;
 

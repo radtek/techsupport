@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.test;
 
 import java.util.Date;
 
-import com.aisino2.core.test.BaseTestCase;
-
 public class QyryjxxxTest {
 
 	//定义服务，名称与bean id一致，利用spring注入模式实例化

@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Gatztbhf  {
 
 	/** @param 公安通知通报回复(t_gatztbhf) */

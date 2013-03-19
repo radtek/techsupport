@@ -2,8 +2,6 @@ package com.aisino2.icksystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Qyryskjl  {
 
 	/** @param 企业人员刷卡记录(t_qyryskjl) */

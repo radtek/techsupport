@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Wgtzrxx  {
 
 	/** @param 外国投资人信息(t_wgtzrxx) */

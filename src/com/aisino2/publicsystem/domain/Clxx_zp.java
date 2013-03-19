@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Clxx_zp  {
 
 	/** @param 车辆信息_照片(t_clxx_zp) */

@@ -2,8 +2,6 @@ package com.aisino2.publicsystem.domain;
 
 import java.util.List;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Pmt  {
 
 	/** @param 平面图(t_pmt) */

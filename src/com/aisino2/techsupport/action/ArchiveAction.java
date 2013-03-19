@@ -1,14 +1,10 @@
 package com.aisino2.techsupport.action;
 
 import java.util.Date;
-import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts2.interceptor.RequestAware;
-import org.drools.lang.dsl.DSLMapParser.mapping_file_return;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

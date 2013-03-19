@@ -2,7 +2,6 @@ package com.aisino2.basicsystem.test;
 
 import com.aisino2.basicsystem.domain.Bjgz;
 import com.aisino2.basicsystem.service.IBjgzService;
-import com.aisino2.core.test.BaseTestCase;
 
 public class BjgzTest {
 

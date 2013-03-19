@@ -2,8 +2,6 @@ package com.aisino2.basicsystem.domain;
 
 import java.util.Date;
 
-import com.aisino2.core.domain.BaseObject;
-
 public class Xctbjsdw  {
 
 	/** @param 协查通报接收单位(t_xctbjsdw) */
