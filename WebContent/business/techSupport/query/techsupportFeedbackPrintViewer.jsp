@@ -154,20 +154,20 @@
 						</tr>
 						<tr>
 							<td>产品（项目）名称:</td>
-							<td colspan="3"><span>暂留</span></td>
+							<td colspan="3">&nbsp;<span></span></td>
 						</tr>
 						
 						<tr>
 							<td>客户单位名称:</td>
-							<td><span>暂留</span></td>
+							<td>&nbsp;<span></span></td>
 							<td>客户联系人:</td>
-							<td><span>暂留</span></td>
+							<td>&nbsp;<span></span></td>
 						</tr>
 						<tr>
 							<td>客户Email地址:</td>
-							<td><span>暂留</span></td>
+							<td>&nbsp;<span></span></td>
 							<td>客户联系电话:</td>
-							<td><span>暂留</span></td>
+							<td>&nbsp;<span></span></td>
 						</tr>
 						<tr>
 							<td colspan="4">
@@ -195,34 +195,34 @@
 						<tr>
 							<td>未完成工作原因分析:</td>
 							<td colspan="3">
-								<span>暂留</span>
+								&nbsp;<span></span>
 							</td>
 						</tr>
 						<tr>
 							<td>遗留问题及后续计划:</td>
 							<td colspan="3">
-								<span>暂留</span>
+								&nbsp;<span></span>
 							</td>
 						</tr>
 						<tr>
 							<td align="center">客<br>户<br>评<br>价</td>
-							<td colspan="4">客户评价及建议:<div>暂留</div>
+							<td colspan="4">客户评价及建议:&nbsp;<div></div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
 						</tr>
 						<tr>
 							<td rowspan="3" align="center">公<br>司<br>内<br>部<br>评<br>价</td>
-							<td colspan="4">申请人评价: <div>暂留</div>
+							<td colspan="4">申请人评价: &nbsp;<div></div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="4">二级审批人评价:<div>暂留</div>
+							<td colspan="4">二级审批人评价:&nbsp;<div></div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="4">一级审批人评价:<div>暂留</div>
+							<td colspan="4">一级审批人评价:&nbsp;<div></div>
 								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
 							</td>
 						</tr>

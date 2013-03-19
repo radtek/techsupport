@@ -178,20 +178,20 @@
 							</tr>
 							<tr>
 								<td>产品（项目）名称:</td>
-								<td colspan="3">&nbsp;<span>暂留</span></td>
+								<td colspan="3">&nbsp;<span></span></td>
 							</tr>
 							
 							<tr>
 								<td>单位名称:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 								<td>联系人:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 							</tr>
 							<tr>
 								<td>Email地址:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 								<td>联系电话:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 							</tr>
 							<tr>
 								<td colspan="4">支持类型:
@@ -214,25 +214,25 @@
 							<tr>
 								<td colspan="4">
 									客户方环境是否已具备（必须明确说明涉及到的软硬件环境）:<br>
-									<span>暂留</span>
+									<span></span>
 								</td>
 							</tr>
 							<tr>
 								<td>希望进行支持的人员:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 								<td>支持人员工作地点:</td>
-								<td>&nbsp;<span>暂留</span></td>
+								<td>&nbsp;<span></span></td>
 							</tr>
 							<tr>
 								<td>预计工作时间:</td>
 								<td colspan="3">
-									&nbsp;<span>暂留</span>
+									&nbsp;<span></span>
 								</td>
 							</tr>
 							<tr>
 								<td id="apply" rowspan="3" align="center">审<br>批</td>
 								<td colspan="4">
-									<div>暂留</div>
+									<div>&nbsp;</div>
 									<label class="signature">申请人主管/日期:
 										<input type="text" class="document_field"> 
 									</label>
