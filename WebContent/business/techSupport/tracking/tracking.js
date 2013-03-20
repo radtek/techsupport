@@ -4,6 +4,12 @@
  * 
  * */
 
+/**
+ * 最近一次二级审批的日期
+ * @type String 
+ */
+var sLatestDepartmentApprovalDate;
+
 var processUrl2;
 var ingridUrl;
 var ingridWidth=400;
@@ -117,6 +123,11 @@ function toFeedbackVerify(){
 	if(departfullcode.indexOf('.cpfab.') != -1){
 		if (!checkControlValue("p_psgCompDate","Date",null,null,null,1,"实际完成时间"))
 			return false;
+		// 实际完成时间应该大于等于部门审批的时间
+		if($('#p_psgCompDate').val() < sLatestDepartmentApprovalDate){
+			jAlert('实际完成时间应该大于等于部门审批的时间','提示');
+			return false;
+		}
 		// ++ bug 在阶段选项打开的时候，内容为必填
 		if($('#psgcpstage').attr("checked")){
 			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"实际需求完成时间"))
@@ -135,6 +146,11 @@ function toFeedbackVerify(){
 	if(departfullcode.indexOf('.jskfb.') != -1){
 		if (!checkControlValue("p_devCompDate","Date",null,null,null,1,"实际完成时间"))
 				return false;
+		// 实际完成时间应该大于等于部门审批的时间
+		if($('#p_devCompDate').val() < sLatestDepartmentApprovalDate){
+			jAlert('实际完成时间应该大于等于部门审批的时间','提示');
+			return false;
+		}
 		// ++ bug 在阶段选项打开的时候，内容为必填
 		if($('#devcpstage').attr("checked")){
 			
@@ -329,6 +345,21 @@ function loadData(){
 		//附件
 		$('#att_stId').val(data.st.id);
 		attachment_query(1);
+		
+		// 获取最近部门审批时间
+		setParams("p_");
+		$.post(getContextPath()+"/techsupport/querylistNoPage_tracking.action",params,function(data){
+			for(var i=0;i<data.lTracking.length;i++){
+				var track = data.lTracking[i];
+				if (track.type == TRACKING_TYPE_PGMREPLY || track.type == TRACKING_TYPE_HDEVREPLY) {
+					sLatestDepartmentApprovalDate = sLatestDepartmentApprovalDate?
+						sLatestDepartmentApprovalDate:setNull(track.trackingDate);
+					if(track.trackingDate > sLatestDepartmentApprovalDate)
+						sLatestDepartmentApprovalDate = setNull(track.trackingDate);
+				}
+			}
+		},"json");
+		
 	},'json');
 	
 	
