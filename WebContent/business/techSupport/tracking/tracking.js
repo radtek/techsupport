@@ -114,14 +114,12 @@ function saveVerify() {
 
 /** 提请反馈验证 */
 function toFeedbackVerify(){
-	if(gxdwmc.indexOf('方案部') > -1){
-		if (!checkControlValue("p_psgCompDate","Date",null,null,null,1,"产品方案部实际完成时间"))
+	if(departfullcode.indexOf('.cpfab.') != -1){
+		if (!checkControlValue("p_psgCompDate","Date",null,null,null,1,"实际完成时间"))
 			return false;
 		// ++ bug 在阶段选项打开的时候，内容为必填
 		if($('#psgcpstage').attr("checked")){
-			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"产品方案部实际需求完成时间"))
-				return false;
-			if (!checkControlValue("p_psgIsCompDate","Date",null,null,null,1,"产品方案部实际实施完成时间"))
+			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"实际需求完成时间"))
 				return false;
 				
 			if(!($('#p_psgDsCompDate').val() < $('#p_psgIsCompDate').val()
@@ -133,22 +131,26 @@ function toFeedbackVerify(){
 		}
 		// -- bug 在阶段选项打开的时候，内容为必填	
 	}
-	if(gxdwmc.indexOf('开发部') > -1){
-		if (!checkControlValue("p_devCompDate","Date",null,null,null,1,"技术开发部实际完成时间"))
+		
+	if(departfullcode.indexOf('.jskfb.') != -1){
+		if (!checkControlValue("p_devCompDate","Date",null,null,null,1,"实际完成时间"))
 				return false;
 		// ++ bug 在阶段选项打开的时候，内容为必填
 		if($('#devcpstage').attr("checked")){
 			
-			if (!checkControlValue("p_devDsCompDate","Date",null,null,null,1,"技术开发部实际设计完成时间"))
+			if (!checkControlValue("p_devDsCompDate","Date",null,null,null,1,"实际设计完成时间"))
 				return false;
-			if (!checkControlValue("p_devDdCompDate","Date",null,null,null,1,"技术开发部实际开发完成时间"))
+			if (!checkControlValue("p_devDdCompDate","Date",null,null,null,1,"实际开发完成时间"))
 				return false;
-			if (!checkControlValue("p_devDtCompDate","Date",null,null,null,1,"技术开发部实际测试完成时间"))
+			if (!checkControlValue("p_devDtCompDate","Date",null,null,null,1,"实际测试完成时间"))
+				return false;
+			if (!checkControlValue("p_psgIsCompDate","Date",null,null,null,1,"实际实施完成时间"))
 				return false;
 			if(!($('#p_devDsCompDate').val() < $('#p_devDdCompDate').val() &&
-					$('#p_devDdCompDate').val() < $('#p_devDtCompDate').val() && 
-					$('#p_devCompDate').val() == $('#p_devDtCompDate').val())){
-					jAlert('实际设计完成时间必须小于实际开发完成时间必须小于实际测试完成时间，实际测试完成时间必须等于实际完成时间','提示');
+					$('#p_devDdCompDate').val() < $('#p_devDtCompDate').val() &&
+					$('#p_devDtCompDate').val() < $('#p_psgIsCompDate').val() &&
+					$('#p_devCompDate').val() == $('#p_psgIsCompDate').val())){
+					jAlert('实际设计完成时间必须小于实际开发完成时间必须小于实际测试完成时间必须小于实际实施完成时间，实际实施完成时间必须等于实际完成时间，','提示');
 					return false;
 				}
 		}

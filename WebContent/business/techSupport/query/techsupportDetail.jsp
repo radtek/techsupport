@@ -111,16 +111,7 @@
 					<div class="clear-row"></div>
 				</div>
 				
-				<div class="row">
-					<div class="column">
-						<div class="psgstage">
-							<label class="label" >实施:</label>
-							<input type="text" class=" item label-80 ro" name="st.psgIsScheDate" id="psgIsScheDate">
-						</div>
-						<div class="clear-column"></div>
-					</div>
-					<div class="clear-row"></div>
-				</div>
+				
 				
 			</div>
 			
@@ -159,16 +150,7 @@
 					<div class="clear-row"></div>
 				</div>
 				
-				<div class="row">
-					<div class="column">
-						<div class="psgcpstage">
-							<label class="label label-80" >实施:</label>
-							<input type="text" class=" item label-80 ro inputstyle" name="st.psgIsCompDate" id="psgIsCompDate">
-						</div>
-						<div class="clear-column"></div>
-					</div>
-					<div class="clear-row"></div>
-				</div>
+				
 				
 				<div class="clear-column"></div>
 			</div>
@@ -215,6 +197,7 @@
 					</div>
 					<div class="clear-row"></div>
 				</div>
+
 				
 				<%-- 添加测试计划时间 --%>
 				<div class="row">
@@ -227,7 +210,21 @@
 					</div>
 					<div class="clear-row"></div>
 				</div>
+				
+				<%--移动实施到技术部 --%>
+				<div class="row">
+					<div class="column">
+						<div class="devstage">
+							<label class="label label-80" >实施:</label>
+							<input type="text" class=" item label-80 ro inputstyle" name="st.psgIsScheDate" id="psgIsScheDate">
+						</div>
+						<div class="clear-column"></div>
+					</div>
+					<div class="clear-row"></div>
+				</div>
 			</div>
+
+			
 			
 			<div class="column ">
 				<div>
@@ -282,6 +279,17 @@
 						<div class="devcpstage">
 							<label class="label label-80" >测试:</label>
 							<input type="text" class=" item label-80 ro inputstyle" name="st.devDtCompDate" id="devDtCompDate">
+						</div>
+						<div class="clear-column"></div>
+					</div>
+					<div class="clear-row"></div>
+				</div>
+				<%-- 移动实施时间到技术部 --%>
+				<div class="row">
+					<div class="column">
+						<div class="devcpstage">
+							<label class="label label-80" >实施:</label>
+							<input type="text" class=" item label-80 ro inputstyle" name="st.psgIsCompDate" id="psgIsCompDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>

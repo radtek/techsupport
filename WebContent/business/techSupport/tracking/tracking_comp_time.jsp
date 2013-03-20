@@ -140,18 +140,6 @@
 			<div class="clear-row"></div>
 		</div>
 
-		<div class="row">
-			<div class="column">
-				<div class="psgcpstage">
-					<label class="label label-80">实施:</label> <input type="text"
-						class=" item inputstyle date " name="trSt.psgIsCompDate"
-						id="p_psgIsCompDate">
-				</div>
-				<div class="clear-column"></div>
-			</div>
-			<div class="clear-row"></div>
-		</div>
-
 		<div class="clear-column"></div>
 	</div>
 	<div class="column column-block2" id="jsb_block">
@@ -217,6 +205,19 @@
 			<div class="clear-row"></div>
 		</div>
 		<%-- -- 新需求 技术开发部添加阶段测试 --%>
+		
+		<%-- 移动实施时间到技术部  --%>
+		<div class="row">
+			<div class="column">
+				<div class="devcpstage">
+					<label class="label label-80">实施:</label> <input type="text"
+						class=" item inputstyle date " name="trSt.psgIsCompDate"
+						id="p_psgIsCompDate">
+				</div>
+				<div class="clear-column"></div>
+			</div>
+			<div class="clear-row"></div>
+		</div>
 	</div>
 	<div class="clear-row"></div>
 </div>

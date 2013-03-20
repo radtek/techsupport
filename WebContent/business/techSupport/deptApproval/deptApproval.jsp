@@ -257,15 +257,7 @@ System.out.println("==================================="+activityName+"=========
 
 						<div class="clear-column"></div>
 					</div>
-					<div class="column column-block2">
-						<div class="psgstage">
-							<label class="label" style="width: 60px;">实施:</label> <input
-								type="text" class=" item date datero inputstyle"
-								name="st.psgIsScheDate" id="psgIsScheDate">
-						</div>
-
-						<div class="clear-column"></div>
-					</div>
+					
 					<div class="clear-row"></div>
 				</div>
 			</div>
@@ -312,6 +304,16 @@ System.out.println("==================================="+activityName+"=========
 							<div class="clear-column"></div>
 						</div>
 						<%-- -- 新需求为技术开发部添加测试阶段 (结束) --%>
+						<%--移动实施到技术部 --%>
+						<div class="column column-block2">
+							<div class="devstage">
+								<label class="label" style="width: 60px;">实施:</label> <input
+									type="text" class=" item date datero inputstyle"
+									name="st.psgIsScheDate" id="psgIsScheDate">
+							</div>
+	
+							<div class="clear-column"></div>
+						</div>
 					</div>
 
 					<div class="clear-row"></div>

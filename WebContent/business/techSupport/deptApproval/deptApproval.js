@@ -351,18 +351,19 @@ function submitVerity() {
 			if (!checkControlValue("psgScheDate", "Date", 1, 100, null, 1,
 					"计划完成时间"))
 				return false;
+			// 计划完成时间必须大于当前部门审批的时间
+			if ($('#devScheDate').val() <= $('#deptApprovalDate').val()){
+				jAlert('计划完成时间不能小于等于审批日期','提示');
+				return false;
+			}
 			if ($('#psgstage').attr('checked')) {
 				if (!checkControlValue("psgDsScheDate", "Date", 1, 100, null,
 						1, "计划需求时间"))
 					return false;
-				if (!checkControlValue("psgIsScheDate", "Date", 1, 100, null,
-						1, "计划实施时间"))
-					return false;
-					
-				if(!($('#psgDsScheDate').val() < $('#psgIsScheDate').val()
-				&& $('#psgIsScheDate').val() == $('#psgScheDate').val())){
 				
-					jAlert('计划需求时间必须小于计划实施时间,计划实施时间必须等于计划完成时间','提示');
+				//移动实施时间到技术部
+				if($('#psgDsScheDate').val() != $('#psgScheDate').val()){
+					jAlert('计划需求时间必须等于计划完成时间','提示');
 					return false;
 				}
 			}
@@ -370,6 +371,11 @@ function submitVerity() {
 			if (!checkControlValue("devScheDate", "Date", 1, 100, null, 1,
 					"计划完成时间"))
 				return false;
+			// 计划完成时间必须大于当前部门审批的时间
+			if ($('#devScheDate').val() <= $('#deptApprovalDate').val()){
+				jAlert('计划完成时间不能小于等于审批日期','提示');
+				return false;
+			}
 			if ($('#devstage').attr('checked')) {
 				if (!checkControlValue("devDsScheDate", "Date", 1, 100, null,
 						1, "计划设计时间"))
@@ -380,11 +386,14 @@ function submitVerity() {
 				if (!checkControlValue("devDtScheDate", "Date", 1, 100, null,
 					1, "计划测试时间"))
 					return false;
-					
+				if (!checkControlValue("psgIsScheDate", "Date", 1, 100, null,
+						1, "计划实施时间"))
+					return false;
 				if(!($('#devDsScheDate').val() < $('#devDdScheDate').val() &&
-					$('#devDdScheDate').val() < $('#devDtScheDate').val() && 
-					$('#devScheDate').val() == $('#devDtScheDate').val())){
-					jAlert('计划设计时间必须小于计划开发时间必须小于计划测试时间，测试时间必须等于计划完成时间','提示');
+					$('#devDdScheDate').val() < $('#devDtScheDate').val() &&
+					$('#devDtScheDate').val() < $('#psgIsScheDate').val() && 
+					$('#devScheDate').val() == $('#psgIsScheDate').val())){
+					jAlert('计划设计时间必须小于计划开发时间必须小于计划测试时间，测试时间必须小于实施时间，实施时间必须等于计划完成时间','提示');
 					return false;
 				}
 			}

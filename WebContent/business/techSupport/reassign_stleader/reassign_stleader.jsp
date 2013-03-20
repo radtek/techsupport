@@ -85,16 +85,7 @@
 					<div class="clear-row"></div>
 				</div>
 				
-				<div class="row">
-					<div class="column">
-						<div class="psgstage">
-							<label class="label label-80" >需求:</label>
-							<input type="text" class="psgstage item inputstyle ro label-100" name="st.psgDsScheDate" id="p_psgDsScheDate">
-						</div>
-						<div class="clear-column"></div>
-					</div>
-					<div class="clear-row"></div>
-				</div>
+				
 				
 				<div class="row">
 					<div class="column">
@@ -165,6 +156,17 @@
 				</div>
 			
 			<%-- -- 新需求 技术开发部添加阶段测试 --%>
+				<%-- 移动实施时间到技术部 --%>
+				<div class="row">
+					<div class="column">
+						<div class="devstage">
+							<label class="label label-80" >需求:</label>
+							<input type="text" class="devstage item inputstyle ro label-100" name="st.psgDsScheDate" id="p_psgDsScheDate">
+						</div>
+						<div class="clear-column"></div>
+					</div>
+					<div class="clear-row"></div>
+				</div>
 			</div>
 			
 			

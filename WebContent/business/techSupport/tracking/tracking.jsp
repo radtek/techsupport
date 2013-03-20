@@ -96,16 +96,7 @@
 					<div class="clear-row"></div>
 				</div>
 				
-				<div class="row">
-					<div class="column">
-						<div class="psgstage">
-							<label class="label label-80" >实施:</label>
-							<input type="text" class="psgstage item inputstyle ro label-100" name="st.psgIsScheDate" id="p_psgIsScheDate">
-						</div>
-						<div class="clear-column"></div>
-					</div>
-					<div class="clear-row"></div>
-				</div>
+				
 			</div>
 			
 			
@@ -165,6 +156,17 @@
 				</div>
 			
 			<%-- -- 新需求 技术开发部添加阶段测试 --%>
+			<%-- 移动实施时间到技术部 --%>
+				<div class="row">
+					<div class="column">
+						<div class="devstage">
+							<label class="label label-80" >实施:</label>
+							<input type="text" class="devstage item inputstyle ro label-100" name="st.psgIsScheDate" id="p_psgIsScheDate">
+						</div>
+						<div class="clear-column"></div>
+					</div>
+					<div class="clear-row"></div>
+				</div>
 			</div>
 			
 			
@@ -172,47 +174,6 @@
 		</div>
 	</fieldset>
 	
-	
-<!--	<fieldset>-->
-<!--		<legend>进展信息</legend>-->
-<!--		<div class="row" style="width: 90%; margin: 0 auto; ">-->
-<!--			<div class="column" style="width: 100%;">-->
-<!--				<div id="trackingTableDiv" style="width: 100%;">-->
-<!--					<table id="trackingTable" width="100%" border="1" cellpadding="0" cellspacing="0">-->
-<!--					  <thead>-->
-<!--					    <tr>       -->
-<!--					     	<th name="l_stNo">日期</th>-->
-<!--					     	<th name="l_region">进展</th>-->
-<!--					     	<th name="l_applicant">填写人员</th>-->
-<!--					    </tr>-->
-<!--					  </thead>-->
-<!--					</table>-->
-<!--				</div>-->
-<!--				<div class="clear-column"></div>-->
-<!--			</div>-->
-<!--			<div class="clear-row"></div>-->
-<!--		</div>-->
-<!--	</fieldset>-->
-<!--	<fieldset>-->
-<!--		<legend>督办进展</legend>-->
-<!--		<div class="row" style="width: 90%; margin: 0 auto; ">-->
-<!--			<div class="column" style="width: 100%;">-->
-<!--				<div id="supervision_list_div" style="margin-left: auto;margin-right: auto;text-align: center;">-->
-<!--					<table id="supervision_list_table" >-->
-<!--						<thead>-->
-<!--							<tr>-->
-<!--								<th>督办人</th>-->
-<!--								<th>督办进展</th>-->
-<!--								<th>督办时间</th>-->
-<!--							</tr>-->
-<!--						</thead>-->
-<!--					</table>-->
-<!--				</div>-->
-<!--				<div class="clear-column"></div>-->
-<!--			</div>-->
-<!--			<div class="clear-row"></div>-->
-<!--		</div>				-->
-<!--	</fieldset>-->
 <div class="row" style="width: 100%;">
 	
 			<div class="column" style="width: 49%;">
