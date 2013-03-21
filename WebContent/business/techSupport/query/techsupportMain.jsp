@@ -222,6 +222,9 @@ function lazyLoad(){
  	 					getUserofDept('applicantName','p_applicantId',__gxdwbm,[ST_ROLE_NAME_APPLICANT],true);
  	 				});
  					//设置技术负责人
+ 					$('#p_supportLeaderId').val('');
+ 					$('#slName').val('');
+ 					$('#slName').unbind('click');
  					$('#slName').click(function(){
  						getUserofDept('slName','p_supportLeaderId',$('#p_departcode').val(),ST_ROLE_NAME_STLEADER,true);
  					});
