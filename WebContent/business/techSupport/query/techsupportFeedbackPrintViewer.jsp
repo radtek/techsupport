@@ -65,20 +65,20 @@
 					});
 					
 					//进展提示
-					var _tracking_content_d = {};
+					var _tracking_content_a = [];
 					var _tracking_a = json.supportTicket.trackList;
 					for(var i=0;i<_tracking_a.length;i++){
-						if(_tracking_a[i].type == TRACKING_TYPE_TRACKING){
-							_tracking_content_d[_tracking_a[i].processor.username] = _tracking_a[i].newProcess;
+						if(_tracking_a[i].type != TRACKING_TYPE_ARCHIVE 
+								|| _tracking_a[i].type != TRACKING_TYPE_EXCEPTION
+								|| _tracking_a[i].type != TRACKING_TYPE_FEEDBACK
+								|| _tracking_a[i].type != TRACKING_TYPE_REASSIGN_DEPARTMENT
+								|| _tracking_a[i].type != TRACKING_TYPE_REASSIGN_SUPPORT_LEADER){
+							_tracking_content_a.push(_tracking_a[i].newProcess+":"+_tracking_a[i].processor.username+"/"+setNull(_tracking_a[i].trackingDate));
 						}
 					}
 				
-					var _tracking_content_a = [];
-					for(var i in _tracking_content_d){
-						_tracking_content_a.push(_tracking_content_d[i]);
-					}
 						
-					$('#tracking').text(_tracking_content_a.join(','));
+					$('#tracking').html(_tracking_content_a.join('<br>'));
 					delete _tracking_content_a;
 					delete _tracking_content_d;
 					delete _tracking_a;
@@ -90,6 +90,21 @@
 					if(json.supportTicket.devCompDate)
 						_compDate_a.push("技术部:"+setNull(json.supportTicket.devCompDate));
 					$('#compDate').text(_compDate_a.join(','));
+					
+					// 申请人评价
+					var _lFeedbackContent = [];
+					var _sFeedbackPerson="";
+					var _sFeedbackDate="";
+					for(var i=0;i<_tracking_a.length;i++){
+						if(_tracking_a[i].type == TRACKING_TYPE_FEEDBACK ){
+							_lFeedbackContent.push(_tracking_a[i].newProcess+":"+setNull(_tracking_a[i].trackingDate));
+							_sFeedbackPerson = _tracking_a[i].processor.username;
+							_sFeedbackDate = setNull(_tracking_a[i].trackingDate);
+						}
+					}
+					
+					$('#applicantAppraisement').html(_lFeedbackContent.join('<br>'));
+					$('#applicantAppraisementPersonAndDate').val(_sFeedbackPerson +" / "+_sFeedbackDate);
 				},'json');
 				
 			}
@@ -212,8 +227,9 @@
 						</tr>
 						<tr>
 							<td rowspan="3" align="center">公<br>司<br>内<br>部<br>评<br>价</td>
-							<td colspan="4">申请人评价: &nbsp;<div></div>
-								<label class="signature">签字/日期:<input type="text" class="document_field"></label>
+							<td colspan="4">申请人评价: <br/>
+								&nbsp;<div id="applicantAppraisement"></div>
+								<label class="signature">签字/日期:<input id="applicantAppraisementPersonAndDate" type="text" class="document_field"></label>
 							</td>
 						</tr>
 						<tr>
