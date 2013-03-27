@@ -49,6 +49,8 @@ function attachment_query(pageno,url){
 										noSortColIndex:[3],
 										changeHref:function($table){
 											render_attachment_filesize($table);
+											// 查看详情显示的时候移除删除按钮
+											$table.find("a[title=删除]").remove();
 										},
 										hideColIndex:[2],
 										colWidths: ["70%","10%","10%","20%"]			
