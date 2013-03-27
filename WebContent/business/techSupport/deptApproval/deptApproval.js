@@ -352,8 +352,8 @@ function submitVerity() {
 					"计划完成时间"))
 				return false;
 			// 计划完成时间必须大于当前部门审批的时间
-			if ($('#devScheDate').val() <= $('#deptApprovalDate').val()){
-				jAlert('计划完成时间不能小于等于审批日期','提示');
+			if ($('#psgScheDate').val() < $('#deptApprovalDate').val()){
+				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
 			if ($('#psgstage').attr('checked')) {
@@ -361,7 +361,7 @@ function submitVerity() {
 						1, "计划需求时间"))
 					return false;
 				
-				//移动实施时间到技术部
+				
 				if($('#psgDsScheDate').val() != $('#psgScheDate').val()){
 					jAlert('计划需求时间必须等于计划完成时间','提示');
 					return false;
@@ -372,8 +372,8 @@ function submitVerity() {
 					"计划完成时间"))
 				return false;
 			// 计划完成时间必须大于当前部门审批的时间
-			if ($('#devScheDate').val() <= $('#deptApprovalDate').val()){
-				jAlert('计划完成时间不能小于等于审批日期','提示');
+			if ($('#devScheDate').val() < $('#deptApprovalDate').val()){
+				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
 			if ($('#devstage').attr('checked')) {
@@ -386,6 +386,7 @@ function submitVerity() {
 				if (!checkControlValue("devDtScheDate", "Date", 1, 100, null,
 					1, "计划测试时间"))
 					return false;
+				//移动实施时间到技术部
 				if (!checkControlValue("psgIsScheDate", "Date", 1, 100, null,
 						1, "计划实施时间"))
 					return false;
@@ -400,7 +401,6 @@ function submitVerity() {
 		}
 	}
 	  
-	
 	//部门意见
 	if(!checkControlValue("deptReply","String",1,4000,null,1,"审批意见"))
 		return false;

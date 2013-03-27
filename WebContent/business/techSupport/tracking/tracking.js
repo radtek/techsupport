@@ -132,11 +132,9 @@ function toFeedbackVerify(){
 		if($('#psgcpstage').attr("checked")){
 			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"实际需求完成时间"))
 				return false;
-				
-			if(!($('#p_psgDsCompDate').val() < $('#p_psgIsCompDate').val()
-				&& $('#p_psgIsCompDate').val() == $('#p_psgCompDate').val())){
-				
-					jAlert('实际需求完成时间必须小于实际实施完成时间,实际实施完成时间必须等于实际完成时间','提示');
+			// 实际完成时间必须等于实际需求完成时间
+			if(!($('#p_psgDsCompDate').val() == $('#p_psgCompDate').val())){
+					jAlert('实际需求完成时间必须等于实际完成时间','提示');
 					return false;
 				}
 		}
