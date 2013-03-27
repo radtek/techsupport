@@ -50,16 +50,16 @@ var send_or_export_flag=1;
 var ingridHeight=200;
 var stNoList;
 function lazyLoad(){
-		queryPanelHeight = $("#queryPanel").outerHeight(true);
-		if(window.screen.height > 768 )
-			ingridHeight=$('#iframes').height()-queryPanelHeight
-			-$('#title').outerHeight(true)-80-28-35;
-		else
-			ingridHeight=document.body.clientHeight -$('#allDiv').outerHeight(true)
-			-queryPanelHeight
-			-$('#title').outerHeight(true)-80-28;
-		loadPageSupportTicketQuery(divnid);
-
+	queryPanelHeight = $("#queryPanel").outerHeight(true);
+	if(window.screen.height > 768 )
+		ingridHeight=$('#iframes').height()-queryPanelHeight
+		-$('#title').outerHeight(true)-80-28;
+	else
+		ingridHeight=document.body.clientHeight -$('#allDiv').outerHeight(true)
+		-queryPanelHeight
+		-$('#title').outerHeight(true)-80-28;
+	
+	loadPageSupportTicketQuery(divnid);	
 }
 
 /**
@@ -71,7 +71,6 @@ function validate(){
 
 function loadPageSupportTicketQuery(divpageid){
 	tables=$("#"+divpageid).html();
-	$("#"+detailid).hide(); 	
 	SupportTicketQuery(1,'#');
 }	
 
@@ -101,7 +100,6 @@ function SupportTicketQuery(pageno,url){
 										pageNumber: pageno,
 										colWidths: ["4%","14%","6%","12%","12%","12%","18%","18%","10%"]				
 									});
-
 // 		全选
 		$('#selectAll').click(function(){
 			if($(this).attr('checked'))
