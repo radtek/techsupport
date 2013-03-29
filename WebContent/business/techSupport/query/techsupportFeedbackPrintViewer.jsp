@@ -68,11 +68,8 @@
 					var _tracking_content_a = [];
 					var _tracking_a = json.supportTicket.trackList;
 					for(var i=0;i<_tracking_a.length;i++){
-						if(_tracking_a[i].type != TRACKING_TYPE_ARCHIVE 
-								|| _tracking_a[i].type != TRACKING_TYPE_EXCEPTION
-								|| _tracking_a[i].type != TRACKING_TYPE_FEEDBACK
-								|| _tracking_a[i].type != TRACKING_TYPE_REASSIGN_DEPARTMENT
-								|| _tracking_a[i].type != TRACKING_TYPE_REASSIGN_SUPPORT_LEADER){
+						if(_tracking_a[i].type == TRACKING_TYPE_TRACKING 
+								){
 							_tracking_content_a.push(_tracking_a[i].newProcess+":"+_tracking_a[i].processor.username+"/"+setNull(_tracking_a[i].trackingDate));
 						}
 					}
