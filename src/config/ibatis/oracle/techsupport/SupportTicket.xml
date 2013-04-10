@@ -472,6 +472,22 @@
 			</isNotEmpty>
 		</isNotEmpty>
 		<!-- __ 使用最后修改时间 -->
+		
+<!-- 		计划完成时间 -->
+		<isNotEmpty prepend="and" property="scheTimeFrom">
+			( t.PSG_SCHE_DATE >= #scheTimeFrom# or t.DEV_SCHE_DATE >= #scheTimeFrom# )
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="scheTimeTo">
+			( t.PSG_SCHE_DATE &lt;= #scheTimeTo# or t.DEV_SCHE_DATE &lt;= #scheTimeTo# )
+		</isNotEmpty>
+		
+<!-- 		实际完成时间 -->
+		<isNotEmpty prepend="and" property="compTimeFrom">
+			( t.PSG_COMP_DATE >= #compTimeFrom# or t.DEV_COMP_DATE >= #compTimeFrom# )
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="compTimeTo">
+			( t.PSG_COMP_DATE &lt;= #compTimeTo# or t.DEV_COMP_DATE &lt;= #compTimeTo# )
+		</isNotEmpty>
 	</sql>
 
 	<sql id="SupportTicketFrom">

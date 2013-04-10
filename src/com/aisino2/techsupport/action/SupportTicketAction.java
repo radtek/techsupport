@@ -1,6 +1,7 @@
 package com.aisino2.techsupport.action;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.aisino2.common.ItemChange;
+import com.aisino2.common.StringUtil;
 import com.aisino2.core.dao.Page;
 import com.aisino2.core.web.PageAction;
 import com.aisino2.sysadmin.domain.Department;
@@ -73,11 +75,11 @@ public class SupportTicketAction extends PageAction implements
 	private IDict_itemService dict_item_service;
 	private IGlobalparService globalparService;
 
-	//地区字典
+	// 地区字典
 	private Map<String, String> regionDict;
-	//支持单状态字典
-	private Map<String,String> stStatusDict;
-	
+	// 支持单状态字典
+	private Map<String, String> stStatusDict;
+
 	@Resource(name = "globalparService")
 	public void setGlobalparService(IGlobalparService globalparService) {
 		this.globalparService = globalparService;
@@ -105,38 +107,42 @@ public class SupportTicketAction extends PageAction implements
 
 	/**
 	 * 支持单删除
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public String remove() throws Exception{
-		try{
-			if(supportTicket == null || supportTicket.getId() == null)
+	public String remove() throws Exception {
+		try {
+			if (supportTicket == null || supportTicket.getId() == null)
 				throw new RuntimeException("支持单删除参数传递错误");
 			stService.deleteSupportTicketByApplicant(supportTicket);
 			this.result = SUCCESS;
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			log.error(e);
-			log.debug(e,e.fillInStackTrace());
+			log.debug(e, e.fillInStackTrace());
 			this.result = e.getMessage();
 		}
 		return SUCCESS;
 	}
+
 	/**
 	 * 支持单修改
-	 * @return 
+	 * 
+	 * @return
 	 * @throws Exception
 	 */
-	public String modify() throws Exception{
-		try{
-			if(supportTicket == null || supportTicket.getId() == null)
+	public String modify() throws Exception {
+		try {
+			if (supportTicket == null || supportTicket.getId() == null)
 				throw new RuntimeException("支持单修改参数传输错误");
 			stService.updateSupportTicket(supportTicket);
 			this.result = SUCCESS;
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			this.result = e.getMessage();
 		}
 		return SUCCESS;
 	}
+
 	/**
 	 * 导出excel
 	 * 
@@ -329,6 +335,13 @@ public class SupportTicketAction extends PageAction implements
 		params.put("trackDateTo", tracking.getTrackingDateTo());
 		params.put("applyDateFrom", supportTicket.getApplyDateFrom());
 		params.put("applyDateTo", supportTicket.getApplyDateTo());
+		//计划时间
+		params.put("scheTimeFrom", supportTicket.getScheTimeFrom());
+		params.put("scheTimeTo", supportTicket.getScheTimeTo());
+		//实际时间
+		params.put("compTimeFrom", supportTicket.getCompTimeFrom());
+		params.put("compTimeTo", supportTicket.getCompTimeTo());
+		
 		if (limitDeparement.getDepartcode() != null
 				&& limitDeparement.getDepartcode().trim().length() > 0) {
 			// 单位筛选
@@ -434,7 +447,7 @@ public class SupportTicketAction extends PageAction implements
 					.getTrackingListForPage(1, 999, tracking, "99", "desc")
 					.getData();
 			supportTicket.setTrackList(lstTracking);
-			
+
 			dictForDisplay(supportTicket);
 		}
 		this.result = "success";
@@ -457,11 +470,15 @@ public class SupportTicketAction extends PageAction implements
 		lPro.add("supportLeaderName");
 		lPro.add("supportDeptName");
 		lPro.add("stStatusName");
-		//添加填报人ID为隐藏字段
+		// 添加填报人ID为隐藏字段
 		lPro.add("applicantId");
-		//添加支持单状态为隐藏字段
+		// 添加支持单状态为隐藏字段
 		lPro.add("stStatus");
-		
+		// 添加计划时间
+		lPro.add("scheTimeText");
+		// 添加完成时间
+		lPro.add("compTimeText");
+
 		List lCol = new ArrayList();
 		List lDetail = new ArrayList();
 		lDetail.add("setDetail");
@@ -488,13 +505,10 @@ public class SupportTicketAction extends PageAction implements
 			}
 		}
 
-		// -- 督办角色的操作
-
-
-		
 		for (SupportTicket st : (List<SupportTicket>) ldata) {
 			st.setStStatusName(ItemChange.codeChange(
 					Constants.ST_STATUS_DICT_CODE, st.getStStatus()));
+			// -- 督办角色的操作
 			// @fixed 技术负责人变成多个指派
 			String supportLeaderNames = "";
 			for (User sl : st.getLstSupportLeaders())
@@ -516,12 +530,39 @@ public class SupportTicketAction extends PageAction implements
 			applicantNames = st.getApplicant() != null ? st.getApplicant()
 					.getUsername() : applicantNames;
 			st.setApplicantName(applicantNames);
-			
-			//添加申请人ID
-			//用于申请人删除与修改
+
+			// 添加申请人ID
+			// 用于申请人删除与修改
 			st.setApplicantId(st.getApplicant() != null ? st.getApplicant()
 					.getUserid() : 0);
-			
+
+			// 设置和合并跨部门的计划时间和实际完成时间
+			StringBuffer scheTimeBuffer = new StringBuffer();
+			StringBuffer compTimeBuffer = new StringBuffer();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			// 计划
+			if (st.getPsgScheDate() != null) {
+				scheTimeBuffer.append("产品:" + dateFormat.format(st.getPsgScheDate()));
+				scheTimeBuffer.append("/");
+			}
+			if (st.getDevScheDate() != null) {
+				scheTimeBuffer.append("技术:" + dateFormat.format(st.getDevScheDate()));
+				scheTimeBuffer.append("/");
+			}
+			st.setScheTimeText(scheTimeBuffer.substring(0,
+					scheTimeBuffer.length() - 1));
+			// 实际
+			if (st.getPsgCompDate() != null) {
+				compTimeBuffer.append("产品:" + dateFormat.format(st.getPsgCompDate()));
+				compTimeBuffer.append("/");
+			}
+			if (st.getDevCompDate() != null) {
+				compTimeBuffer.append("技术:" + dateFormat.format(st.getDevCompDate()));
+				compTimeBuffer.append("/");
+			}
+			st.setCompTimeText(compTimeBuffer.substring(0,
+					compTimeBuffer.length() - 1));
+
 		}
 		SupportTicket supportTicket = new SupportTicket();
 		this.setData(supportTicket, ldata, lPro, lCol);
@@ -588,36 +629,39 @@ public class SupportTicketAction extends PageAction implements
 		totalrows = this.getTotalrows();
 	}
 
-	private void dictForDisplay(SupportTicket st){
-		if(regionDict==null){
-			regionDict = new HashMap<String,String>();
+	private void dictForDisplay(SupportTicket st) {
+		if (regionDict == null) {
+			regionDict = new HashMap<String, String>();
 			Dict_item dict_item = new Dict_item();
 			dict_item.setDict_code(Constants.ST_REGION_DICT_CODE);
-			List<Dict_item> item_list = dict_item_service.getListDict_item(dict_item);
-			for(Dict_item item : item_list){
+			List<Dict_item> item_list = dict_item_service
+					.getListDict_item(dict_item);
+			for (Dict_item item : item_list) {
 				regionDict.put(item.getFact_value(), item.getDisplay_name());
 			}
 		}
-		
-		if(stStatusDict==null){
-			stStatusDict = new HashMap<String,String>();
+
+		if (stStatusDict == null) {
+			stStatusDict = new HashMap<String, String>();
 			Dict_item dict_item = new Dict_item();
 			dict_item.setDict_code(Constants.ST_STATUS_DICT_CODE);
-			List<Dict_item> item_list = dict_item_service.getListDict_item(dict_item);
-			for(Dict_item item : item_list){
+			List<Dict_item> item_list = dict_item_service
+					.getListDict_item(dict_item);
+			for (Dict_item item : item_list) {
 				stStatusDict.put(item.getFact_value(), item.getDisplay_name());
 			}
 		}
-		
-		if(st==null)
+
+		if (st == null)
 			return;
-		
-		//转义字典代码
-		//地区代码
+
+		// 转义字典代码
+		// 地区代码
 		st.setRegionName(regionDict.get(st.getRegion()));
-		//状态代码
+		// 状态代码
 		st.setStStatusName(stStatusDict.get(st.getStStatus()));
 	}
+
 	@Resource(name = "SupportTicketServiceImpl")
 	public void setStService(SupportTicketService stService) {
 		this.stService = stService;

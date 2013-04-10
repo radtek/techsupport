@@ -90,7 +90,73 @@ public class SupportTicket {
 	//归档号
 	private String archive_code;
 	
+	/**
+	 * 查询用 计划完成时间 开始
+	 */
+	private Date scheTimeFrom;
 	
+	/**
+	 * 查询用 计划完成时间 结束 
+	 */
+	private Date scheTimeTo;
+	
+	/**
+	 * 查询用实际完成时间 开始
+	 */
+	private Date compTimeFrom;
+	
+	/**
+	 *  查询用实际完成时间 结束
+	 */
+	private Date compTimeTo;
+	
+	/**
+	 * 查询用计划完成时间列表显示
+	 */
+	private String scheTimeText;
+	
+	/**
+	 * 查询用实际完成时间列表显示
+	 */
+	private String compTimeText;
+	
+	
+	public String getScheTimeText() {
+		return scheTimeText;
+	}
+	public void setScheTimeText(String scheTimeText) {
+		this.scheTimeText = scheTimeText;
+	}
+	public String getCompTimeText() {
+		return compTimeText;
+	}
+	public void setCompTimeText(String compTimeText) {
+		this.compTimeText = compTimeText;
+	}
+	public Date getScheTimeFrom() {
+		return scheTimeFrom;
+	}
+	public void setScheTimeFrom(Date scheTimeFrom) {
+		this.scheTimeFrom = scheTimeFrom;
+	}
+	public Date getScheTimeTo() {
+		return scheTimeTo;
+	}
+	public void setScheTimeTo(Date scheTimeTo) {
+		this.scheTimeTo = scheTimeTo;
+	}
+	public Date getCompTimeFrom() {
+		return compTimeFrom;
+	}
+	public void setCompTimeFrom(Date compTimeFrom) {
+		this.compTimeFrom = compTimeFrom;
+	}
+	public Date getCompTimeTo() {
+		return compTimeTo;
+	}
+	public void setCompTimeTo(Date compTimeTo) {
+		this.compTimeTo = compTimeTo;
+	}
 	public Date getApplyDateFrom() {
 		return applyDateFrom;
 	}

@@ -364,27 +364,40 @@ function lazyLoad(){
 	                                       	ingridPageParams:sXML,
 	                                       	onRowSelect:null,
 											pageNumber: pageno,
-											noSortColIndex:[3,4,6,7,8],
+											noSortColIndex:[3,4,6,7,8,9,10],
 											changeHref:function(table){
 												$("tr",table).each(function(){
 													var __tr = $(this);
-													var text = __tr.find('td').eq(7).text();
+													var text = __tr.find('td').eq(9).text();
 													//督办控制
 													if(text == ST_STATUS_COMPLETE || text == ST_STATUS_STOP){
 														__tr.find("a[title=督办]").remove();
 													}
 													//控制:只有申请人在待公司审批的时候才能够修改和删除
-													if(userid == __tr.find('td:nth(6)').text() && text == ST_STATUS_WAIT_COMPANY_APPRAVAL){
+													if(userid == __tr.find('td:nth(8)').text() && text == ST_STATUS_WAIT_COMPANY_APPRAVAL){
 														__tr.find('td:last').append('<a title="删除" class="fontbutton" href="#" onclick="setDelete('+__tr.attr('id')+')" style="margin-right:5px;">删除</a>');
 														__tr.find('td:last').append('<a title="修改" class="fontbutton" href="#" onclick="setModify('+__tr.attr('id')+')" style="margin-right:5px;">修改</a>');
 													}
 													
 													__tr.find('td:last').append('<a title="打印申请单" class="fontbutton" href="#" onclick="setPrintApply('+__tr.attr('id')+')" style="margin-right:5px;">打印申请单</a>');
 													__tr.find('td:last').append('<a title="打印反馈单" class="fontbutton" href="#" onclick="setPrintFeedback('+__tr.attr('id')+')" style="margin-right:5px;">打印反馈单</a>');
+													
+													//“计划完成时间”<=当前时间的记录行，反显（突出）显示
+													var scheTimeStr = __tr.find('td:nth(6)').text().trim(); 
+													if(scheTimeStr){
+														var scheTimeArray = scheTimeStr.split("/");
+														var timeStr = scheTimeArray[scheTimeArray.length-1].split(":")[1];
+														var scheTime = Date.parse(timeStr.replace(/-/g,"/"));
+														var now = new Date();
+														if(scheTime <= now)
+															__tr.css('filter','Invert()');
+													}
+													
+													
 												});
 											},
-											colWidths: ['14.2%','14.2%','14.2%','14.2%','14.2%','14.2%','0','0','14.2%'],
-											hideColIndex:[6,7]
+											colWidths: ['11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','0','0','11.1%'],
+											hideColIndex:[8,9]
 										});				
 			}
 	}
@@ -458,13 +471,13 @@ function lazyLoad(){
 				</div>
 				<div class="column column-width-default">
 					<label class="label">支持单申请时间:从:</label>
-						<input type="text" class="item date  inputstyle" id="p_applyDateFrom"></select>
+						<input type="text" class="item date  inputstyle" id="p_applyDateFrom">
 <!--						<input type="hidden" value="" id="p_type">-->
 					<div class="clear-column"></div>
 				</div>
 				<div class="column column-width-default">
 					<label class="label">到:</label>
-						<input type="text" class="item date  inputstyle" id="p_applyDateTo"></select>
+						<input type="text" class="item date  inputstyle" id="p_applyDateTo">
 					<div class="clear-column"></div>
 				</div>
 				
@@ -505,18 +518,32 @@ function lazyLoad(){
 					<div class="clear-column"></div>
 				</div>
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">技术支持部门:</label>
-					<select class="item" id="p_departcode" >
-						<option></option>
-					</select>
+					<label class="label" style="margin-right: 5px">计划完成时间:</label>
+					<input type="text" class="item date  inputstyle" id="p_scheTimeFrom">
+					<div class="clear-column"></div>
+				</div>
+				
+				<div class="column column-width-default">
+					<label class="label" style="margin-right: 5px">到:</label>
+					<input type="text" class="item date  inputstyle" id="p_scheTimeTo">
 					
 					<div class="clear-column"></div>
 				</div>
+				
+				<div class="clear-row"></div>
+			</div>
+			
+			<div class="row">
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">技术支持部门:</label>
-					<select class="item" id="p_departcode" >
-						<option></option>
-					</select>
+					<label class="label" style="margin-right: 5px">实际完成时间:</label>
+					<input type="text" class="item date  inputstyle" id="p_compTimeFrom">
+					
+					<div class="clear-column"></div>
+				</div>
+				
+				<div class="column column-width-default">
+					<label class="label" style="margin-right: 5px">到:</label>
+					<input type="text" class="item date  inputstyle" id="p_compTimeTo">
 					
 					<div class="clear-column"></div>
 				</div>
@@ -558,6 +585,7 @@ function lazyLoad(){
 			     	<th name="l_supportLeader">技术支持单负责人</th>
 			     	<th name="l_supportDept">技术支持部门</th>
 			     	<th name="l_supportStatusnName">状态</th>
+			     	<%--需要合并 --%>
 			     	<th name="l_scheTime">计划完成时间</th>
 			     	<th name="l_compTime">实际完成时间</th>
 			     	<%-- 申请人修改删除用 --%>
