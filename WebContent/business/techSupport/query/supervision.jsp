@@ -99,13 +99,6 @@
 	</head>
 
 	<body>
-		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-		    <tr>
-		      <td align="left" class="title1">督办进展</td>
-		      <td align="right"><a href="#" id="closeDiv" onclick='$("#"+supervision_div).hideAndRemove("show");' class="close"></a></td>
-		    </tr>
-		</table>
-		
 		<div id="supervision_process" style="margin-left: auto; margin-right: auto; padding-top: 10px;padding-bottom: 10px;">
 			<input type="hidden" id="sv_st_id" name="supervision.st_id">
 			<input type="hidden" id="supervision_person_id" name="supervision.supervision_person.userid" value="<%=user.getUserid()%>">

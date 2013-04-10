@@ -247,7 +247,7 @@ $(function(){
 	//设置反馈按钮
 	$('#toFeedbackBtn').click(function(){
 		
-		detailDialog(comp_time_div_id,400,'business/techSupport/tracking/tracking_comp_time.jsp');
+		detailDialog(comp_time_div_id,400,'business/techSupport/tracking/tracking_comp_time.jsp','完成时间');
 	});
 	
 	daggleDiv(comp_time_div_id);

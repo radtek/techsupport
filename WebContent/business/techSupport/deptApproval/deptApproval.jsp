@@ -42,15 +42,6 @@ System.out.println("==================================="+activityName+"=========
 <input type="hidden" id="sv_st_id">
 <input type="hidden" id="att_stId">
 <input type="hidden" id="activityName" value="<%=activityName%>">
-<table width="100%" border="0" cellpadding="0" cellspacing="0"
-	align="center">
-	<tr>
-		<td align="left" class="title1">部门审批</td>
-		<td align="right"><a href="#" id="closeDiv"
-			onclick='$("#detailCt").hideAndRemove("show");' class="close"></a>
-		</td>
-	</tr>
-</table>
 <div id="deptApprovalCt" style="padding: 5 5 5 5;">
 
 	<div id="contentCt" class="tdbg scrollbarface">
@@ -332,19 +323,17 @@ System.out.println("==================================="+activityName+"=========
 			</div>
 		</div>
 	</div>
-	<div id="footerCt">
-		<div class="row">
-			<div class="column" style="width: 70%;">
-				<div class="clear-column"></div>
-			</div>
-			<div class="column" style="width: 10%;">
-				<a href="#" class="addbutton" id="savebtn">保存</a>
-				<div class="clear-column"></div>
-			</div>
-			<div class="column" style="width: 10%;">
-				<div class="clear-column"></div>
-			</div>
-			<div class="clear-row"></div>
+	<div id="footerCt" class="row">
+		<div class="column" style="width: 70%;">
+			<div class="clear-column"></div>
 		</div>
+		<div class="column" style="width: 10%;">
+			<a href="#" class="addbutton" id="savebtn">保存</a>
+			<div class="clear-column"></div>
+		</div>
+		<div class="column" style="width: 10%;">
+			<div class="clear-column"></div>
+		</div>
+		<div class="clear-row"></div>
 	</div>
 </div>

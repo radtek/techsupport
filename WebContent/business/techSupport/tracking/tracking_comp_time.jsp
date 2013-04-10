@@ -93,15 +93,6 @@
 	});
 //-->
 </script>
-<table width="100%" border="0" cellpadding="0" cellspacing="0"
-	align="center">
-	<tr>
-		<td align="left" class="title1">完成时间</td>
-		<td align="right"><a href="#" id="closeDiv"
-			onclick='$("#comp_time_div").hideAndRemove("show");' class="close"></a>
-		</td>
-	</tr>
-</table>
 <div class="row">
 	<div class="column column-block2" id="cpb_block">
 		<div>

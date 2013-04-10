@@ -116,11 +116,34 @@ function getDictitem(config) {
  * @param callback
  * 			  加载后的回调函数
  */
-function detailDialog(detailid, width, url, config, callback) {
+function detailDialog(detailid, width, url,title, config, callback) {
 	setWidth(detailid, width);
+	$("#" + detailid).height('auto');
 	$("#" + detailid).empty();
-	$("#" + detailid).load(url, config, callback);
-	$("#" + detailid).show("slow");
+	$.post(url, config, function(data,options){
+		//添加统一标题栏
+		title = title ? title : "";
+		var titleBarHtml = '<table class="titleBar" width="100%" border="0" cellpadding="0" cellspacing="0" align="center">'+
+		    '<tr>'+
+		      '<td align="left" class="title1">'+title+'&nbsp;</td>'+
+		      '<td align="right"><a href="#" id="closeDiv" onclick="close_dialog(this);" class="close"></a></td>'+
+		    '</tr>'+
+		'</table>';
+		$("#" + detailid).append(titleBarHtml);
+		$("#" + detailid).append('<div class="dialogContent"></div>');
+		$("#" + detailid+' .dialogContent').html(data);
+		if(callback)
+			callback(data,options);
+	});
+	$("#" + detailid).show("slow",function(){
+		if($("#" + detailid).height() > $('body').height()){
+			$("#" + detailid).height($('body').height()-20);
+			$("#" + detailid+' .dialogContent').css('overflow-y','scroll');
+			$("#" + detailid+' .dialogContent').css('overflow-x','hidden');
+			$("#" + detailid+' .dialogContent').height($("#" + detailid).height() - $('#'+detailid+' .titleBar').height());
+		}
+	});
+	
 	upAllPage(detailid);
 	bindDocument(detailid);
 }

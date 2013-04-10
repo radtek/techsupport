@@ -18,13 +18,6 @@
 <input type="hidden" id="id">
 <input type="hidden" id="track_stId">
 <input type="hidden" id="sv_st_id">
-<input type="hidden" id="att_stId">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-    <tr>
-      <td align="left" class="title1">支持单详情</td>
-      <td align="right"><a href="#" id="closeDiv" onclick='$("#detailCt").hideAndRemove("show");' class="close"></a></td>
-    </tr>
-</table>
 <div id="techsupportDetail" style="margin-left:auto; margin-right:auto; margin-top:auto; width: 840px; text-align: center;padding-top:10px;padding-bottom:5px;">
 	<fieldset>
 		<legend>支持单信息</legend>

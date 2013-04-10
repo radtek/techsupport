@@ -394,7 +394,7 @@ function lazyLoad(){
 	*/ 
 	function setDetail(id){
 		dataid=id;
-		detailDialog(detailid,detailWidth,detailURL);
+		detailDialog(detailid,detailWidth,detailURL,'技术支持单详情');
 	}
 
 	/**
@@ -402,7 +402,7 @@ function lazyLoad(){
 	*/
 	function set_supervision(id){
 		dataid=id;
-		detailDialog(supervision_div,supervision_width,supervision_page);
+		detailDialog(supervision_div,supervision_width,supervision_page,'督办进展');
 	}
 	
 	///////////////////////添加申请人修改和删除////////////////////////////
@@ -423,7 +423,7 @@ function lazyLoad(){
 	/** 修改 */
 	function setModify(id){
 		dataid=id;
-		detailDialog(detailid,detailWidth,applicant_page);
+		detailDialog(detailid,detailWidth,applicant_page,'支持单修改');
 	}
 	////////////////////////////////////////////////////////////////////
 	

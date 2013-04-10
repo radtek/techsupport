@@ -8,7 +8,7 @@
 // var detailID;
 
 var ingridHeight = 180;
-var trackingDetailWidth=850;
+var trackingDetailWidth=880;
 var feedbackDetailWidth=trackingDetailWidth;
 var archiveDetailWidth=trackingDetailWidth;
 var ce_appr_detail_width = 800;
@@ -144,7 +144,7 @@ function setProcess(taskId){
 			usingDetailWidth=archiveDetailWidth;
 		else
 			usingDetailWidth=detailWidth;
-		detailDialog(detailid,usingDetailWidth,processURL,{'worksheet.activityName':worksheet.activityName});
+		detailDialog(detailid,usingDetailWidth,processURL,worksheet.activityName,{'worksheet.activityName':worksheet.activityName});
 		
 	},'json');
 	

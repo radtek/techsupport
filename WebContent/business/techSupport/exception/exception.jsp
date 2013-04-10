@@ -12,13 +12,6 @@
 
 </style>
 <input type="hidden" id="p_taskId">
-<input type="hidden" name="st.id">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-    <tr>
-      <td align="left" class="title1">支持单中止</td>
-      <td align="right"><a href="#" id="closeDiv" onclick='$("#detailCt").hideAndRemove("show");' class="close"></a></td>
-    </tr>
-</table>
 <div id="tracking" style="padding: 5 5 5 5">
 	<fieldset>
 		<legend>支持单信息</legend>

@@ -16,12 +16,6 @@
 <input type="hidden" name="st.id">
 <input type="hidden" id="sv_st_id">
 <input type="hidden" id="att_stId">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-    <tr>
-      <td align="left" class="title1">反馈确认</td>
-      <td align="right"><a href="#" id="closeDiv" onclick='$("#detailCt").hideAndRemove("show");' class="close"></a></td>
-    </tr>
-</table>
 <div id="feedback">
 	<fieldset>
 		<legend>支持单信息</legend>
