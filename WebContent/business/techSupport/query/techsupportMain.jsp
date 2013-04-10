@@ -504,6 +504,22 @@ function lazyLoad(){
 					
 					<div class="clear-column"></div>
 				</div>
+				<div class="column column-width-default">
+					<label class="label" style="margin-right: 5px">技术支持部门:</label>
+					<select class="item" id="p_departcode" >
+						<option></option>
+					</select>
+					
+					<div class="clear-column"></div>
+				</div>
+				<div class="column column-width-default">
+					<label class="label" style="margin-right: 5px">技术支持部门:</label>
+					<select class="item" id="p_departcode" >
+						<option></option>
+					</select>
+					
+					<div class="clear-column"></div>
+				</div>
 				<div class="clear-row"></div>
 			</div>
 			<div class="row">
@@ -542,6 +558,8 @@ function lazyLoad(){
 			     	<th name="l_supportLeader">技术支持单负责人</th>
 			     	<th name="l_supportDept">技术支持部门</th>
 			     	<th name="l_supportStatusnName">状态</th>
+			     	<th name="l_scheTime">计划完成时间</th>
+			     	<th name="l_compTime">实际完成时间</th>
 			     	<%-- 申请人修改删除用 --%>
 			     	<th name="l_applicantId">申请人ID</th>
 			     	<%--支持单状态代码 --%> 
