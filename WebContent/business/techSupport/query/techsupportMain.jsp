@@ -409,16 +409,16 @@ function lazyLoad(){
 													__tr.find('td:last').append('<a title="打印申请单" class="fontbutton" href="#" onclick="setPrintApply('+__tr.attr('id')+')" style="margin-right:5px;">打印申请单</a>');
 													__tr.find('td:last').append('<a title="打印反馈单" class="fontbutton" href="#" onclick="setPrintFeedback('+__tr.attr('id')+')" style="margin-right:5px;">打印反馈单</a>');
 													
-													//“计划完成时间”<=当前时间的记录行，反显（突出）显示
+													//当在进行中的时候,“计划完成时间”<=当前时间的记录行，高亮（突出）显示
 													var	scheTimeStr = __tr.find('td:nth(6)').html().trim().replace(/&nbsp;/g,'');
-													if(scheTimeStr){
+													if(scheTimeStr && text == ST_STATUS_GOING){
 														var scheTimeArray = scheTimeStr.split("/");
 														var	timeStr = scheTimeArray[scheTimeArray.length-1].split(":")[1];
 														var scheTime = Date.parse(timeStr.replace(/-/g,"/"));
 														var now = new Date();
 														now = new Date(now.getYear(),now.getMonth(),now.getDate());
 														if(scheTime <= now)
-															__tr.find("td").css('filter','Invert');
+															__tr.find("td").css('color','red');
 													}
 													
 													
@@ -546,7 +546,7 @@ function lazyLoad(){
 					<div class="clear-column"></div>
 				</div>
 				<div class="column column-width-default">
-					<label class="label" >计划完成时间:</label>
+					<label class="label" >计划完成时间:从:</label>
 					<input type="text" class="item date  inputstyle" id="p_scheTimeFrom">
 					<div class="clear-column"></div>
 				</div>
@@ -563,7 +563,7 @@ function lazyLoad(){
 			
 			<div class="row">
 				<div class="column column-width-default">
-					<label class="label" >实际完成时间:</label>
+					<label class="label" >实际完成时间:从:</label>
 					<input type="text" class="item date  inputstyle" id="p_compTimeFrom">
 					
 					<div class="clear-column"></div>
