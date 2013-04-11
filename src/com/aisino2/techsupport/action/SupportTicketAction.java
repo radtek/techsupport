@@ -335,13 +335,13 @@ public class SupportTicketAction extends PageAction implements
 		params.put("trackDateTo", tracking.getTrackingDateTo());
 		params.put("applyDateFrom", supportTicket.getApplyDateFrom());
 		params.put("applyDateTo", supportTicket.getApplyDateTo());
-		//计划时间
+		// 计划时间
 		params.put("scheTimeFrom", supportTicket.getScheTimeFrom());
 		params.put("scheTimeTo", supportTicket.getScheTimeTo());
-		//实际时间
+		// 实际时间
 		params.put("compTimeFrom", supportTicket.getCompTimeFrom());
 		params.put("compTimeTo", supportTicket.getCompTimeTo());
-		
+
 		if (limitDeparement.getDepartcode() != null
 				&& limitDeparement.getDepartcode().trim().length() > 0) {
 			// 单位筛选
@@ -470,14 +470,15 @@ public class SupportTicketAction extends PageAction implements
 		lPro.add("supportLeaderName");
 		lPro.add("supportDeptName");
 		lPro.add("stStatusName");
-		// 添加填报人ID为隐藏字段
-		lPro.add("applicantId");
-		// 添加支持单状态为隐藏字段
-		lPro.add("stStatus");
 		// 添加计划时间
 		lPro.add("scheTimeText");
 		// 添加完成时间
 		lPro.add("compTimeText");
+		// 添加填报人ID为隐藏字段
+		lPro.add("applicantId");
+		// 添加支持单状态为隐藏字段
+		lPro.add("stStatus");
+	
 
 		List lCol = new ArrayList();
 		List lDetail = new ArrayList();
@@ -542,26 +543,32 @@ public class SupportTicketAction extends PageAction implements
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			// 计划
 			if (st.getPsgScheDate() != null) {
-				scheTimeBuffer.append("产品:" + dateFormat.format(st.getPsgScheDate()));
+				scheTimeBuffer.append("产品:"
+						+ dateFormat.format(st.getPsgScheDate()));
 				scheTimeBuffer.append("/");
 			}
 			if (st.getDevScheDate() != null) {
-				scheTimeBuffer.append("技术:" + dateFormat.format(st.getDevScheDate()));
+				scheTimeBuffer.append("技术:"
+						+ dateFormat.format(st.getDevScheDate()));
 				scheTimeBuffer.append("/");
 			}
-			st.setScheTimeText(scheTimeBuffer.substring(0,
-					scheTimeBuffer.length() - 1));
+			st.setScheTimeText(scheTimeBuffer.length() > 0 ? scheTimeBuffer
+					.substring(0, scheTimeBuffer.length() - 1) : scheTimeBuffer
+					.toString());
 			// 实际
 			if (st.getPsgCompDate() != null) {
-				compTimeBuffer.append("产品:" + dateFormat.format(st.getPsgCompDate()));
+				compTimeBuffer.append("产品:"
+						+ dateFormat.format(st.getPsgCompDate()));
 				compTimeBuffer.append("/");
 			}
 			if (st.getDevCompDate() != null) {
-				compTimeBuffer.append("技术:" + dateFormat.format(st.getDevCompDate()));
+				compTimeBuffer.append("技术:"
+						+ dateFormat.format(st.getDevCompDate()));
 				compTimeBuffer.append("/");
 			}
-			st.setCompTimeText(compTimeBuffer.substring(0,
-					compTimeBuffer.length() - 1));
+			st.setCompTimeText(compTimeBuffer.length() > 0 ? compTimeBuffer
+					.substring(0, compTimeBuffer.length() - 1) : compTimeBuffer
+					.toString());
 
 		}
 		SupportTicket supportTicket = new SupportTicket();

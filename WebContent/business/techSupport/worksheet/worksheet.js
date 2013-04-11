@@ -12,6 +12,7 @@ var trackingDetailWidth=880;
 var feedbackDetailWidth=trackingDetailWidth;
 var archiveDetailWidth=trackingDetailWidth;
 var ce_appr_detail_width = 800;
+var deptApprovalDetailWidth = 980;
 
 var usingDetailWidth;
 //弹出窗口
@@ -142,6 +143,8 @@ function setProcess(taskId){
 			usingDetailWidth=feedbackDetailWidth;
 		else if(worksheet.activityName=='归档')
 			usingDetailWidth=archiveDetailWidth;
+		else if (worksheet.activityName.indexOf('部门审批') != -1)
+			usingDetailWidth = deptApprovalDetailWidth;
 		else
 			usingDetailWidth=detailWidth;
 		detailDialog(detailid,usingDetailWidth,processURL,worksheet.activityName,{'worksheet.activityName':worksheet.activityName});

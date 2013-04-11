@@ -330,6 +330,33 @@ function lazyLoad(){
 				return false;
 			}
 		}
+		
+		//计划完成时间 
+		if($('#p_scheTimeFrom').val() && $('#p_scheTimeTo').val())
+		{
+			var fromDateStr = $('#p_scheTimeFrom').val().replace("-","/"); 
+			var toDateStr = $('#p_scheTimeTo').val().replace("-","/");
+			var fromDate = new Date(Date.parse(fromDateStr))
+			var toDate = new Date(Date.parse(toDateStr));
+			if(fromDate > toDate)
+			{
+				jAlert("计划完成时间起始时间应该小于等于结束时间","提示");
+				return false;
+			}
+		}
+		//实际完成时间
+		if($('#p_compTimeFrom').val() && $('#p_compTimeTo').val())
+		{
+			var fromDateStr = $('#p_compTimeFrom').val().replace("-","/"); 
+			var toDateStr = $('#p_compTimeTo').val().replace("-","/");
+			var fromDate = new Date(Date.parse(fromDateStr))
+			var toDate = new Date(Date.parse(toDateStr));
+			if(fromDate > toDate)
+			{
+				jAlert("实际完成时间起始时间应该小于等于结束时间","提示");
+				return false;
+			}
+		}
 	 	return true;
 	 }
 	 
@@ -383,20 +410,21 @@ function lazyLoad(){
 													__tr.find('td:last').append('<a title="打印反馈单" class="fontbutton" href="#" onclick="setPrintFeedback('+__tr.attr('id')+')" style="margin-right:5px;">打印反馈单</a>');
 													
 													//“计划完成时间”<=当前时间的记录行，反显（突出）显示
-													var scheTimeStr = __tr.find('td:nth(6)').text().trim(); 
+													var	scheTimeStr = __tr.find('td:nth(6)').html().trim().replace(/&nbsp;/g,'');
 													if(scheTimeStr){
 														var scheTimeArray = scheTimeStr.split("/");
-														var timeStr = scheTimeArray[scheTimeArray.length-1].split(":")[1];
+														var	timeStr = scheTimeArray[scheTimeArray.length-1].split(":")[1];
 														var scheTime = Date.parse(timeStr.replace(/-/g,"/"));
 														var now = new Date();
+														now = new Date(now.getYear(),now.getMonth(),now.getDate());
 														if(scheTime <= now)
-															__tr.css('filter','Invert()');
+															__tr.find("td").css('filter','Invert');
 													}
 													
 													
 												});
 											},
-											colWidths: ['11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','11.1%','0','0','11.1%'],
+											colWidths: ['11.1%','7%','7%','11.1%','11.1%','11.1%','15.1%','15.1%','0','0','11.1%'],
 											hideColIndex:[8,9]
 										});				
 			}
@@ -518,13 +546,13 @@ function lazyLoad(){
 					<div class="clear-column"></div>
 				</div>
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">计划完成时间:</label>
+					<label class="label" >计划完成时间:</label>
 					<input type="text" class="item date  inputstyle" id="p_scheTimeFrom">
 					<div class="clear-column"></div>
 				</div>
 				
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">到:</label>
+					<label class="label" >到:</label>
 					<input type="text" class="item date  inputstyle" id="p_scheTimeTo">
 					
 					<div class="clear-column"></div>
@@ -535,14 +563,14 @@ function lazyLoad(){
 			
 			<div class="row">
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">实际完成时间:</label>
+					<label class="label" >实际完成时间:</label>
 					<input type="text" class="item date  inputstyle" id="p_compTimeFrom">
 					
 					<div class="clear-column"></div>
 				</div>
 				
 				<div class="column column-width-default">
-					<label class="label" style="margin-right: 5px">到:</label>
+					<label class="label">到:</label>
 					<input type="text" class="item date  inputstyle" id="p_compTimeTo">
 					
 					<div class="clear-column"></div>
