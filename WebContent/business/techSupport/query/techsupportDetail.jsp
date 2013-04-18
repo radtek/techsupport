@@ -18,6 +18,7 @@
 <input type="hidden" id="id">
 <input type="hidden" id="track_stId">
 <input type="hidden" id="sv_st_id">
+<input type="hidden" id="att_stId">
 <div id="techsupportDetail" style="margin-left:auto; margin-right:auto; margin-top:auto; width: 840px; text-align: center;padding-top:10px;padding-bottom:5px;">
 	<fieldset>
 		<legend>支持单信息</legend>
