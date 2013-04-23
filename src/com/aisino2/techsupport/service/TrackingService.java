@@ -13,7 +13,7 @@ public interface TrackingService {
 	 * @param taskId 流程ID
 	 * @return 插入后的 追踪批复
 	 */
-	Tracking insertTrackingAndGo(Tracking tracking,String taskId,SupportTicket st);
+	Tracking insertTrackingAndGo(String taskId,SupportTicket st,Tracking tracking);
 	/**
 	 * 保存新进度
 	 * @param tracking 追踪批复实体

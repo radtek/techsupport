@@ -164,7 +164,7 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		this.trackDao = trackDao;
 	}
 
-	public Tracking insertTrackingAndGo(Tracking tracking,String taskId,SupportTicket st) {
+	public Tracking insertTrackingAndGo(String taskId,SupportTicket st,Tracking tracking) {
 		Tracking track = null;
 		if (logger.isDebugEnabled()) {
 			logger.debug("insertTrackingAndGo(Tracking) - start"); //$NON-NLS-1$

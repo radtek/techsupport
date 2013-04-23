@@ -24,6 +24,7 @@ import org.jbpm.api.TaskService;
 import org.jbpm.api.history.HistoryTask;
 import org.jbpm.api.task.Participation;
 import org.jbpm.api.task.Task;
+import org.jbpm.pvm.internal.history.model.HistoryActivityInstanceImpl;
 import org.jbpm.pvm.internal.task.TaskImpl;
 import org.springframework.stereotype.Component;
 
@@ -807,7 +808,6 @@ public class WorksheetServiceImpl extends BaseService implements
 				break;
 			}
 		}
-
 		if (showtipTask != null) {
 
 			Mail mail = new Mail();
@@ -845,6 +845,7 @@ public class WorksheetServiceImpl extends BaseService implements
 					mailContent = util.getMsg(
 							mailContent,
 							new String[] { user.getUsername(),
+									st.getStNo(),
 									sdf.format(new Date()) });
 					mailService.sendByDaemon(mail, properties
 							.getProperty("automessage.approval_subject"),
@@ -869,10 +870,12 @@ public class WorksheetServiceImpl extends BaseService implements
 			throw new RuntimeException("自动环节提示历史工作单任务号为空");
 		if (st == null || st.getId() == null)
 			throw new RuntimeException("自动环节提示支持单实体或者支持单ID为空");
+		st = stService.getSupportTicket(st);
 		HistoryTask previousTask = workflow.getHistoryService()
 				.createHistoryTaskQuery().taskId(taskId).uniqueResult();
+		String[] proccessInstanceIdArray = previousTask.getExecutionId().split("\\.");
 		List<Task> currentTaskList = workflow.getTaskService()
-				.createTaskQuery().executionId(previousTask.getExecutionId())
+				.createTaskQuery().processInstanceId(proccessInstanceIdArray[0]+"."+proccessInstanceIdArray[1])
 				.list();
 		for (Task task : currentTaskList) {
 			// 部门审批
@@ -915,7 +918,7 @@ public class WorksheetServiceImpl extends BaseService implements
 						SimpleDateFormat sdf = new SimpleDateFormat(
 								"yyyy-MM-dd");
 						mailContent = util.getMsg(mailContent, new String[] {
-								user.getUsername(), sdf.format(new Date()) });
+								user.getUsername(),st.getStNo(), sdf.format(new Date()) });
 						mailService.sendByDaemon(mail, properties
 								.getProperty("automessage.approval_subject"),
 								email, null, mailContent, false);
@@ -960,7 +963,7 @@ public class WorksheetServiceImpl extends BaseService implements
 						SimpleDateFormat sdf = new SimpleDateFormat(
 								"yyyy-MM-dd");
 						mailContent = util.getMsg(mailContent, new String[] {
-								user.getUsername(), sdf.format(new Date()) });
+								user.getUsername(),st.getStNo(), sdf.format(new Date()) });
 						mailService.sendByDaemon(mail, properties
 								.getProperty("automessage.tracking_subject"),
 								email, null, mailContent, false);
@@ -1005,7 +1008,7 @@ public class WorksheetServiceImpl extends BaseService implements
 						SimpleDateFormat sdf = new SimpleDateFormat(
 								"yyyy-MM-dd");
 						mailContent = util.getMsg(mailContent, new String[] {
-								user.getUsername(), sdf.format(new Date()) });
+								user.getUsername(),st.getStNo(), sdf.format(new Date()) });
 						mailService.sendByDaemon(mail, properties
 								.getProperty("automessage.feedback_subject"),
 								email, null, mailContent, false);
@@ -1050,7 +1053,7 @@ public class WorksheetServiceImpl extends BaseService implements
 						SimpleDateFormat sdf = new SimpleDateFormat(
 								"yyyy-MM-dd");
 						mailContent = util.getMsg(mailContent, new String[] {
-								user.getUsername(), sdf.format(new Date()) });
+								user.getUsername(), st.getStNo(),sdf.format(new Date()) });
 						mailService.sendByDaemon(mail, properties
 								.getProperty("automessage.archive_subject"),
 								email, null, mailContent, false);

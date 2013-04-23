@@ -152,7 +152,7 @@ public class TrackingAction extends PageAction implements ServletRequestAware {
 		track.setProcessor(culUser);//设置填写人员
 		
 		try {
-			trackService.insertTrackingAndGo(track, taskId, trSt);
+			trackService.insertTrackingAndGo(taskId, trSt,track);
 			returnNo=0;
 			returnMsg="追踪批复 提请反馈成功";
 		} catch (RuntimeException e) {
