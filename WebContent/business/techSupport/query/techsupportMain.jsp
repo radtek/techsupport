@@ -387,7 +387,7 @@ function lazyLoad(){
 											height:ingridHeight,
 											ingridPageWidth:1000,
 											isPlayResultNull: false,
-											havaWaiDivGunDong: true,
+// 											havaWaiDivGunDong: true,
 	                                       	ingridPageParams:sXML,
 	                                       	onRowSelect:null,
 											pageNumber: pageno,
