@@ -449,7 +449,7 @@
 <!-- 			a.departid=#limitDeparement# -->
 <!-- 		</isNotEmpty> -->
 		<isNotEmpty prepend="and" property="limitUserDeparement">
-			and d.departcode = #limitDeparement#
+			d.departcode = #limitDeparement#
 		</isNotEmpty>
 		<isNotEmpty prepend="and" property="applicant.userid" open="(" close=")">
 			t.applicant=#applicant.userid#
