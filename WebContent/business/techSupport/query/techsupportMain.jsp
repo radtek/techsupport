@@ -118,82 +118,83 @@ function lazyLoad(){
 		//20121109 支持单未完成导入
 		daggleDiv('import_detail_div');
 		$('#import_btn').click(function(){
-			detailDialog('import_detail_div',480,'#',null,function(json){
-				var html= '<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">'+
-				'		    <tr>'+
-				'		      <td align="left" class="title1">未完成支持单导入</td>'+
-				'		      <td align="right"><a href="#" id="closeDiv" onclick="close_dialog(this);" class="close"></a></td>'+
-				'		    </tr>'+
-				'		</table>'+
-				'		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top:10px;">'+
-				'			<tr>'+
-				'				<td align="right">文件：</td>'+	
-				'				<td>'+
-				'					<div id="fileUploadPanel" style="width:260px;text-align:center;">请选择一个上传的文件</div>'+
-				'				</td>'+
-				'				<td>'+
-				'					<input type="file" id="uploadFile">'+
-				'				</td>'+
-				'			</tr>'+
-				'			<tr>'+
-				'				<td colspan="2"></td>'+	
-				'				<td>'+
-				'					<a href="#" class="addbutton" id="uploadButton">确认</a>'+
-				'				</td>'+
-				'			</tr>'+
-				'		</table>';
-				$('#import_detail_div').html(html);
-				//设置上传
-				
-				$('#uploadFile').uploadify({
-							  'uploader'  : 'business/techSupport/common/javascript/uploadify/uploadify.swf',  
-			                  'script'    : uploadURL,  
-			                  'cancelImg' : 'business/techSupport/common/javascript/uploadify/cancel.png',  
-			                  'fileDataName':upload_name,
-			                  'queueID' : queue_id,
-			                  'folder': upload_folder,
-			                  //解决中文按钮名的好方式  
-			                  'buttonImg' : 'business/techSupport/common/javascript/uploadify/select_file.png',  
-			                  //可选  
-			                  'height'    : 22,  
-			                  //可选  
-			                  'width'     : 61,  
-			                  //设置允许上传的文件格式  
-			                  'fileExt'   : '*.xls;*.xlsx',  
-			                  //设置允许上传的文件格式后，必须加上下面这行代码才能帮你过滤  
-			                  'fileDesc'    : ['请选择xls,xlsx文件'],  
-			                  //允许连续上传多个文件  
-			                  'multi':false,  
-			                  //一次性最多允许上传多少个,不设置的话默认为999个  
-//			                  'queueSizeLimit' : 3,  
-			                  //每个文件允许上传的大小(字节)  
-			                  'sizeLimit'   : allow_max_size,
-			                  'onAllComplete'  :  function(event,data) {
-			                	  if(data.filesUploaded){
-			                		  SupportTicketQuery($('#pageNo').val());
-			                		  alert("导入成功");
-			                	  }
-			                		  
-			                	  try{
-			                		  $('#import_detail_div').hideAndRemove("show");
-			                	  }catch (e) {}
-			                  },
-			                  'onSelect':function(file){
-			                	  if(file)
-			                		  $('#'+queue_id).text('');
-			                  },
-			                  onError: function(event,queueId,fileObj,errorObj){
-			                	  jAlert(fileObj.name+"导入错误，请联系管理员","警告");
-			                  },
-			                  auto:false
-				});
-				$('#uploadButton').click(function(){
-					$('#uploadFile').uploadifyUpload();
-				});
-				
-				$('#import_detail_div').css('top',document.body.offsetHeight/2-30+'px');
-			});
-		});
+			setWidth('import_detail_div', 480);
+			$("#" + 'import_detail_div').empty();
+			var html= '<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">'+
+			'		    <tr>'+
+			'		      <td align="left" class="title1">未完成支持单导入</td>'+
+			'		      <td align="right"><a href="#" id="closeDiv" onclick="close_dialog(this);" class="close"></a></td>'+
+			'		    </tr>'+
+			'		</table>'+
+			'		<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top:10px;">'+
+			'			<tr>'+
+			'				<td align="right">文件：</td>'+	
+			'				<td>'+
+			'					<div id="fileUploadPanel" style="width:260px;text-align:center;">请选择一个上传的文件</div>'+
+			'				</td>'+
+			'				<td>'+
+			'					<input type="file" id="uploadFile">'+
+			'				</td>'+
+			'			</tr>'+
+			'			<tr>'+
+			'				<td colspan="2"></td>'+	
+			'				<td>'+
+			'					<a href="#" class="addbutton" id="uploadButton">确认</a>'+
+			'				</td>'+
+			'			</tr>'+
+			'		</table>';
+			$('#import_detail_div').html(html);
+			$('#uploadFile').uploadify({
+				  'uploader'  : 'business/techSupport/common/javascript/uploadify/uploadify.swf',  
+                'script'    : uploadURL,  
+                'cancelImg' : 'business/techSupport/common/javascript/uploadify/cancel.png',  
+                'fileDataName':upload_name,
+                'queueID' : queue_id,
+                'folder': upload_folder,
+                //解决中文按钮名的好方式  
+                'buttonImg' : 'business/techSupport/common/javascript/uploadify/select_file.png',  
+                //可选  
+                'height'    : 22,  
+                //可选  
+                'width'     : 61,  
+                //设置允许上传的文件格式  
+                'fileExt'   : '*.xls;*.xlsx',  
+                //设置允许上传的文件格式后，必须加上下面这行代码才能帮你过滤  
+                'fileDesc'    : ['请选择xls,xlsx文件'],  
+                //允许连续上传多个文件  
+                'multi':false,  
+                //一次性最多允许上传多少个,不设置的话默认为999个  
+//                'queueSizeLimit' : 3,  
+                //每个文件允许上传的大小(字节)  
+                'sizeLimit'   : allow_max_size,
+                'onAllComplete'  :  function(event,data) {
+              	  if(data.filesUploaded){
+              		  SupportTicketQuery($('#pageNo').val());
+              		  alert("导入成功");
+              	  }
+              		  
+              	  try{
+              		  $('#import_detail_div').hideAndRemove("show");
+              	  }catch (e) {}
+                },
+                'onSelect':function(file){
+              	  if(file)
+              		  $('#'+queue_id).text('');
+                },
+                onError: function(event,queueId,fileObj,errorObj){
+              	  jAlert(fileObj.name+"导入错误，请联系管理员","警告");
+                },
+                auto:false
+	});
+	$('#uploadButton').click(function(){
+		$('#uploadFile').uploadifyUpload();
+	});
+	
+	$('#import_detail_div').css('top',document.body.offsetHeight/2-30+'px');
+	upAllPage('import_detail_div');
+	bindDocument('import_detail_div');
+	$('#import_detail_div').show('slow');
+	});
  		
 		var roleURL="sysadmin/queryUsreRoleList_user.action"
 		setParams('t_');
