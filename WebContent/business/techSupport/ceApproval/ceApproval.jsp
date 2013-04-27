@@ -128,8 +128,8 @@
 						<div class="column" >
 							<label class="label red">技术支持部门:</label>
 							<div id="deptApprovalPanel"  class="item">
-								<label><input type="checkbox" name="ceApprovalSt.supportDeptList[0].departcode" value="cpfab">产品方案部</label>
-								<label><input type="checkbox" name="ceApprovalSt.supportDeptList[1].departcode" value="jskfb">技术开发部</label>
+								<label><input type="checkbox" checked="checked" name="ceApprovalSt.supportDeptList[0].departcode" value="cpfab">产品方案部</label>
+								<label><input type="checkbox" checked="checked" name="ceApprovalSt.supportDeptList[1].departcode" value="jskfb">技术开发部</label>
 							</div>
 							<div class="clear-column"></div>
 						</div>
