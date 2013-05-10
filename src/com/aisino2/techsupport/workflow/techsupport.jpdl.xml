@@ -1,104 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process key="techsupport2" name="techsupport" version="7" xmlns="http://jbpm.org/4.4/jpdl">
-   <start g="34,16,48,48" name="start1">
+<process key="techsupport2" name="techsupport" version="8" xmlns="http://jbpm.org/4.4/jpdl">
+   <start g="106,20,168,52" name="start1">
       <transition to="ce_appr"/>
    </start>
-   <task form="/business/techSupport/tracking/tracking.jsp" g="497,308,144,52" name="tracking_appr">
-      <description>追踪批复</description>
+   <task form="/business/techSupport/tracking/tracking.jsp" g="271,661,171,60" name="tracking_appr">
       <assignment-handler class="com.aisino2.techsupport.workflow.assignee.TrackingAssignmentHandler">
       </assignment-handler>
       <transition to="terminate_exception_proc"/>
    </task>
-   <end g="879,610,48,48" name="end"/>
-   <task candidate-users="#{feedbackUsers}" form="/business/techSupport/feedback/feedback.jsp" g="841,242,92,52" name="feedback">
-   	  <description>反馈确认</description>
+   <end g="524,962,171,52" name="end"/>
+   <task candidate-users="#{feedbackUsers}" form="/business/techSupport/feedback/feedback.jsp" g="269,826,168,60" name="feedback">
       <transition to="archive"/>
-      <transition g="-85,-25" name="no_feedback" to="tracking_appr"/>
+      <transition g="240,857;239,691:-85,-25" name="no_feedback" to="tracking_appr"/>
    </task>
-   <task candidate-users="#{archiveUsers}" form="/business/techSupport/archive/archive.jsp" g="851,388,92,52" name="archive">
-   	  <description>归档</description>
-      <transition to="end"/>
+   <task candidate-users="#{archiveUsers}" form="/business/techSupport/archive/archive.jsp" g="269,904,171,60" name="archive">
+      <transition g="491,935:" to="end"/>
    </task>
-   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="12,99,112,51" name="ce_appr">
-   	  <description>公司审批/总工审批</description>
+   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="45,107,168,60" name="ce_appr">
       <transition to="ce_appr_condition"/>
    </task>
-   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="58,357,175,52" name="tech_department_appr">
-      <description>技术部门审批</description>
+   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="265,340,195,52" name="tech_department_appr">
       <assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
-      	<field name="department_approval_type" >
+      	<field name="department_approval_type">
       		<string value="ts_技术部审批人"/>
       	</field>
       </assignment-handler>
-      <transition to="join1"/>
+      <transition to="tech_department_appr_exclusive"/>
    </task>
-   <decision expr="#{ceApprovalCode == approvalCodePassed ? 'pass':'nopass'}" g="25,613,48,48" name="ce_appr_condition">
-   	  <description>公司审批条件/总工审批条件</description>
-      <transition g="-62,-25" name="nopass" to="end"/>
-      <transition g="-19,-19" name="pass" to="department_appr_condition"/>
+   <decision expr="#{ceApprovalCode == approvalCodePassed ? 'pass':'nopass'}" g="104,186,171,60" name="ce_appr_condition">
+      <transition g="16,209;15,991:4,-11" name="nopass" to="end"/>
+      <transition g="-19,-19" name="pass" to="initDeptAppr"/>
    </decision>
-   <decision expr="#{ techDeptApprResult &amp;&amp; productDeptApprResult ? 'tracking_appr' : 'ce_appr' }" g="117,42,48,48" name="department_appr">
-   	  <description>部门审批条件</description>
-      <transition g="-53,-15" name="ce_appr" to="ce_appr"/>
-      <transition g="-65,-69" name="tracking_appr" to="updateStatusToGoing"/>
+   <decision expr="#{ techDeptApprResult and productDeptApprResult ? 'tracking_appr' : 'ce_appr' }" g="323,507,168,52" name="department_appr">
+      <transition g="764,524;766,137:-53,-15" name="ce_appr" to="ce_appr"/>
+      <transition g="12,7" name="tracking_appr" to="updateStatusToGoing"/>
    </decision>
    
-   <fork g="298,59,100,60" name="exception_tracking_fork">
-   	<description>例外追踪处理分支</description>
+   <fork g="516,577,168,60" name="exception_tracking_fork">
    	<transition to="tracking_appr"/>
    	<transition to="exception_process"/>
-      <transition to="reassign_depart"/>
       <transition to="reassgin_stleader"/>
    </fork>
-   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="455,502,171,46" name="exception_process">
-   	<description>例外处理</description>
+   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="466,660,161,60" name="exception_process">
    	<transition to="end"/>
    </task>
-   <join g="750,390,48,48" multiplicity="1" name="terminate_exception_proc">
-      <description>结束例外处理分支</description>
+   <join g="329,746,168,52" multiplicity="1" name="terminate_exception_proc">
       <transition to="feedback"/>
    </join>
-   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/reassign_depart/reassign_depart.jsp" g="421,10,155,52" name="reassign_depart">
-      <transition to="reassign_depart_condition"/>
+   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="34,408,148,52" name="reassign_depart">
+      <transition to="end_reassign_department_join"/>
    </task>
-   <task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="519,97,150,52" name="reassgin_stleader">
-   	  <description>重新指派支持单负责人</description>
-   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"></assignment-handler>
+   <task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="660,660,149,60" name="reassgin_stleader">
+   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"/>
       <transition to="reassign_stleader_condition"/>
    </task>
-   <decision expr="#{reassign_stleader_repeat}" g="791,55,48,48" name="reassign_stleader_condition">
-      <transition g="762,146:-67,10" name="to_reassgin_stleader" to="reassgin_stleader"/>
+   <decision expr="#{reassign_stleader_repeat}" g="712,781,168,60" name="reassign_stleader_condition">
+      <transition g="-135,-20" name="to_reassgin_stleader" to="reassgin_stleader"/>
    </decision>
-   <decision expr="#{reassign_depart_repeat}" g="720,8,48,48" name="reassign_depart_condition">
-      <transition g="631,75:-45,3" name="to reassign_depart" to="reassign_depart"/>
-   </decision>
-   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="249,358,195,52" name="product_department_appr">
-      <description>产品方案部审批</description>
-   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler" >
+   <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="509,339,195,52" name="product_department_appr">
+   	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
       	<field name="department_approval_type">
       		<string value="ts_产品部审批人"/>
       	</field>
       </assignment-handler>
-      <transition to="join1"/>
+      <transition to="product_department_appr_exclusive"/>
    </task>
-   <fork g="165,449,48,48" name="fork1">
-      <transition to="tech_department_appr">
-      </transition>
+   <fork continue="sync" g="439,265,48,48" name="department_appr_fork">
+      <transition to="tech_department_appr"/>
       <transition to="product_department_appr"/>
    </fork>
-   <join g="104,185,48,48" name="join1">
-      <transition to="department_appr"/>
+   <join g="492,455,48,48" name="end_department_appr_join">
+      <transition to="settingDeptAppr"/>
    </join>
-   <decision g="128,543,48,48" name="department_appr_condition">
-   	  <description>部门审批条件判断，是不是多部门审批</description>
+   <decision g="409,146,48,48" name="department_appr_condition">
    	  <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
-      <transition g="-5,-20" name="both" to="fork1"/>
+      <transition g="-5,-20" name="both" to="department_appr_fork"/>
       <transition g="-51,-8" name="tech_appr" to="tech_department_appr"/>
       <transition g="-40,0" name="product_appr" to="product_department_appr"/>
    </decision>
-   <java name="updateStatusToGoing" g="139,143,168,52" class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" method="updateStatus" >
-   	  <description>在完成部门审批后把支持单状态改为进行中</description>
+   <java class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" g="179,574,171,60" method="updateStatus" name="updateStatusToGoing">
    	  <arg>
    	  	<object expr="#{worksheetno}"/>
    	  </arg>
@@ -107,4 +88,31 @@
    	  </field>
       <transition to="exception_tracking_fork"/>
    </java>
+   <join g="87,506,195,52" multiplicity="1" name="end_reassign_department_join">
+      <transition to="reassign_department_or_tracking"/>
+   </join>
+   <decision expr="#{departmentAppr ? 'to_department_appr' : 'to_reassign_department_fork'}" g="209,516,48,48" name="reassign_department_or_tracking">
+      <transition g="-71,-33" name="to_department_appr" to="department_appr"/>
+      <transition g="196,564;34,559;31,340:-23,11" name="to_reassign_department_fork" to="reassign_department_fork"/>
+   </decision>
+   <script expr="false" g="60,251,146,52" name="initDeptAppr" var="departmentAppr">
+      <transition to="reassign_department_fork"/>
+   </script>
+   <fork g="160,315,171,52" name="reassign_department_fork">
+      <transition to="department_appr_condition"/>
+      <transition to="reassign_depart"/>
+   </fork>
+   <script expr="true" g="228,426,127,52" name="settingDeptAppr" var="departmentAppr">
+      <transition to="end_reassign_department_join"/>
+   </script>
+   <decision name="tech_department_appr_exclusive" g="435,405,48,48">
+   <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
+      <transition name="both" to="end_department_appr_join" g="-10,-18"/>
+      <transition name="tech_appr" to="settingDeptAppr" g="-32,-22"/>
+   </decision>
+   <decision name="product_department_appr_exclusive" g="532,406,48,48">
+   <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
+      <transition name="both" to="end_department_appr_join" g="-21,-19"/>
+      <transition name="product_appr" to="settingDeptAppr" g="561,516;446,517:-127,-20"/>
+   </decision>
 </process>

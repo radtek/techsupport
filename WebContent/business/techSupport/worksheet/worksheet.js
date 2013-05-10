@@ -103,16 +103,6 @@ function lazyLoad() {
                                        	noSortColIndex:[7],
                                        	onRowSelect:null,
 										pageNumber: pageno,
-										//暂时屏蔽 重指派部门，待日后完善后开发
-										changeHref:function($table){
-											$table.find('tr').each(function(){
-												$td_6 = $(this).find('td').eq(6);
-												if($td_6.text() == '重指派部门'){
-													$(this).remove();
-												}
-											});
-											
-										},
 										colWidths: ["14%","10%","12%","12%","12%","12%","12%","12%"]				
 									});				
 		}
@@ -138,7 +128,6 @@ function setProcess(taskId){
 		if(worksheet.activityName=="追踪批复")
 			usingDetailWidth=trackingDetailWidth;
 		else if(worksheet.activityName=='反馈确认' 
-				|| worksheet.activityName=='重指派部门' 
 				|| worksheet.activityName=='重指派支持单负责人')
 			usingDetailWidth=feedbackDetailWidth;
 		else if(worksheet.activityName=='归档')

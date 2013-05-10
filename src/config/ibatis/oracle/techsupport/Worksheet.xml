@@ -114,7 +114,7 @@
 			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
 				<include refid="worksheet.getListForPageWhere"/>
 				<!-- 过滤掉重新指派部门的环节 -->
-				and t.ACTIVITY_NAME_ != 'reassign_depart'
+				<!-- and t.ACTIVITY_NAME_ != 'reassign_depart' -->
 			</dynamic>
 			order by $pageSort$)  z 
 		) x where rowno &gt;$beginRow$ and rowno &lt;= $endRow$ 
@@ -135,7 +135,7 @@
 			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
 				<include refid="worksheet.getListForPageWhere"/>
 				<!-- 过滤掉重新指派部门的环节 -->
-				and t.ACTIVITY_NAME_ != 'reassign_depart'
+				<!-- and t.ACTIVITY_NAME_ != 'reassign_depart' -->
 			</dynamic>
 	</select>
 
