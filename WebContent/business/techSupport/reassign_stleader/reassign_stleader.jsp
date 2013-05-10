@@ -14,12 +14,6 @@
 <input type="hidden" id="p_taskId">
 <input type="hidden" name="st.id">
 <input type="hidden" id="sv_st_id">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-    <tr>
-      <td align="left" class="title1">重指派支持单负责人</td>
-      <td align="right"><a href="#" id="closeDiv" onclick='$("#detailCt").hideAndRemove("show");' class="close"></a></td>
-    </tr>
-</table>
 <div id="tracking" style="padding: 5 5 5 5;">
 	<fieldset>
 		<legend>技术支持单</legend>
@@ -85,18 +79,18 @@
 					<div class="clear-row"></div>
 				</div>
 				
-				
-				
 				<div class="row">
 					<div class="column">
 						<div class="psgstage">
-							<label class="label label-80" >实施:</label>
-							<input type="text" class="psgstage item inputstyle ro label-100" name="st.psgIsScheDate" id="p_psgIsScheDate">
+							<label class="label label-80" >需求:</label>
+							<input type="text" class="psgstage item inputstyle ro label-100" name="st.psgDsScheDate" id="p_psgDsScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
 					<div class="clear-row"></div>
 				</div>
+				
+				
 			</div>
 			
 			
@@ -157,11 +151,12 @@
 			
 			<%-- -- 新需求 技术开发部添加阶段测试 --%>
 				<%-- 移动实施时间到技术部 --%>
+				
 				<div class="row">
 					<div class="column">
 						<div class="devstage">
-							<label class="label label-80" >需求:</label>
-							<input type="text" class="devstage item inputstyle ro label-100" name="st.psgDsScheDate" id="p_psgDsScheDate">
+							<label class="label label-80" >实施:</label>
+							<input type="text" class="devstage item inputstyle ro label-100" name="st.psgIsScheDate" id="p_psgIsScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
