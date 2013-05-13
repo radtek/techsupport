@@ -61,11 +61,11 @@ public class SupportTicketDaoImpl extends TechSupportBaseDao implements SupportT
 				sCol = " std.dept_id "+ desc;
 			}
 			else if(sort.equals("5"))
-				sCol = " t.st_status " + desc;
+				sCol = " item.sib_order "+desc+",t.st_no " + desc;
 			else
 				sCol = " t.st_no ";
 		}else{
-			sCol=" t.st_no ";
+			sCol=" item.sib_order,t.st_no ";
 		}
 		map.put("pageSort", sCol);
 		return this.queryForPage("SupportTicket.getListForPage", map, pageno, pagesize);

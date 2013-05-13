@@ -612,7 +612,8 @@
 				t.ARCHIVE_USERID,
 				t.last_update_date,
 				t.archive_code,
-				t.apply_date
+				t.apply_date,
+				item.sib_order
 
 <!-- 		, -->
 <!-- 			<isNotEmpty property="supportLeader.userid"> -->
@@ -632,7 +633,10 @@
 <!-- 			'' APPLICANT_MOBILEPHONE -->
 <!-- 		</isEmpty> -->
 		 from T_TS_TECH_SUPPORT t 
-		
+<!-- 		 关联状态字典,排序 -->
+		 join t_dict_item item 
+		 on t.st_status = item.fact_value
+		 		and item.dict_code = 'dm_ts_status' 
 		 <dynamic prepend="">
 			<include refid="SupportTicketFrom"/>
 		 </dynamic>
