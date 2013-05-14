@@ -263,7 +263,7 @@ function submitVerity(){
 		return false;
 	if (!checkControlValue("ceName","String",1,50,null,1,"审批人"))
 		return false;
-	if (!checkControlValue("ceApprovalDate","Date",1,100,null,1,"审批日期"))
+	if (!checkControlValue("ceApprovalDate","Datetime",1,100,null,1,"审批日期"))
 		return false;
 	
 	if($('#ceApprovalRadioPanel input:checked').length == 0){

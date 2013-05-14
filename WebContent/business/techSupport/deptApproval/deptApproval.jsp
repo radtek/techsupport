@@ -148,7 +148,7 @@ System.out.println("==================================="+activityName+"=========
 									<label class="label red label-100">审批日期:</label> <input type="text"
 										class=" item ro inputstyle"
 										name="st.trackList[0].trackingDate" id="deptApprovalDate"
-										value="<%=dateNow%>"> <input type="hidden"
+										value="<%=datetime%>"> <input type="hidden"
 										name="st.trackList[0].processor.userid"
 										value="<%=user.getUserid()%>"> <input type="hidden"
 										name="st.trackList[0].processor.departid"

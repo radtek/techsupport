@@ -18,7 +18,7 @@ var supervision_query_url = BUSNEISS_PATH +"/querylist_supervision.action";
 function saveVerify() {
 	if (!checkControlValue("p_newProcess","String",1,4000,null,1,"变更原因"))
 		return false;
-	if (!checkControlValue("p_trackingDate","Date",null,null,null,1,"变更日期"))
+	if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"变更日期"))
 		return false;
 	if (!checkControlValue("p_processor","String",1,100,null,1,"新支持单负责人"))
 		return false;

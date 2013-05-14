@@ -82,7 +82,7 @@
 		            <fieldset>
 					<legend>公司一级审批信息</legend>
 	                <label class="label red">审批日期:</label>
-	                <input type="text" class=" item ro inputstyle" name="ceApprovalSt.trackList[0].trackingDate" id="ceApprovalDate" value="<%=dateNow%>">
+	                <input type="text" class=" item ro inputstyle" name="ceApprovalSt.trackList[0].trackingDate" id="ceApprovalDate" value="<%=datetime%>">
 	                <div class="clear-column"></div>
 	                
 	                <div class="row" >

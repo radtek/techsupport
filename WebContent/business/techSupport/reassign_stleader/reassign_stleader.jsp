@@ -231,7 +231,7 @@
 			<div class="column">
 				<div>
 					<label class="label red">变更日期:</label>
-					<input type="text" class="ro  item  inputstyle" name="track.trackingDate" id="p_trackingDate" value="<%=dateNow%>">
+					<input type="text" class="ro  item  inputstyle" name="track.trackingDate" id="p_trackingDate" value="<%=datetime%>">
 				</div>
 				<div class="clear-column"></div>
 			</div>

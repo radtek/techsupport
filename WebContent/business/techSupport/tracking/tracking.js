@@ -113,7 +113,7 @@ function supervision_query(pageno,url){
 function saveVerify() {
 	if (!checkControlValue("p_newProcess","String",1,3000,null,1,"进展填写"))
 		return false;
-	if (!checkControlValue("p_trackingDate","Date",null,null,null,1,"日期"))
+	if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"日期"))
 		return false;
 	return true;
 }
@@ -171,7 +171,7 @@ function toFeedbackVerify(){
 	}
 		if (!checkControlValue("p_newProcess","String",1,3000,null,1,"进展填写"))
 			return false;
-		if (!checkControlValue("p_trackingDate","Date",null,null,null,1,"日期"))
+		if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"日期"))
 			return false;
 		
 		// -- bug 在阶段选项打开的时候，内容为必填	

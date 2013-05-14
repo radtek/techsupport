@@ -335,7 +335,7 @@ function loadData(){
  * 提交验证
  */
 function submitVerity() {
-	if (!checkControlValue("deptApprovalDate","Date",1,100,null,1,"审批日期"))
+	if (!checkControlValue("deptApprovalDate","Datetime",1,100,null,1,"审批日期"))
 		return false;
 	if (!checkControlValue("deptName","String",1,50,null,1,"审批人"))
 		return false;

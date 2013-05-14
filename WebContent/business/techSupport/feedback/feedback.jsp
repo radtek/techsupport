@@ -398,7 +398,7 @@
 			<div class="row">
 				
 				<label class="label red">日期:</label>
-				<input type="text" class="ro date item inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=dateNow%>">
+				<input type="text" class="ro date item inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=datetime%>">
 			</div>
 			
 			<div class="clear-column"></div>

@@ -198,7 +198,7 @@
 					<div class="column">
 						<div>
 							<label class="label red">中止日期:</label>
-							<input type="text" class="date  item  inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=dateNow%>">
+							<input type="text" class="date  item  inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=datetime%>">
 						</div>
 						<div class="clear-column"></div>
 					</div>
