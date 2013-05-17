@@ -12,6 +12,7 @@
 
 </style>
 <input type="hidden" id="p_taskId">
+<input type="hidden" name="st.id">
 <div id="tracking" style="padding: 5 5 5 5">
 	<fieldset>
 		<legend>支持单信息</legend>
@@ -198,7 +199,7 @@
 					<div class="column">
 						<div>
 							<label class="label red">中止日期:</label>
-							<input type="text" class="date  item  inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=datetime%>">
+							<input type="text" class="ro  item  inputstyle" name="tracking.trackingDate" id="p_trackingDate" value="<%=datetime%>">
 						</div>
 						<div class="clear-column"></div>
 					</div>
