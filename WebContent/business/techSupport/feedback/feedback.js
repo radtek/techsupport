@@ -50,6 +50,9 @@ function attachment_query(pageno,url){
 										noSortColIndex:[3],
 										changeHref:function($table){
 											render_attachment_filesize($table);
+											$table.find("tr > td:nth(3)").each(function(){
+												$(this).find('a[title=删除]').remove();
+											});
 										},
 										hideColIndex:[2],
 										colWidths: ["70%","10%","10%","20%"]				
