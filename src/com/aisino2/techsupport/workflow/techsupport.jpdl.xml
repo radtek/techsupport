@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <process key="techsupport2" name="techsupport" version="8" xmlns="http://jbpm.org/4.4/jpdl">
+	<variable init-expr="true" name="techDeptApprResult" type="bool">
+	</variable>
+	<variable init-expr="true" name="productDeptApprResult" type="bool">
+	</variable>
+	
    <start g="106,20,168,52" name="start1">
       <transition to="ce_appr"/>
    </start>
@@ -32,7 +37,7 @@
       <transition g="16,209;15,991:4,-11" name="nopass" to="end"/>
       <transition g="-19,-19" name="pass" to="initDeptAppr"/>
    </decision>
-   <decision expr="#{ techDeptApprResult and productDeptApprResult ? 'tracking_appr' : 'ce_appr' }" g="323,507,168,52" name="department_appr">
+   <decision expr="#{techDeptApprResult == productDeptApprResult ? 'tracking_appr' : 'ce_appr'}" g="323,507,168,52" name="department_appr">
       <transition g="764,524;766,137:-53,-15" name="ce_appr" to="ce_appr"/>
       <transition g="12,7" name="tracking_appr" to="updateStatusToGoing"/>
    </decision>
@@ -70,13 +75,13 @@
       <transition to="tech_department_appr"/>
       <transition to="product_department_appr"/>
    </fork>
-   <join g="492,455,48,48" name="end_department_appr_join">
+   <join g="492,462,48,48" name="end_department_appr_join">
       <transition to="settingDeptAppr"/>
    </join>
    <decision g="409,146,48,48" name="department_appr_condition">
    	  <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
       <transition g="-5,-20" name="both" to="department_appr_fork"/>
-      <transition g="-51,-8" name="tech_appr" to="tech_department_appr"/>
+      <transition g="-39,2" name="tech_appr" to="tech_department_appr"/>
       <transition g="-40,0" name="product_appr" to="product_department_appr"/>
    </decision>
    <java class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" g="179,574,171,60" method="updateStatus" name="updateStatusToGoing">
@@ -99,20 +104,26 @@
       <transition to="reassign_department_fork"/>
    </script>
    <fork g="160,315,171,52" name="reassign_department_fork">
-      <transition to="department_appr_condition"/>
       <transition to="reassign_depart"/>
+      <transition to="resetTechResult"/>
    </fork>
-   <script expr="true" g="228,426,127,52" name="settingDeptAppr" var="departmentAppr">
+   <script expr="true" g="158,462,127,52" name="settingDeptAppr" var="departmentAppr">
       <transition to="end_reassign_department_join"/>
    </script>
-   <decision name="tech_department_appr_exclusive" g="435,405,48,48">
+   <decision g="449,426,48,48" name="tech_department_appr_exclusive">
    <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
-      <transition name="both" to="end_department_appr_join" g="-10,-18"/>
-      <transition name="tech_appr" to="settingDeptAppr" g="-32,-22"/>
+      <transition g="-10,-18" name="both" to="end_department_appr_join"/>
+      <transition g="-29,-5" name="tech_appr" to="settingDeptAppr"/>
    </decision>
-   <decision name="product_department_appr_exclusive" g="532,406,48,48">
+   <decision g="576,424,48,48" name="product_department_appr_exclusive">
    <handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
-      <transition name="both" to="end_department_appr_join" g="-21,-19"/>
-      <transition name="product_appr" to="settingDeptAppr" g="561,516;446,517:-127,-20"/>
+      <transition g="-21,-19" name="both" to="end_department_appr_join"/>
+      <transition g="561,516;446,517:-127,-20" name="product_appr" to="settingDeptAppr"/>
    </decision>
+   <script expr="true" g="252,186,151,52" name="resetProductResult" var="productDeptApprResult">
+      <transition to="department_appr_condition"/>
+   </script>
+   <script expr="true" g="226,261,125,52" name="resetTechResult" var="techDeptApprResult">
+      <transition to="resetProductResult"/>
+   </script>
 </process>

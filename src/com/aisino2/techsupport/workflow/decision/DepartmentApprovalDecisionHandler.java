@@ -45,8 +45,8 @@ public class DepartmentApprovalDecisionHandler implements DecisionHandler {
 		st.setId(worksheet_id);
 		st = stService.getSupportTicket(st);
 		//添加后面需要用到的判断结果
-		execution.setVariable("productDeptApprResult", true);
-		execution.setVariable("techDeptApprResult", true);
+//		execution.setVariable("productDeptApprResult", true);
+//		execution.setVariable("techDeptApprResult", true);
 		
 		Set<String> assign_roles = new HashSet<String>(); 
 		//獲取部門審批角色字典項
