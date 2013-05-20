@@ -276,6 +276,8 @@ function loadData(){
 					$('#ceName').val(setNull(t.processor.username));
 					dictitem=getDictitem({dictcode:ST_APPR_TYPE_DICT_CODE , value : t.approvalCode});
 					$('#ceApprovalRadioPanel span').text(dictitem[0].display_name);
+					
+					break; //显示最新的审核信息
 				}
 			}
 			
