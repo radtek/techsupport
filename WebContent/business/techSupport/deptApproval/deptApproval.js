@@ -312,7 +312,7 @@ function loadData(){
 //				}
 //			}
 //		}
-		if($('#activityName').val() == '技术部门审批'){
+		if($('#activityName').val() == ST_PROCESS_TECH_DEPARTMENT_APPROVAL){
 			gxdwmc_ = '技术开发部';
 			gxdwbm_ = 'jskfb';
 			deptApprType = ST_ROLE_TECH_DEPT_APPR_TYPE;

@@ -35,8 +35,7 @@
 -->
 </style>
 <%
-String activityName = request.getParameter("worksheet.activityName");
-System.out.println("==================================="+activityName+"===================================");
+String activityName = request.getParameter("worksheet_activity");
 %>
 <input type="hidden" id="p_taskId">
 <input type="hidden" id="sv_st_id">
