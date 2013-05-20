@@ -441,7 +441,8 @@ public class WorksheetServiceImpl extends BaseService implements
 
 				worksheet.setSupportDeptName(supportDeptName);
 				worksheet.setStNo(worksheet.getSt().getStNo());
-
+				
+				worksheet.setActivity(worksheet.getTask().getActivityName());
 				worksheet.setTask(null);
 			} catch (Exception e) {
 				log.error(e);

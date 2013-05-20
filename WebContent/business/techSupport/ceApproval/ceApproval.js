@@ -209,7 +209,9 @@ $(function(){
 //	<input type="radio" class=" item " name="st.ceApprovalCode" id="ceApprovalCodeLess">通过
 	buildHTMLComponentByDict('<label><input type="radio" name="ceApprovalSt.trackList[0].approvalCode" value="{fact_value}">{display}</label>',$('#ceApprovalRadioPanel'),ST_APPR_TYPE_DICT_CODE,'dict_item.fact_value == 0');
 	$('input:radio','#ceApproval ').eq(0).attr('checked',true);
-	
+//	当为重新指派部门的时候,不能修改审批状态
+	if(ST_PROCESS_REASSIGN_DEPART == $('#activity').val())
+		$('#ceApprovalRadioPanel input:radio').attr("disabled",true);
 	loadData();
 	//附件显示框
 	load_page_attachment_query(attachment_div_id);

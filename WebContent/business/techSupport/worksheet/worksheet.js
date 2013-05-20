@@ -136,7 +136,12 @@ function setProcess(taskId){
 			usingDetailWidth = deptApprovalDetailWidth;
 		else
 			usingDetailWidth=detailWidth;
-		detailDialog(detailid,usingDetailWidth,processURL,worksheet.activityName,{'worksheet.activityName':worksheet.activityName});
+		detailDialog(detailid,usingDetailWidth,processURL,worksheet.activityName,
+			{
+				'worksheet_activityName':worksheet.activityName,
+				'worksheet_activity':worksheet.activity
+			}
+		);
 		
 	},'json');
 	

@@ -106,4 +106,27 @@
 	var ST_ROLE_PRODUCT_DEPT_APPR_TYPE = "<%=com.aisino2.techsupport.common.Constants.ST_ROLE_PRODUCT_DEPT_APPR_TYPE%>";
 	//流程环节字典
 	var ST_WORKFLOW_NAME_DICT_CODE = "<%=com.aisino2.techsupport.common.Constants.ST_WORKFLOW_NAME_DICT_CODE%>";
+	
+// 	技术支持单流程环节
+// 填报
+	var ST_PROCESS_APPLY = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_APPLY%>";
+	// 总工审批或者公司审批
+	var ST_PROCESS_CE_APPROVAL = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_CE_APPROVAL%>";
+	// 部门审批或者公司二级审批 // 技术部门审批
+	var ST_PROCESS_TECH_DEPARTMENT_APPROVAL = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_TECH_DEPARTMENT_APPROVAL%>";
+	// 产品部门审批
+	var ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_PRODUCT_DEPARTMENT_APPROVAL%>";
+	// 追踪批复
+	var ST_PROCESS_TRACKING = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_TRACKING%>";
+	// 反馈确认
+	var ST_PROCESS_FEEDBACK = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_FEEDBACK%>";
+	// 归档
+	var ST_PROCESS_ARCHIVE = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_ARCHIVE%>";
+	// 例外处理
+	var ST_PROCESS_EXCEPTION = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_EXCEPTION%>";
+	// 重指派部门
+	var ST_PROCESS_REASSIGN_DEPART = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_REASSIGN_DEPART%>";
+	// 重指派支持单负责人
+	var ST_PROCESS_REASSGIN_STLEADER = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_REASSGIN_STLEADER%>";
+	
 </script>

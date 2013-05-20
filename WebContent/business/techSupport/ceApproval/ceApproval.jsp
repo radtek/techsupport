@@ -27,9 +27,15 @@
  
 </style>
 
+<% 
+	String activity = request.getParameter("worksheet_activity");
+	if(activity==null)
+		activity = "";
+%>
 <input type="hidden" id="p_taskId" value="">
 <input type="hidden" id="sv_st_id">
 <input type="hidden" id="att_stId">
+<input type="hidden" id="activity" value="<%=activity%>">
 <div id="ceApprovalCt" style="padding: 5 5 5 5">
 	<fieldset>
 		<legend>支持单信息</legend>

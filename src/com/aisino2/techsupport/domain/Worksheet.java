@@ -23,8 +23,16 @@ public class Worksheet {
 	private Integer supportLeaderId;//技术负责人ID
 	private String supportDeptCode;//技术负责单位代码
 	private String stStatusCode;//支持单状态代码
+	private String activity;
 	
 	
+	
+	public String getActivity() {
+		return activity;
+	}
+	public void setActivity(String activity) {
+		this.activity = activity;
+	}
 	public TaskImpl getTask() {
 		return task;
 	}
