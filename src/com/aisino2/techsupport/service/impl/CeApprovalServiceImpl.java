@@ -51,14 +51,17 @@ public class CeApprovalServiceImpl extends BaseService implements
 			st.setStStatus(Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL);
 		// 更新最后操作时间
 		st.setLastUpdateDate(new Date());
+		// 兼容重新指派清除该支持单计划时间
+		st.setReassignDept(true);
 		// 保存支持单信息
 		stService.updateSupportTicket(st);
 		// 保存审核意见信息
 		trackingService.insertTracking(tracking);
-		// 兼容重新指派清除该支持单所有的负责人指派
+		// 兼容重新指派清除该支持单所有的负责人指派,还有部门的计划时间
 		SupportLeaderRelation supportLeaderRelation = new SupportLeaderRelation();
 		supportLeaderRelation.setStId(st.getId());
 		supportLeaderRelationDao.delete(supportLeaderRelation);
+
 		// 流程控制
 		// 当提交的技术支持单，在本环节重新对单位做出了指派的时候，那么主要更新指派信息
 		Map<String, Object> candidate_users = new HashMap<String, Object>();
