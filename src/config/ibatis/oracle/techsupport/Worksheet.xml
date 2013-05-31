@@ -113,8 +113,8 @@
 			    and  exists ( select p.task_  from JBPM4_PARTICIPATION P where p.task_ = t.dbid_ <include refid="worksheet.getlistForPage_ParticipationWhere" />)
 			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
 				<include refid="worksheet.getListForPageWhere"/>
-				<!-- 过滤掉重新指派部门的环节 -->
-				<!-- and t.ACTIVITY_NAME_ != 'reassign_depart' -->
+				<!-- 过滤掉重新指派部门的环节并且为进行中的记录 -->
+				and not (t.ACTIVITY_NAME_ = 'reassign_depart' and s.st_status = 'going')
 			</dynamic>
 			order by $pageSort$)  z 
 		) x where rowno &gt;$beginRow$ and rowno &lt;= $endRow$ 
@@ -134,8 +134,8 @@
 			    and  exists ( select p.task_  from JBPM4_PARTICIPATION P where p.task_ = t.dbid_ <include refid="worksheet.getlistForPage_ParticipationWhere" />)
 			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
 				<include refid="worksheet.getListForPageWhere"/>
-				<!-- 过滤掉重新指派部门的环节 -->
-				<!-- and t.ACTIVITY_NAME_ != 'reassign_depart' -->
+				<!-- 过滤掉重新指派部门的环节并且为进行中的记录 -->
+				and not (t.ACTIVITY_NAME_ = 'reassign_depart' and s.st_status = 'going')
 			</dynamic>
 	</select>
 
