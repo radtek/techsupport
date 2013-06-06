@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process key="techsupport2" name="techsupport" version="8" xmlns="http://jbpm.org/4.4/jpdl">
+<process key="techsupport2" name="techsupport" version="9" xmlns="http://jbpm.org/4.4/jpdl">
 	<variable init-expr="true" name="techDeptApprResult" type="bool">
 	</variable>
 	<variable init-expr="true" name="productDeptApprResult" type="bool">
@@ -9,15 +9,13 @@
    <start g="106,20,168,52" name="start1">
       <transition to="ce_appr"/>
    </start>
-   <task form="/business/techSupport/tracking/tracking.jsp" g="271,661,171,60" name="tracking_appr">
-      <assignment-handler class="com.aisino2.techsupport.workflow.assignee.TrackingAssignmentHandler">
-      </assignment-handler>
-      <transition to="terminate_exception_proc"/>
+   <task form="/business/techSupport/tracking/tracking.jsp" g="284,675,171,60" name="tracking_appr">
+      <transition to="pause_join"/>
    </task>
    <end g="524,962,171,52" name="end"/>
    <task candidate-users="#{feedbackUsers}" form="/business/techSupport/feedback/feedback.jsp" g="269,826,168,60" name="feedback">
       <transition to="archive"/>
-      <transition g="240,857;239,691:-85,-25" name="no_feedback" to="tracking_appr"/>
+      <transition g="34,860;36,654:-85,-25" name="no_feedback" to="pause_fork"/>
    </task>
    <task candidate-users="#{archiveUsers}" form="/business/techSupport/archive/archive.jsp" g="269,904,171,60" name="archive">
       <transition g="491,935:" to="end"/>
@@ -43,14 +41,15 @@
    </decision>
    
    <fork g="516,577,168,60" name="exception_tracking_fork">
-   	<transition to="tracking_appr"/>
    	<transition to="exception_process"/>
       <transition to="reassgin_stleader"/>
+   	<transition to="pause_fork"/>
    </fork>
-   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="466,660,161,60" name="exception_process">
+   <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="479,678,161,60" name="exception_process">
    	<transition to="end"/>
+      <transition g="-189,-20" name="to terminate_exception_proc" to="terminate_exception_proc"/>
    </task>
-   <join g="329,746,168,52" multiplicity="1" name="terminate_exception_proc">
+   <join g="338,764,168,52" multiplicity="1" name="terminate_exception_proc">
       <transition to="feedback"/>
    </join>
    <task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="34,408,148,52" name="reassign_depart">
@@ -59,6 +58,7 @@
    <task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="660,660,149,60" name="reassgin_stleader">
    	  <assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"/>
       <transition to="reassign_stleader_condition"/>
+      <transition g="-189,-20" name="to terminate_exception_proc" to="terminate_exception_proc"/>
    </task>
    <decision expr="#{reassign_stleader_repeat}" g="712,781,168,60" name="reassign_stleader_condition">
       <transition g="-135,-20" name="to_reassgin_stleader" to="reassgin_stleader"/>
@@ -126,11 +126,31 @@
    <script expr="true" g="239,265,125,52" name="resetTechResult" var="techDeptApprResult">
       <transition to="join1"/>
    </script>
-   <fork name="fork1" g="199,222,48,48">
+   <fork g="199,222,48,48" name="fork1">
       <transition to="resetTechResult"/>
       <transition to="resetProductResult"/>
    </fork>
-   <join name="join1" g="347,213,48,48">
+   <join g="347,213,48,48" name="join1">
       <transition to="department_appr_condition"/>
    </join>
+   <fork g="87,609,48,48" name="pause_fork">
+      <transition to="tracking_appr" g="311,641:"/>
+      <transition to="initPauseVar"/>
+   </fork>
+   <task g="65,719,92,52" name="pause" form="/business/techSupport/pause/pause.jsp">
+      <transition to="pause_join"/>
+   </task>
+   <task g="93,778,92,52" name="restore" form="/business/techSupport/pause/restore.jsp">
+      <transition g="64,806;63,679:" to="pause_fork"/>
+   </task>
+   <join g="213,726,48,48" name="pause_join" multiplicity="1">
+      <transition to="restore_or_feedback"/>
+   </join>
+   <decision g="215,779,48,48" name="restore_or_feedback" expr="#{isPause ? 'restore':'terminate_exception_proc'}">
+      <transition g="-189,-20" name="terminate_exception_proc" to="terminate_exception_proc"/>
+      <transition g="-68,-20" name="restore" to="restore"/>
+   </decision>
+   <script name="initPauseVar" g="157,659,104,52" expr="false" var="isPause">
+      <transition to="pause"/>
+   </script>
 </process>

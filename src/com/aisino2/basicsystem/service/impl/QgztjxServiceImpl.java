@@ -67,7 +67,7 @@ public class QgztjxServiceImpl extends BaseService implements IQgztjxService {
 	public String getFtpUpdate(){
 		String  sLog="开始更新\n";
 		sLog+=DateToString.getDateTimeChinese(new Date())+" 开始下载数据\n";
-		FtpFile ftpFile=new FtpFile(QgztjxServiceImpl.class.getClassLoader().getResource("").getPath()+"ftpFile.xml","全国在逃简项");
+		FtpFile ftpFile=new FtpFile(QgztjxServiceImpl.class.getClassLoader().getResource("").getPath()+ "ftpFile.xml","全国在逃简项");
 		
 		
 		String[] aFiles=ftpFile.getfilenamelist(ftpFile.getFilepostfix());

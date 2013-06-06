@@ -140,7 +140,7 @@ public class WorkflowUtil {
 		Deployment deployment = getRepositoryService()
 				.createDeployment()
 				.addResourceFromClasspath(
-						"com/aisino2/techsupport/workflow/techsupport.jpdl.xml");
+                        "com/aisino2/techsupport/workflow/techsupport.jpdl.xml");
 		return ((DeploymentImpl)deployment).deploy();
 	}
 

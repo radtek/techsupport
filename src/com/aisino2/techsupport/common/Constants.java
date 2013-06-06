@@ -31,6 +31,9 @@ public class Constants {
 	public static String ST_STATUS_WAIT_FEEDBACK = "wait_feedback";
 	// 已反馈
 	public static String ST_STATUS_FEEDBACKED = "feedbacked";
+	// 新需求v1.0sp3
+	// 暂停
+	public static String ST_STATUS_PAUSE = "pause";
 
 	// 支持单状态字典代码
 	public static String ST_STATUS_DICT_CODE = "dm_ts_status";
@@ -63,6 +66,11 @@ public class Constants {
 	public static String TRACKING_TYPE_REASSIGN_DEPARTMENT = "70";
 	// 重新指派支持单负责人原因
 	public static String TRACKING_TYPE_REASSIGN_SUPPORT_LEADER = "80";
+	// 新需求v1.0sp3
+	// 支持单暂停
+	public static String TRACKING_TYPE_PAUSE = "90";
+	// 支持单恢复
+	public static String TRACKING_TYPE_RESTORE = "91";
 
 	// 流程名称
 	public static final String workflowName = "techsupport";
@@ -151,7 +159,11 @@ public class Constants {
 	public static final String ST_PROCESS_REASSIGN_DEPART = "reassign_depart";
 	// 重指派支持单负责人
 	public static final String ST_PROCESS_REASSGIN_STLEADER = "reassgin_stleader";
-
+	// 新需求v.1sp3
+	// 暂停
+	public static final String ST_PROCESS_PAUSE = "pause";
+	// 恢复
+	public static final String ST_PROCESS_RESTORE = "restore";
 	// 审批更新间隔代码
 	public static final String ST_APPRAVAL_UPDATE_INTERVAL_DAY = "st_appraval_update_interval_day";
 	// 进展更新间隔代码
@@ -173,12 +185,12 @@ public class Constants {
 	 * 产品部门审批机构代码
 	 */
 	public static String ST_APPROVAL_DEPARTMENT_CODE_PRODUCT;
-	
+
 	/**
 	 * 用户邮件字典代码
 	 */
 	public static String ST_USER_EMAIL_MAP_DICT_CODE = "dm_userAndEmail_tech";
-	
+
 	static {
 		util = new CommonUtil();
 		try {
