@@ -1,6 +1,6 @@
 /**
- * Filename:pause.js
- * Description:支持单暂停
+ * Filename:restore.js
+ * Description:支持单恢复
  * 
  * */
 
@@ -11,9 +11,9 @@ var trackingWindowWidth=850;
 
 /**保存验证*/
 function saveVerify() {
-	if (!checkControlValue("p_newProcess","String",1,3000,null,1,"暂停原因"))
+	if (!checkControlValue("p_newProcess","String",1,3000,null,1,"恢复原因"))
 		return false;
-	if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"暂停日期"))
+	if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"恢复日期"))
 		return false;
 	return true;
 }
@@ -22,7 +22,7 @@ function saveVerify() {
 $(function(){
 
 	//保存连接
-	var saveURL = getContextPath()+"/techsupport/save_pause.action";
+	var saveURL = getContextPath()+"/techsupport/save_restore.action";
 	
 	//只读化控件
 	$('.ro').attr('readOnly',true);
@@ -57,7 +57,7 @@ $(function(){
 		if(!saveVerify()){
 			return;
 		}
-		if(!confirm("您确认本支持单暂停吗？"))
+		if(!confirm("您确认本支持单恢复吗？"))
 			return;
 		var params = {};
 		
