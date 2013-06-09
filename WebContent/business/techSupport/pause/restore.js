@@ -142,8 +142,8 @@ function loadData(){
 		relateHide('psgstage');
 				
 		//非阶段性隐藏
-		relateHide('devcpstage');
-		relateHide('psgcpstage');
+		relateHide('devstage2');
+		relateHide('psgstage2');
 		
 //		初始化单位信息
 		var deptNameStr="";
@@ -161,29 +161,6 @@ function loadData(){
 		sSlNames=sSlNames.length > 0? sSlNames.substring(1) : sSlNames;
 		$('#p_slName').val(sSlNames);
 		
-		//	初始化提请反馈必填项颜色信息
-		if($('#p_deptName').val().indexOf('方案部') > -1){
-			$('#p_psgCompDate').prev('label').addClass('blue');
-			// 修正bug 添加必要的颜色信息
-			$("#psgcpstage").blur(function() {
-				if ($(this).attr('checked')) {
-					$('.' + this.id).addClass('blue');
-				} else {
-					$('.' + this.id).removeClass("blue");
-				}
-			});
-		}
-		if($('#p_deptName').val().indexOf('开发部') > -1){
-			$('#p_devCompDate').prev('label').addClass('blue');
-			// 修正bug 添加必要的颜色信息
-			$("#devcpstage").blur(function() {
-				if ($(this).attr('checked')) {
-					$('.' + this.id).addClass('blue');
-				} else {
-					$('.' + this.id).removeClass("blue");
-				}
-			});
-		}
 		
 		$('#p_region').val(getDictitem({dictcode:ST_REGION_DICT_CODE,value:$('#p_region').val()})[0].display_name);
 		

@@ -9,7 +9,6 @@ import com.aisino2.core.web.PageAction;
 import com.aisino2.techsupport.domain.SupportTicket;
 import com.aisino2.techsupport.domain.Tracking;
 import com.aisino2.techsupport.service.IRestoreService;
-import com.aisino2.techsupport.service.SupportTicketService;
 
 /**
  * 支持单恢复
@@ -46,8 +45,8 @@ public class RestoreAction extends PageAction {
 	private String returnMsg;
 
 	private IRestoreService restoreService;
-	
-	@Resource(name="restoreServiceImpl")
+
+	@Resource(name = "restoreServiceImpl")
 	public void setRestoreService(IRestoreService restoreService) {
 		this.restoreService = restoreService;
 	}
@@ -98,6 +97,22 @@ public class RestoreAction extends PageAction {
 	 * @return
 	 */
 	public String save() {
+		try {
+			if (taskId == null)
+				throw new RuntimeException("支持单恢复任务号传输错误");
+			if (st == null)
+				throw new RuntimeException("支持单恢复工单信息传输错误");
+			restoreService.restore(taskId, st, tracking);
+			returnNo = 0;
+		} catch (Exception e) {
+			log.error(e);
+			returnNo = -1;
+			returnMsg = "支持单恢复错误";
+			if (log.isDebugEnabled()) {
+				log.debug(e, e.fillInStackTrace());
+				returnMsg = e.getMessage();
+			}
+		}
 		return SUCCESS;
 	}
 }

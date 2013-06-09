@@ -12,7 +12,7 @@
 <link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
 </head>
 <body>
-	<script type="text/javascript" src="<%=tsBase %>/pause/pause.js"></script>
+	<script type="text/javascript" src="<%=tsBase %>/pause/restore.js"></script>
 <link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
 <style type="text/css">
 .date {
@@ -106,7 +106,7 @@
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">现计划完成时间:</label>
+						<label class="label label-80">原计划完成时间:</label>
 						<input type="text" class=" item inputstyle ro label-100" name="st.devScheDate" >
 						<div class="clear-column"></div>
 					</div>
@@ -268,7 +268,7 @@
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">原计划完成时间:</label>
+						<label class="label label-80">现计划完成时间:</label>
 						<input type="text" class="date item inputstyle ro label-100" name="st.devScheDate" id="p_devScheDate">
 						<div class="clear-column"></div>
 					</div>
@@ -330,7 +330,6 @@
 					<div class="clear-row"></div>
 				</div>
 			</div>
-			
 			<div class="clear-row"></div>
 		</div>
 	</fieldset>

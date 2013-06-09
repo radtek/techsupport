@@ -76,5 +76,13 @@
   	<action name="*_exception" class="ExceptionAction" method="{1}">
   		<result type="json"></result>
   	</action>
+<!--   	支持单暂停 -->
+  	<action name="*_pause" class="pauseAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
+<!--   	支持单恢复 -->
+  	<action name="*_restore" class="restoreAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
   </package>
 </struts>

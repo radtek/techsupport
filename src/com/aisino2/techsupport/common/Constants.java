@@ -1,6 +1,8 @@
 package com.aisino2.techsupport.common;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -43,9 +45,6 @@ public class Constants {
 
 	// 区总区域映射字典代码
 	public static String ST_RGM_RG_MAP_DICT_CODE = "dm_ts_rm_map";
-
-	// 地区代码与机构映射
-	public static String ST_RD_MAP_DICT_CODE = "dm_ts_rd_map";
 
 	// 普通进展批复
 	public static String TRACKING_TYPE_TRACKING = "0";
@@ -191,6 +190,10 @@ public class Constants {
 	 */
 	public static String ST_USER_EMAIL_MAP_DICT_CODE = "dm_userAndEmail_tech";
 
+	/**
+	 * 机构代码部门审批角色映射
+	 */
+	public static Map<String, String> ST_DEPARTCODE_DEPARTMENT_APPROVAL_ROLE_MAP = new HashMap<String, String>();
 	static {
 		util = new CommonUtil();
 		try {
@@ -233,6 +236,15 @@ public class Constants {
 					.getTechSupportEnvConfig("techsupport.worksheet.approval_department.tech");
 			ST_APPROVAL_DEPARTMENT_CODE_PRODUCT = util
 					.getTechSupportEnvConfig("techsupport.worksheet.approval_department.product");
+
+			// 机构代码部门审批角色映射
+			ST_DEPARTCODE_DEPARTMENT_APPROVAL_ROLE_MAP.put(
+					ST_APPROVAL_DEPARTMENT_CODE_PRODUCT,
+					ST_ROLE_PRODUCT_DEPT_APPR_TYPE);
+			ST_DEPARTCODE_DEPARTMENT_APPROVAL_ROLE_MAP.put(
+					ST_APPROVAL_DEPARTMENT_CODE_TECH,
+					ST_ROLE_TECH_DEPT_APPR_TYPE);
+
 		} catch (IOException e) {
 			log.error(e);
 			log.debug(e, e.fillInStackTrace());

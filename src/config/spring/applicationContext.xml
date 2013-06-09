@@ -55,6 +55,9 @@
 			<tx:method name="stop*" />
 			<tx:method name="change*" />
 			<tx:method name="import*" />
+			<tx:method name="pause"/>
+			<tx:method name="retore"/>
+			<tx:method name="assign*"/>
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
