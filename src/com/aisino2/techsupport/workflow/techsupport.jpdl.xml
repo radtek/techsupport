@@ -9,21 +9,26 @@
 		<transition to="ce_appr"/>
 	</start>
 	<task form="/business/techSupport/tracking/tracking.jsp" g="237,713,171,60" name="tracking_appr">
+		<description>追踪批复</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.TrackingAssignmentHandler"/>
 		<transition to="pause_join"/>
 	</task>
 	<end g="529,1217,171,52" name="end"/>
 	<task candidate-users="#{feedbackUsers}" form="/business/techSupport/feedback/feedback.jsp" g="265,1027,168,60" name="feedback">
+		<description>反馈</description>
 		<transition to="archive"/>
 		<transition g="35,1056;34,673:-85,-25" name="no_feedback" to="pause_fork"/>
 	</task>
 	<task candidate-users="#{archiveUsers}" form="/business/techSupport/archive/archive.jsp" g="265,1138,171,60" name="archive">
+		<description>归档</description>
 		<transition g="502,1170:" to="end"/>
 	</task>
 	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="45,107,168,60" name="ce_appr">
+		<description>公司审批</description>
 		<transition to="ce_appr_condition"/>
 	</task>
 	<task form="/business/techSupport/deptApproval/deptApproval.jsp" g="265,340,195,52" name="tech_department_appr">
+		<description>技术部门审批</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
 			<field name="department_approval_type">
 				<string value="ts_技术部审批人"/>
@@ -32,38 +37,44 @@
 		<transition to="tech_department_appr_exclusive"/>
 	</task>
 	<decision expr="#{ceApprovalCode == approvalCodePassed ? 'pass':'nopass'}" g="104,186,171,60" name="ce_appr_condition">
+		<description>公司审批结果判断,未通过结束,通过走向部门审批</description>
 		<transition g="16,209;15,1240:4,-11" name="nopass" to="end"/>
 		<transition g="-19,-19" name="pass" to="initDeptAppr"/>
 	</decision>
 	<decision expr="#{techDeptApprResult and productDeptApprResult ? 'tracking_appr' : 'ce_appr'}" g="323,507,168,52" name="department_appr">
+		<description>部门审批结果判断,未通过回到公司审批,通过开始追踪批复与异常分支</description>
 		<transition g="764,524;766,137:-53,-15" name="ce_appr" to="ce_appr"/>
 		<transition g="-84,14" name="tracking_appr" to="updateStatusToGoing"/>
 	</decision>
 
-	<fork g="523,623,168,60" name="exception_tracking_fork">
-		<transition to="exception_process"/>
-		<transition to="reassgin_stleader"/>
+	<fork g="430,609,168,60" name="exception_tracking_fork">
+		<description>追踪批复与异常分支</description>
 		<transition to="pause_fork"/>
+      <transition to="exception_reassign_leader_fork"/>
 	</fork>
-	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="479,704,161,60" name="exception_process">
+	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="459,775,161,60" name="exception_process">
+		<description>支持单意外终止</description>
 		<transition to="end"/>
-      <transition g="-189,-20" name="to terminate_exception_proc" to="terminate_exception_proc"/>
 	</task>
-	<join g="322,929,168,52" multiplicity="1" name="terminate_exception_proc">
+	<join g="321,964,168,52" multiplicity="1" name="terminate_exception_proc">
+		<description>支持单意外分支合并</description>
 		<transition to="feedback"/>
 	</join>
 	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/ceApproval/ceApproval.jsp" g="34,408,148,52" name="reassign_depart">
+		<description>重新指派部门</description>
 		<transition to="end_reassign_department_join"/>
 	</task>
-	<task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="670,703,149,60" name="reassgin_stleader">
+	<task form="/business/techSupport/reassign_stleader/reassign_stleader.jsp" g="649,772,149,60" name="reassgin_stleader">
+		<description>重新指派负责人</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"/>
 		<transition to="reassign_stleader_condition"/>
-      <transition g="-189,-20" name="to terminate_exception_proc" to="terminate_exception_proc"/>
 	</task>
-	<decision expr="#{reassign_stleader_repeat}" g="726,905,168,60" name="reassign_stleader_condition">
-		<transition g="839,838:-135,-20" name="to_reassgin_stleader" to="reassgin_stleader"/>
+	<decision expr="#{reassign_stleader_repeat}" g="710,936,168,60" name="reassign_stleader_condition">
+		<description>无限重新指派</description>
+		<transition g="816,885:-135,-20" name="to_reassgin_stleader" to="reassgin_stleader"/>
 	</decision>
 	<task form="/business/techSupport/deptApproval/deptApproval.jsp" g="509,339,195,52" name="product_department_appr">
+		<description>产品部门审批</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
 			<field name="department_approval_type">
 				<string value="ts_产品部审批人"/>
@@ -72,19 +83,23 @@
 		<transition to="product_department_appr_exclusive"/>
 	</task>
 	<fork continue="sync" g="439,265,48,48" name="department_appr_fork">
+		<description>双部门审批分支</description>
 		<transition to="tech_department_appr"/>
 		<transition to="product_department_appr"/>
 	</fork>
 	<join g="492,462,48,48" name="end_department_appr_join">
+		<description>双部门分支合并</description>
 		<transition to="settingDeptAppr"/>
 	</join>
 	<decision g="409,146,48,48" name="department_appr_condition">
+		<description>部门审批条件</description>
 		<handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
 		<transition g="-5,-20" name="both" to="department_appr_fork"/>
 		<transition g="-39,2" name="tech_appr" to="tech_department_appr"/>
 		<transition g="-40,0" name="product_appr" to="product_department_appr"/>
 	</decision>
 	<java class="com.aisino2.techsupport.workflow.autotask.UpdateStStatus" g="462,539,171,60" method="updateStatus" name="updateStatusToGoing">
+		<description>修改程序状态</description>
 		<arg>
 			<object expr="#{worksheetno}"/>
 		</arg>
@@ -94,9 +109,11 @@
 		<transition to="exception_tracking_fork"/>
 	</java>
 	<join g="87,506,195,52" multiplicity="1" name="end_reassign_department_join">
+		<description>重新指派部门分支合并</description>
 		<transition to="reassign_department_or_tracking"/>
 	</join>
 	<decision expr="#{departmentAppr ? 'to_department_appr' : 'to_reassign_department_fork'}" g="209,516,48,48" name="reassign_department_or_tracking">
+		<description>重指派部门与追踪批复判断</description>
 		<transition g="-71,-33" name="to_department_appr" to="department_appr"/>
 		<transition g="196,564;34,559;31,340:-23,11" name="to_reassign_department_fork" to="reassign_department_fork"/>
 	</decision>
@@ -134,25 +151,41 @@
 		<transition to="department_appr_condition"/>
 	</join>
 	<fork g="211,651,48,48" name="pause_fork">
+		<description>暂停分支</description>
 		<transition to="tracking_appr"/>
 		<transition to="initPauseVar"/>
 	</fork>
 	<task form="/business/techSupport/pause/pause.jsp" g="82,785,92,52" name="pause">
+		<description>支持单暂停</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.PauseRestoreAssignHandler"/>
 		<transition to="pause_join"/>
 	</task>
 	<task form="/business/techSupport/pause/restore.jsp" g="95,960,92,52" name="restore">
+		<description>支持单恢复</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.PauseRestoreAssignHandler"/>
 		<transition g="66,988;69,697:" to="pause_fork"/>
 	</task>
-	<join g="221,789,48,48" name="pause_join">
-		<transition to="restore_or_feedback"/>
+	<join g="221,789,48,48" name="pause_join" multiplicity="1">
+		<description>暂停流程分支</description>
+		<transition to="create_exception_reassign_leader_fork"/>
 	</join>
-	<decision expr="#{isPause ? 'restore':'terminate_exception_proc'}" g="229,853,48,48" name="restore_or_feedback">
-		<transition g="-95,-21" name="terminate_exception_proc" to="terminate_exception_proc"/>
+	<decision expr="#{isPause ? 'restore':'terminate_exception_proc'}" g="216,902,48,48" name="restore_or_feedback">
+		<description>用于判断执行恢复流程还是正常流程</description>
+		<transition g="-2,-27" name="terminate_exception_proc" to="terminate_exception_proc"/>
 		<transition g="-68,-20" name="restore" to="restore"/>
 	</decision>
 	<script expr="false" g="75,699,104,52" name="initPauseVar" var="isPause">
+		<description>初始化暂停操作控制变量,用于在restore_or_feedback处判断改执行恢复流程还是正常流程</description>
 		<transition to="pause"/>
 	</script>
+   <fork name="exception_reassign_leader_fork" g="610,664,48,48">
+   	<description>用于把异常部分和进展和暂停部分分离,以便于该分支的子流程重新被创建</description>
+		<transition to="exception_process"/>
+		<transition to="reassgin_stleader"/>
+   </fork>
+   <fork name="create_exception_reassign_leader_fork" g="303,826,48,48">
+   	<description>用于重新创建被pause_join强制关闭的exception_reassign_leader_fork</description>
+      <transition to="exception_reassign_leader_fork"/>
+      <transition to="restore_or_feedback"/>
+   </fork>
 </process>
