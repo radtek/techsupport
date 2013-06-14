@@ -22,7 +22,7 @@
 </style>
 <input type="hidden" id="p_taskId">
 <input type="hidden" name="st.id">
-<div id="tracking" style="padding: 5 5 5 5">
+<div id="st" style="padding: 5 5 5 5">
 	<fieldset>
 		<legend>支持单信息</legend>
 		<div class="row">
@@ -194,6 +194,8 @@
 			<div class="clear-row"></div>
 		</div>
 	</fieldset>
+	</div>
+	<div id="restoreCt">
 	<fieldset>
 		<legend>恢复信息</legend>
 		<div class="row">
@@ -228,13 +230,13 @@
 			</div>
 			<%--产品方案部看到的计划时间 --%>
 			<div class="column-block2 column">
-				<label class="label label-80 red">产品方案部:</label>
+				<label class="label label-80" id="psgLabel">产品方案部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
 						<label class="label label-80">现计划完成时间:</label>
-						<input type="text" class="date item inputstyle ro label-100" name="st.psgScheDate" >
+						<input type="text" class="date item inputstyle ro label-100" name="st.psgScheDate" id="psgScheDate" >
 						<div class="clear-column"></div>
 					</div>
 					<div class="clear-row"></div>
@@ -253,7 +255,7 @@
 					<div class="column">
 						<div class="psgstage2">
 							<label class="label label-80" >需求:</label>
-							<input type="text" class="date psgstage2 item inputstyle ro label-100" name="st.psgDsScheDate">
+							<input type="text" class="date psgstage2 item inputstyle ro label-100" name="st.psgDsScheDate" id="psgDsScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
@@ -263,13 +265,13 @@
 			
 			<%--技术部门看到的计划时间 --%>
 			<div class="column-block2 column">
-				<label class="label label-80 red">技术开发部:</label>
+				<label class="label label-80" id="devLabel">技术开发部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
 						<label class="label label-80">现计划完成时间:</label>
-						<input type="text" class="date item inputstyle ro label-100" name="st.devScheDate" id="p_devScheDate">
+						<input type="text" class="date item inputstyle ro label-100" name="st.devScheDate" id="devScheDate">
 						<div class="clear-column"></div>
 					</div>
 					<div class="clear-row"></div>
@@ -287,7 +289,7 @@
 					<div class="column">
 						<div class="devstage2">
 							<label class="label label-80" >设计:</label>
-							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.devDsScheDate" id="p_devDsScheDate">
+							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.devDsScheDate" id="devDsScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
@@ -298,7 +300,7 @@
 					<div class="column">
 						<div class="devstage2">
 							<label class="label label-80" >开发:</label>
-							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDdScheDate" id="p_devDdScheDate">
+							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDdScheDate" id="devDdScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
@@ -310,7 +312,7 @@
 					<div class="column">
 						<div class="devstage2">
 							<label class="label label-80" >测试:</label>
-							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDtScheDate" id="p_devDtScheDate">
+							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDtScheDate" id="devDtScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
@@ -323,7 +325,7 @@
 					<div class="column">
 						<div class="devstage2">
 							<label class="label label-80" >实施:</label>
-							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.psgIsScheDate" id="p_psgIsScheDate">
+							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.psgIsScheDate" id="psgIsScheDate">
 						</div>
 						<div class="clear-column"></div>
 					</div>
