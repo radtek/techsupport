@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="TimeChange" type="com.aisino2.techsupport.domain.TimeChange" />
+
+	<resultMap class="TimeChange" id="timeChangeListR">
+		<result property="id" column="id" />
+		<result property="devScheDate" column="DEV_SCHE_DATE" />		<result property="psgScheDate" column="PSG_SCHE_DATE" />		<result property="devDsScheDate" column="DEV_DS_SCHE_DATE" />		<result property="devDdScheDate" column="DEV_DD_SCHE_DATE" />		<result property="devDtScheDate" column="DEV_DT_SCHE_DATE" />		<result property="psgDsScheDate" column="PSG_DS_SCHE_DATE" />		<result property="psgIsScheDate" column="PSG_IS_SCHE_DATE" />		<result property="type" column="TYPE" />
+		<result property="tracking.id" column="tr.id"/>
+		<result property="tracking.stId" column="tr.st_id"/>
+		<result property="tracking.trackingDate" column="tr.tracking_date"/>
+		<result property="tracking.newProcess" column="tr.new_process"/>
+		<result property="tracking.processor.id" column="tr.processor"/>
+		<result property="tracking.processor.username" column="user.username"/>	</resultMap>
+	
+	<sql id="where">
+		<isNotEmpty property="id" prepend="and">
+			t.id = #id#
+		</isNotEmpty>
+	</sql>
+	
+	<sql id="pageWhere">
+		<isNotEmpty property="tracking">
+			<isNotEmpty property="tracking.id" prepend="and">
+				tr.id = #tracking.id#
+			</isNotEmpty>
+			<isNotEmpty property="tracing.stId" prepend="and">
+				tr.st_id = #tracking.stId#
+			</isNotEmpty>
+		</isNotEmpty>
+	</sql>
+	
+	<insert id="TimeChange.insert" parameterClass="TimeChange">
+		insert into t_ts_timechange (
+			id,
+			tracking_id,
+			type
+			<isNotNull prepend="," property="devScheDate">
+				DEV_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="psgScheDate">
+				PSG_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="devDsScheDate">
+				DEV_DS_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="devDdScheDate">
+				DEV_DD_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="devDtScheDate">
+				DEV_DT_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="psgDsScheDate">
+				PSG_DS_SCHE_DATE
+			</isNotNull>
+			<isNotNull prepend="," property="psgIsScheDate">
+				PSG_IS_SCHE_DATE
+			</isNotNull>
+		)
+		values(
+			#id#,
+			#tracking.id#,
+			#type#
+			<isNotNull prepend="," property="devScheDate">
+				#DEV_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="psgScheDate">
+				#PSG_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="devDsScheDate">
+				#DEV_DS_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="devDdScheDate">
+				#DEV_DD_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="devDtScheDate">
+				#DEV_DT_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="psgDsScheDate">
+				#PSG_DS_SCHE_DATE#
+			</isNotNull>
+			<isNotNull prepend="," property="psgIsScheDate">
+				#PSG_IS_SCHE_DATE#
+			</isNotNull>
+		)
+	</insert>
+	
+	<select id="TimeChange.getListForPage" parameterClass="map" resultMap="timeChangeListR">
+		select t.*,tr.id,tr.st_id,tr.tracking_date,tr.new_process,tr.new_process,tr.processor
+			,user.username
+		from t_ts_timechange t, t_user user, t_ts_tracking tr
+		where
+			t.tracking_id = tr.id and tr.processor = user.id
+			<include refid="pageWhere"/>
+	</select>
+</sqlMap>

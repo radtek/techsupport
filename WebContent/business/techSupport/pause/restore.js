@@ -11,8 +11,8 @@ var trackingWindowWidth = 850;
 var techDepartmentApprovalTime = null;
 // 产品部门审批时间
 var productDepartmentApprovalTime = null;
-//追踪批复链接
-var trackingInfoURL=BUSNEISS_PATH+"/querylistNoPage_tracking.action";
+// 追踪批复链接
+var trackingInfoURL = BUSNEISS_PATH + "/querylistNoPage_tracking.action";
 /** 保存验证 */
 function saveVerify() {
 	if (!checkControlValue("p_newProcess", "String", 1, 3000, null, 1, "恢复原因"))
@@ -115,7 +115,9 @@ $(function() {
 							return;
 						var params = {};
 
-						params = getSubmitParams('[name^=tracking.]');
+						
+						params = getSubmitParams('#restoreCt [name^=tracking.]');
+						params = getSubmitParams('#restoreCt [name^=st.]',params);
 						// 设置当前的track.stId
 						params['tracking.stId'] = $('input:hidden[name=st.id]')
 								.val();
@@ -242,7 +244,7 @@ function loadData() {
 			var trackinglist = result.lTracking;
 			for (var i = trackinglist.length - 1; i >= 0; i--) {
 				if (trackinglist[i].type == TRACKING_TYPE_HDEVREPLY) {
-					 techDepartmentApprovalTime = setNull(trackinglist[i].trackingDate);
+					techDepartmentApprovalTime = setNull(trackinglist[i].trackingDate);
 				} else if (trackinglist[i].type == TRACKING_TYPE_PGMREPLY) {
 					productDepartmentApprovalTime = setNull(trackinglist[i].trackingDate);
 				}
