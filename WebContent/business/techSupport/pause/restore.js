@@ -124,6 +124,12 @@ $(function() {
 						params['st.id'] = $('input:hidden[name=st.id]').val();
 						params['taskId'] = $('#p_taskId').val();
 
+						if ($('#st input[name=st.devScheDate]').val()) {
+						  params['timeChange.type'] = ST_TIME_CHANGE_TYPE_DEVELOP;
+						}
+						else
+						  params['timeChange.type'] = ST_TIME_CHANGE_TYPE_PRODUCT;
+						  
 						$.post(saveURL, params, function(data) {
 									if (!data) {
 										alert("传输错误，管理人员");
@@ -178,7 +184,7 @@ function loadData() {
 
 	$.post(processUrl2, paramsss, function(data) {
 
-		$('input[name^=st.]').each(function() {
+		$('#st input[name^=st.]').each(function() {
 			try {
 				$(this).val(setNull(eval("(" + "data." + $(this).attr('name')
 						+ ")")));
@@ -187,7 +193,7 @@ function loadData() {
 			}
 
 		});
-		$('textarea[name^=st.]').each(function() {
+		$('#st textarea[name^=st.]').each(function() {
 			try {
 				$(this).val(setNull(eval("(" + "data." + $(this).attr('name')
 						+ ")")));

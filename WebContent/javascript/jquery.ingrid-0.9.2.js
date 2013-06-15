@@ -23,6 +23,7 @@ jQuery.fn.ingrid = function(o){
 		ingridPageRows:0,
 		ingridHightSpeed:false,                        //插件高速模式 默认为关闭
 		ingridPageParams:initParams,
+		ingridExtraParams:{},                           //添加自定义参数，默认为空对象
 		height: 200,									//默认插件高度 --- 一般在页面都要重新设置
 		tableid : "grid",								//插件的ID --- 方便在页面直接对插件内容的操作
 		sumFlag: false,									//合计请求标识 ---
@@ -225,7 +226,7 @@ jQuery.fn.ingrid = function(o){
 			} else {
 				$theadTrTh.find('div:first').addClass(cfg.sortNoneClass);
 			}
-			$theadTrTh.click(function(){
+			$theadTrTh.get(0).onclick=function(){
 				cfg.clickPageOrSort = true; //点击了排序
 				$gridObj.find('tbody').html("");
 				var $nowthdiv = $theadTrTh.find('div:first');
@@ -245,7 +246,7 @@ jQuery.fn.ingrid = function(o){
 				});
 				$nowthdiv.removeClass(cfg.sortAscClass).removeClass(cfg.sortDescClass).removeClass(cfg.sortNoneClass).addClass(nowclass);
 				$ingrider.load();
-			});
+			};
 		}
 	});
 
@@ -253,7 +254,7 @@ jQuery.fn.ingrid = function(o){
 				.addClass(cfg.pageToolbarClass)
 				.height(cfg.pageToolbarHeight)
 			    .width(cfg.ingridPageWidth)
-	
+
 	var $ingridTable = jQuery("<div />") //将上面的TABLE放到这个DIV里面 作为插件的内容(如果需要改变插件的内容就改变gridObj就行了)
 			.width(cfg.ingridPageWidth-1)
 			.height(cfg.height+cfg.headerHeight)
@@ -324,11 +325,15 @@ jQuery.fn.ingrid = function(o){
 				//end
 				if(cfg.ingridSort==''&&cfg.ingridDir==''){
 					thisPageParams = { dataxml:cfg.ingridPageParams,
-						pagerow:cfg.ingridPageRows,pagesize:cfg.pageNumber }
+						pagerow:cfg.ingridPageRows,pagesize:cfg.pageNumber };
+					//扩增自定义增强参数 2012-8-15
+					jQuery.extend(thisPageParams,cfg.ingridExtraParams);
 				} else {
 					thisPageParams = { dataxml:cfg.ingridPageParams,
 						pagerow:cfg.ingridPageRows,pagesize:cfg.pageNumber,
-						sort:cfg.ingridSort, dir:cfg.ingridDir }
+						sort:cfg.ingridSort, dir:cfg.ingridDir };
+					//扩增自定义增强参数 2012-8-15
+					jQuery.extend(thisPageParams,cfg.ingridExtraParams);
 				}
 				var data = jQuery.extend(cfg.extraParams, thisPageParams);
 				
@@ -342,9 +347,7 @@ jQuery.fn.ingrid = function(o){
 					async: cfg.loadAsync,
 					success: function(result){
 						if (cfg.dataType == 'json') {
-							//修复在jquery-1.4.2的错误
-//							var $rows  = eval( '(' + result + ')' );
-							var $rows = result;
+							var $rows  = eval( '(' + result + ')' );
 							if($rows.result=='success'){
 								cfg.totalRecords=$rows.totalrows;
 								$ingrider.setPageCon($rows.tabledata);

@@ -194,6 +194,16 @@ public class Constants {
 	 * 机构代码部门审批角色映射
 	 */
 	public static Map<String, String> ST_DEPARTCODE_DEPARTMENT_APPROVAL_ROLE_MAP = new HashMap<String, String>();
+
+	/**
+	 * 支持单时间改变轨迹状态, 产品
+	 */
+	public static final String ST_TIME_CHANGE_TYPE_PRODUCT = "0";
+	/**
+	 * 支持单时间改变轨迹状态, 开发
+	 */
+	public static final String ST_TIME_CHANGE_TYPE_DEVELOP = "1";
+
 	static {
 		util = new CommonUtil();
 		try {

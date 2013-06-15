@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.aisino2.core.web.PageAction;
 import com.aisino2.techsupport.domain.SupportTicket;
+import com.aisino2.techsupport.domain.TimeChange;
 import com.aisino2.techsupport.domain.Tracking;
 import com.aisino2.techsupport.service.IRestoreService;
 
@@ -44,7 +45,20 @@ public class RestoreAction extends PageAction {
 	 */
 	private String returnMsg;
 
+	/**
+	 * 时间改变轨迹
+	 */
+	private TimeChange timeChange;
+
 	private IRestoreService restoreService;
+
+	public TimeChange getTimeChange() {
+		return timeChange;
+	}
+
+	public void setTimeChange(TimeChange timeChange) {
+		this.timeChange = timeChange;
+	}
 
 	@Resource(name = "restoreServiceImpl")
 	public void setRestoreService(IRestoreService restoreService) {
@@ -102,7 +116,10 @@ public class RestoreAction extends PageAction {
 				throw new RuntimeException("支持单恢复任务号传输错误");
 			if (st == null)
 				throw new RuntimeException("支持单恢复工单信息传输错误");
-			restoreService.restore(taskId, st, tracking);
+			if (timeChange == null) {
+				throw new RuntimeException("支持单恢复时间轨迹传输错误");
+			}
+			restoreService.restore(taskId, st, tracking, timeChange);
 			returnNo = 0;
 		} catch (Exception e) {
 			log.error(e);

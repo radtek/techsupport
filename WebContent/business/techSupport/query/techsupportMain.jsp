@@ -63,6 +63,10 @@ var supervision_width = 690;
 
 // 申请人修改页面
 var applicant_page = "business/techSupport/query/techsupportModify.jsp";
+// 时间变更情况链接地址
+var timeChangeUrl = "business/techSupport/query/timeChange.jsp";
+var timeChangeDetailWidth = detailWidth;
+var timeChangeCt = "timeChangeCt";
 
 // 延迟加载
 function lazyLoad(){
@@ -86,6 +90,10 @@ function lazyLoad(){
 		//lazyLoad(); 
 		
 		daggleDiv(detailid);
+		
+		//时间变更轨迹
+	    daggleDiv('timeChangeCt');
+		
 // 		设置状态下拉条
 		$('#p_stStatus').selectBox({code:ST_STATUS_DICT_CODE});
 		//设置部门选择器
@@ -112,7 +120,6 @@ function lazyLoad(){
 		var upload_folder = '/upload';
 		//允许上传大小 字节
 		var allow_max_size = 20971520;
-		
 		
 		
 		//20121109 支持单未完成导入
@@ -410,6 +417,8 @@ function lazyLoad(){
 													__tr.find('td:last').append('<a title="打印申请单" class="fontbutton" href="#" onclick="setPrintApply('+__tr.attr('id')+')" style="margin-right:5px;">打印申请单</a>');
 													__tr.find('td:last').append('<a title="打印反馈单" class="fontbutton" href="#" onclick="setPrintFeedback('+__tr.attr('id')+')" style="margin-right:5px;">打印反馈单</a>');
 													
+													//添加时间变更情况
+													__tr.find("td:last").append('<a title="时间变更情况" class="fontbutton" href="#" onclick="setTimeChange('+__tr.attr('id')+')" style="margin-right:5px;">时间变更情况</a>');
 													//当在进行中的时候,“计划完成时间”<=当前时间的记录行，高亮（突出）显示
 													var	scheTimeStr = __tr.find('td:nth(6)').html().trim().replace(/&nbsp;/g,'');
 													if(scheTimeStr && text == ST_STATUS_GOING){
@@ -478,6 +487,12 @@ function lazyLoad(){
 		window.open('business/techSupport/query/techsupportFeedbackPrintViewer.jsp?stId='+id,'printWindow');
 	}
 	////////////////////////////////////////////////////////////////////
+	
+// 	时间变更情况查询
+  function setTimeChange(id){
+		dataid=id;
+	  detailDialog(timeChangeCt,timeChangeDetailWidth,timeChangeUrl,'时间变更情况');
+	}
 </script>
 	</head>
 	<body>
@@ -631,5 +646,6 @@ function lazyLoad(){
 <div id="detailCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 <div id="supervision_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 <div id="import_detail_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
+<div id="timeChangeCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 	</body>
 </html>

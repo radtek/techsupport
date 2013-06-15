@@ -127,5 +127,12 @@
 	var ST_PROCESS_REASSIGN_DEPART = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_REASSIGN_DEPART%>";
 	// 重指派支持单负责人
 	var ST_PROCESS_REASSGIN_STLEADER = "<%=com.aisino2.techsupport.common.Constants.ST_PROCESS_REASSGIN_STLEADER%>";
-	
+	/**
+	   * 支持单时间改变轨迹状态, 产品
+	   */
+	var ST_TIME_CHANGE_TYPE_PRODUCT = "<%=com.aisino2.techsupport.common.Constants.ST_TIME_CHANGE_TYPE_PRODUCT%>";
+	/**
+	   * 支持单时间改变轨迹状态, 开发
+	   */
+	var ST_TIME_CHANGE_TYPE_DEVELOP = "<%=com.aisino2.techsupport.common.Constants.ST_TIME_CHANGE_TYPE_DEVELOP%>";
 </script>
