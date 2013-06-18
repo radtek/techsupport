@@ -562,3 +562,81 @@ function render_attachment_filesize($table){
 		$file_size_td.text(file_size);
 	});
 }
+
+ /** 
+ * 时间对象的格式化; 
+ */  
+Date.prototype.format = function(format) {  
+    /* 
+     * eg:format="yyyy-MM-dd hh:mm:ss"; 
+     */  
+    var o = {  
+        "M+" : this.getMonth() + 1, // month  
+        "d+" : this.getDate(), // day  
+        "h+" : this.getHours(), // hour  
+        "m+" : this.getMinutes(), // minute  
+        "s+" : this.getSeconds(), // second  
+        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
+        "S" : this.getMilliseconds()  
+        // millisecond  
+    }  
+  
+    if (/(y+)/.test(format)) {  
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
+                        - RegExp.$1.length));  
+    }  
+  
+    for (var k in o) {  
+        if (new RegExp("(" + k + ")").test(format)) {  
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1  
+                            ? o[k]  
+                            : ("00" + o[k]).substr(("" + o[k]).length));  
+        }  
+    }  
+    return format;  
+}
+/**
+ * 通过解析时间字符串和和格式,返回时间毫秒
+ * @param {} timeStr 时间字符串
+ * @param {} format 时间格式 yyyy-MM-dd之类
+ * @return 毫秒数
+ */
+Date.parse = function(timeStr,format){
+    	/* 
+         * eg:format="yyyy-MM-dd hh:mm:ss"; 
+         */  
+        format = format?format:'yyyy-MM-dd';
+        var year='';
+        var month='';
+        var day='';
+        var hours='';
+        var minutes='';
+        var seconds='';
+        
+        var o = {
+            "y" : function(y){ year += y},
+            "M" : function(M){ month += M}, // month  
+            "d" : function(d){ day+=d}, // day  
+            "h" : function(h){ hours+=h}, // hour  
+            "m" : function(m){ minutes += m}, // minute  
+            "s" : function(s){ seconds += s} // second  
+        }
+    for(k in o){
+        var left = format.indexOf(k);
+        var right = format.lastIndexOf(k);
+        if(-1 == left || -1 == right)
+            continue;
+        
+        o[k](timeStr.substring(left,right+1));
+    }    
+    var date = null;
+    try{
+//        console.log('year = '+year+',month = '+month+',day = '+day+', hours = '+hours+', minutes = '+minutes+', seconds = '+seconds);
+       date =  new Date(parseInt(year),month?parseInt(month)-1:0,day?parseInt(day):0,hours?parseInt(hours):0,minutes?parseInt(minutes):0,seconds?parseInt(seconds):0);
+    }
+    catch(e){
+        console.log('日期格式错误');
+        throw e;
+    }
+    return date;
+}   

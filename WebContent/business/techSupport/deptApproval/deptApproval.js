@@ -354,7 +354,7 @@ function submitVerity() {
 					"计划完成时间"))
 				return false;
 			// 计划完成时间必须大于当前部门审批的时间
-			if ($('#psgScheDate').val() < $('#deptApprovalDate').val()){
+			if (Date.parse($('#psgScheDate').val()) < Date.parse($('#deptApprovalDate').val(),'yyyy-MM-dd hh:mm:ss')){
 				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
@@ -364,7 +364,7 @@ function submitVerity() {
 					return false;
 				
 				
-				if($('#psgDsScheDate').val() != $('#psgScheDate').val()){
+				if(Date.parse($('#psgDsScheDate').val()) != Date.parse($('#psgScheDate').val())){
 					jAlert('计划需求时间必须等于计划完成时间','提示');
 					return false;
 				}
@@ -373,8 +373,9 @@ function submitVerity() {
 			if (!checkControlValue("devScheDate", "Date", 1, 100, null, 1,
 					"计划完成时间"))
 				return false;
+				
 			// 计划完成时间必须大于当前部门审批的时间
-			if ($('#devScheDate').val() < $('#deptApprovalDate').val()){
+			if (Date.parse($('#devScheDate').val()) < Date.parse($('#deptApprovalDate').val(),'yyyy-MM-dd hh:mm:ss')){
 				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
@@ -392,10 +393,10 @@ function submitVerity() {
 				if (!checkControlValue("psgIsScheDate", "Date", 1, 100, null,
 						1, "计划实施时间"))
 					return false;
-				if(!($('#devDsScheDate').val() < $('#devDdScheDate').val() &&
-					$('#devDdScheDate').val() < $('#devDtScheDate').val() &&
-					$('#devDtScheDate').val() < $('#psgIsScheDate').val() && 
-					$('#devScheDate').val() == $('#psgIsScheDate').val())){
+				if(!(Date.parse($('#devDsScheDate').val()) < Date.parse($('#devDdScheDate').val()) &&
+					Date.parse($('#devDdScheDate').val()) < Date.parse($('#devDtScheDate').val()) &&
+					Date.parse($('#devDtScheDate').val()) < Date.parse($('#psgIsScheDate').val()) && 
+					Date.parse($('#devScheDate').val()) == Date.parse($('#psgIsScheDate').val()))){
 					jAlert('计划设计时间必须小于计划开发时间必须小于计划测试时间，测试时间必须小于实施时间，实施时间必须等于计划完成时间','提示');
 					return false;
 				}

@@ -124,7 +124,7 @@ function toFeedbackVerify(){
 		if (!checkControlValue("p_psgCompDate","Date",null,null,null,1,"实际完成时间"))
 			return false;
 		// 实际完成时间应该大于等于部门审批的时间
-		if($('#p_psgCompDate').val() < sLatestDepartmentApprovalDate){
+		if(Date.parse($('#p_psgCompDate').val()) < sLatestDepartmentApprovalDate){
 			jAlert('实际完成时间应该大于等于部门审批的时间','提示');
 			return false;
 		}
@@ -133,7 +133,7 @@ function toFeedbackVerify(){
 			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"实际需求完成时间"))
 				return false;
 			// 实际完成时间必须等于实际需求完成时间
-			if(!($('#p_psgDsCompDate').val() == $('#p_psgCompDate').val())){
+			if(!(Date.parse($('#p_psgDsCompDate').val()) == Date.parse($('#p_psgCompDate').val()))){
 					jAlert('实际需求完成时间必须等于实际完成时间','提示');
 					return false;
 				}
@@ -145,7 +145,7 @@ function toFeedbackVerify(){
 		if (!checkControlValue("p_devCompDate","Date",null,null,null,1,"实际完成时间"))
 				return false;
 		// 实际完成时间应该大于等于部门审批的时间
-		if($('#p_devCompDate').val() < sLatestDepartmentApprovalDate){
+		if(Date.parse($('#p_devCompDate').val()) < sLatestDepartmentApprovalDate){
 			jAlert('实际完成时间应该大于等于部门审批的时间','提示');
 			return false;
 		}
@@ -160,10 +160,10 @@ function toFeedbackVerify(){
 				return false;
 			if (!checkControlValue("p_psgIsCompDate","Date",null,null,null,1,"实际实施完成时间"))
 				return false;
-			if(!($('#p_devDsCompDate').val() < $('#p_devDdCompDate').val() &&
-					$('#p_devDdCompDate').val() < $('#p_devDtCompDate').val() &&
-					$('#p_devDtCompDate').val() < $('#p_psgIsCompDate').val() &&
-					$('#p_devCompDate').val() == $('#p_psgIsCompDate').val())){
+			if(!(Date.parse($('#p_devDsCompDate').val()) < Date.parse($('#p_devDdCompDate').val()) &&
+					Date.parse($('#p_devDdCompDate').val()) < Date.parse($('#p_devDtCompDate').val()) &&
+					Date.parse($('#p_devDtCompDate').val()) < Date.parse($('#p_psgIsCompDate').val()) &&
+					Date.parse($('#p_devCompDate').val()) == Date.parse($('#p_psgIsCompDate').val()))){
 					jAlert('实际设计完成时间必须小于实际开发完成时间必须小于实际测试完成时间必须小于实际实施完成时间，实际实施完成时间必须等于实际完成时间，','提示');
 					return false;
 				}
@@ -350,10 +350,10 @@ function loadData(){
 			for(var i=0;i<data.lTracking.length;i++){
 				var track = data.lTracking[i];
 				if (track.type == TRACKING_TYPE_PGMREPLY || track.type == TRACKING_TYPE_HDEVREPLY) {
-					sLatestDepartmentApprovalDate = sLatestDepartmentApprovalDate?
-						sLatestDepartmentApprovalDate:setNull(track.trackingDate);
-					if(track.trackingDate > sLatestDepartmentApprovalDate)
-						sLatestDepartmentApprovalDate = setNull(track.trackingDate);
+					sLatestDepartmentApprovalDate = sLatestDepartmentApprovalDate && sLatestDepartmentApprovalDate >= Date.parse(track.trackingDate,'yyyy-MM-dd hh:mm:ss') ?
+						sLatestDepartmentApprovalDate:Date.parse(setNull(track.trackingDate),'yyyy-MM-dd hh:mm:ss');
+//					if(track.trackingDate > sLatestDepartmentApprovalDate)
+//						sLatestDepartmentApprovalDate = setNull(track.trackingDate);
 				}
 			}
 		},"json");
