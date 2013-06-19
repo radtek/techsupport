@@ -8,14 +8,15 @@
 <script type="text/javascript">
 var developTimeCt = "developTimeChangeDiv";
 var developTimeTableId = "developTimeChangeTable";
-var developTimeCtWidth=400;
+var developTimeCtWidth=450;
 var developTimeTable;
 
 var productTimeCt = "productTimeChangeDiv";
 var productTimeTableId = "productTimeChangeTable";
-var productTimeCtWidth  = 300;
+var productTimeCtWidth  = 450;
 var productTimeTable;
 
+var timeChangeQueryUrl = BUSNEISS_PATH + "/querylist_timeChange.action";
 $(function(){
 	initProductTimeChangeQuery(productTimeCt);
 	
@@ -34,7 +35,7 @@ function initProductTimeChangeQuery(divpageid){
 // 	  createXML("tc_");
 	  params = {'timeChange.tracking.stId':dataid,'timeChange.type':ST_TIME_CHANGE_TYPE_PRODUCT};
 	  if (url==null || url=="undefined"){
-	    url=timeChangeUrl;
+	    url=timeChangeQueryUrl;
 	  }
 	  return url;
 	 }
@@ -71,7 +72,7 @@ function initProductTimeChangeQuery(divpageid){
 //		    createXML("tc_");
 		    params = {'timeChange.tracking.stId':dataid,'timeChange.type':ST_TIME_CHANGE_TYPE_DEVELOP};
 		    if (url==null || url=="undefined"){
-		      url=timeChangeUrl;
+		      url=timeChangeQueryUrl;
 		    }
 		    return url;
 		   }
@@ -99,13 +100,19 @@ function initProductTimeChangeQuery(divpageid){
 		      }
 		  }
 </script>
+<style type="text/css">
+	.timeCt {
+		padding: 5 5 5 5;
+	}
+</style>
 </head>
 <body>
-  <div id="productTimeCt">
+  <div id="productTimeCt" style="width:49%;float: left;" class="timeCt">
     <fieldset>
       <legend>产品计划时间变更</legend>
-      <div id="productTimeChangeDiv">
+      <div id="productTimeChangeDiv" >
         <table id="productTimeChangeTable">
+         <thead>
           <tr>
              <th>变更人</th>
             <th>变更时间</th>
@@ -120,15 +127,17 @@ function initProductTimeChangeQuery(divpageid){
             <th>实施时间</th>
             <th>变更原因</th>
           </tr>
+         </thead>
         </table>
       </div>
     </fieldset>
   </div>
-  <div id="developTimeCt" style="float: left;">
+  <div id="developTimeCt" style="float: left;width:49%" class="timeCt">
     <fieldset>
       <legend>开发计划时间变更</legend>
       <div id="developTimeChangeDiv">
         <table id="developTimeChangeTable">
+        	 <thead>
           <tr>
             <th>变更人</th>
             <th>变更时间</th>
@@ -143,6 +152,7 @@ function initProductTimeChangeQuery(divpageid){
             <th>实施时间</th>
             <th>变更原因</th>
           </tr>
+           </thead>
         </table>
       </div>
     </fieldset>

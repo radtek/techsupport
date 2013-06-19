@@ -29,44 +29,44 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(TrackingServiceImpl.class);
+	private static final Logger logger = Logger
+			.getLogger(TrackingServiceImpl.class);
 
 	private TrackingDao trackDao;
 
 	private SupportTicketService stService;
-	
+
 	private IUserService userService;
-	
+
 	/**
 	 * 流程控制服务
 	 */
 	private WorkflowUtil workflow;
-	
+
 	public Tracking insertTracking(Tracking tracking) {
-		Tracking track = null;
 		if (logger.isDebugEnabled()) {
 			logger.debug("insertTracking(Tracking) - start"); //$NON-NLS-1$
 		}
 
 		try {
-			if(tracking.getType()==null || tracking.getType().trim().length() == 0)
+			if (tracking.getType() == null
+					|| tracking.getType().trim().length() == 0)
 				tracking.setType(Constants.TRACKING_TYPE_TRACKING);
-			track = trackDao.insertTracking(tracking);
+			tracking = trackDao.insertTracking(tracking);
 			SupportTicket st = new SupportTicket();
 			st.setId(tracking.getStId());
-			//更新最后操作时间
+			// 更新最后操作时间
 			st.setLastUpdateDate(new Date());
 			stService.updateSupportTicket(st);
 		} catch (RuntimeException e) {
-			logger.error(e,e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			throw e;
 		}
-		
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("insertTracking(Tracking) - end"); //$NON-NLS-1$
 		}
-		return track;
+		return tracking;
 	}
 
 	public int updateTracking(Tracking tracking) {
@@ -74,11 +74,11 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		if (logger.isDebugEnabled()) {
 			logger.debug("updateTracking(Tracking) - start"); //$NON-NLS-1$
 		}
-		
+
 		try {
 			ret = trackDao.updateTracking(tracking);
 		} catch (RuntimeException e) {
-			logger.error(e,e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			throw e;
 		}
 
@@ -97,7 +97,7 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		try {
 			ret = trackDao.deleteTracking(tracking);
 		} catch (RuntimeException e) {
-			logger.error(e,e);
+			logger.error(e, e);
 			throw e;
 		}
 
@@ -118,19 +118,22 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		if (logger.isDebugEnabled()) {
 			logger.debug("getTrackingListForPage(int, int, Tracking, String, String) - start"); //$NON-NLS-1$
 		}
-		
+
 		try {
-			trackPage = trackDao.getTrackingListForPage(pageno, pagesize, tracking, sort, desc);
-			if(trackPage.getData()!=null && trackPage.getData().size()>0)
-				for(Tracking track : (List<Tracking>)trackPage.getData()){
-					if(track.getProcessor()!=null){
-						track.setProcessor(userService.getUser(track.getProcessor()));
+			trackPage = trackDao.getTrackingListForPage(pageno, pagesize,
+					tracking, sort, desc);
+			if (trackPage.getData() != null && trackPage.getData().size() > 0)
+				for (Tracking track : (List<Tracking>) trackPage.getData()) {
+					if (track.getProcessor() != null) {
+						track.setProcessor(userService.getUser(track
+								.getProcessor()));
 						track.setProcessorId(track.getProcessor().getUserid());
-						track.setProcessorName(track.getProcessor().getUsername());
+						track.setProcessorName(track.getProcessor()
+								.getUsername());
 					}
 				}
 		} catch (RuntimeException e) {
-			logger.error(e,e);
+			logger.error(e, e);
 			throw e;
 		}
 
@@ -145,11 +148,11 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		if (logger.isDebugEnabled()) {
 			logger.debug("getTracking(Tracking) - start"); //$NON-NLS-1$
 		}
-		
+
 		try {
 			track = trackDao.getTracking(tracking);
 		} catch (RuntimeException e) {
-			logger.error(e,e);
+			logger.error(e, e);
 			throw e;
 		}
 
@@ -159,57 +162,62 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		return track;
 	}
 
-	@Resource(name="TrackingDaoImpl")
+	@Resource(name = "TrackingDaoImpl")
 	public void setTrackDao(TrackingDao trackDao) {
 		this.trackDao = trackDao;
 	}
 
-	public Tracking insertTrackingAndGo(String taskId,SupportTicket st,Tracking tracking) {
+	public Tracking insertTrackingAndGo(String taskId, SupportTicket st,
+			Tracking tracking) {
 		Tracking track = null;
 		if (logger.isDebugEnabled()) {
 			logger.debug("insertTrackingAndGo(Tracking) - start"); //$NON-NLS-1$
 		}
 
 		try {
-			if(taskId==null)
+			if (taskId == null)
 				throw new RuntimeException("taskID 为空;");
-			if(tracking.getType()==null || tracking.getType().trim().length() == 0)
+			if (tracking.getType() == null
+					|| tracking.getType().trim().length() == 0)
 				tracking.setType(Constants.TRACKING_TYPE_TRACKING);
 			track = trackDao.insertTracking(tracking);
-			
-			
-			List<Participation> tracking_users = workflow.getTaskService().getTaskParticipations(taskId);
-			for(Participation p : tracking_users){
-				if(tracking.getProcessor().getUserid() == Integer.parseInt(p.getUserId()))
-				{
-					workflow.getTaskService().removeTaskParticipatingUser(taskId, p.getUserId(), Participation.CANDIDATE);
+
+			List<Participation> tracking_users = workflow.getTaskService()
+					.getTaskParticipations(taskId);
+			for (Participation p : tracking_users) {
+				if (tracking.getProcessor().getUserid() == Integer.parseInt(p
+						.getUserId())) {
+					workflow.getTaskService().removeTaskParticipatingUser(
+							taskId, p.getUserId(), Participation.CANDIDATE);
 					tracking_users.remove(p);
 					break;
 				}
 			}
-			//当所有部门的支持单负责人都提请反馈后，才真正的提请反馈。。
-			if(tracking_users.isEmpty()){
-				try{
-					//流程开始
+			// 当所有部门的支持单负责人都提请反馈后，才真正的提请反馈。。
+			if (tracking_users.isEmpty()) {
+				try {
+					// 流程开始
 					workflow.workflowNext(workflow.setVariable(taskId, null));
-				}catch (Exception e) {
-					workflow.getTaskService().addTaskParticipatingUser(taskId, tracking.getProcessor().getUserid().toString(), Participation.CANDIDATE);
-					
+				} catch (Exception e) {
+					workflow.getTaskService().addTaskParticipatingUser(taskId,
+							tracking.getProcessor().getUserid().toString(),
+							Participation.CANDIDATE);
+
 				}
-				
-				//设置提请反馈时间
+
+				// 设置提请反馈时间
 				st.setApplyingFeedbackDate(new Date());
-				//设置状态
+				// 设置状态
 				st.setStStatus(Constants.ST_STATUS_WAIT_FEEDBACK);
-				
+
 			}
-			//更新最后操作时间
+			// 更新最后操作时间
 			st.setLastUpdateDate(new Date());
 			stService.updateSupportTicket(st);
-			
+
 		} catch (RuntimeException e) {
-			logger.error(e,e.fillInStackTrace());
-			throw e ;
+			logger.error(e, e.fillInStackTrace());
+			throw e;
 		}
 
 		if (logger.isDebugEnabled()) {
@@ -218,17 +226,17 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 		return track;
 	}
 
-	@Resource(name="SupportTicketServiceImpl")
+	@Resource(name = "SupportTicketServiceImpl")
 	public void setStService(SupportTicketService stService) {
 		this.stService = stService;
 	}
 
-	@Resource(name="userService")
+	@Resource(name = "userService")
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
-	
-	@Resource(name="WorkflowUtil")
+
+	@Resource(name = "WorkflowUtil")
 	public void setWorkflow(WorkflowUtil workflow) {
 		this.workflow = workflow;
 	}

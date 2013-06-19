@@ -2,7 +2,8 @@ package com.aisino2.techsupport.dao.ibatis;
 
 import java.util.Map;
 
-import com.aisino2.core.dao.BaseDao;
+import org.springframework.stereotype.Component;
+
 import com.aisino2.core.dao.Page;
 import com.aisino2.techsupport.dao.TimeChangeDao;
 import com.aisino2.techsupport.domain.TimeChange;
@@ -13,7 +14,9 @@ import com.aisino2.techsupport.domain.TimeChange;
  * @author hooxin
  * 
  */
-public class TimeChangeDaoImpl extends BaseDao implements TimeChangeDao {
+@Component
+public class TimeChangeDaoImpl extends TechSupportBaseDao implements
+		TimeChangeDao {
 
 	@Override
 	public TimeChange insert(TimeChange timeChange) {

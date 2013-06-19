@@ -84,5 +84,9 @@
   	<action name="*_restore" class="restoreAction" method="{1}">
   		<result type="json"></result>
   	</action>
+<!--   	时间变更轨迹 -->
+  	<action name="*_timeChange" class="timeChangeAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
   </package>
 </struts>

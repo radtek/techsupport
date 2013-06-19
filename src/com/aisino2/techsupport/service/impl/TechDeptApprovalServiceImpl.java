@@ -76,6 +76,7 @@ public class TechDeptApprovalServiceImpl implements IDeptApprovalService {
 		timeChange.setDevDtScheDate(st.getDevDtScheDate());
 		timeChange.setPsgIsScheDate(st.getPsgIsCompDate());
 		timeChange.setType(Constants.ST_TIME_CHANGE_TYPE_DEVELOP);
+		timeChange.setTracking(tracking);
 		timeChangeService.insertTimeChange(timeChange);
 
 		Map<String, Object> var = new HashMap<String, Object>();

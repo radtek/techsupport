@@ -28,7 +28,7 @@ public class RestoreServiceImpl implements IRestoreService {
 	private WorkflowUtil workflow;
 	private TimeChangeDao timeChangeDao;
 
-	@Resource(name = "TimeChangeDaoImpl")
+	@Resource(name = "timeChangeDaoImpl")
 	public void setTimeChangeDao(TimeChangeDao timeChangeDao) {
 		this.timeChangeDao = timeChangeDao;
 	}

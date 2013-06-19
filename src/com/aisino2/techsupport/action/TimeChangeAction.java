@@ -115,7 +115,6 @@ public class TimeChangeAction extends PageAction {
 	@SuppressWarnings("unchecked")
 	public String querylist() {
 		try {
-			timeChange = (TimeChange) this.setClass(timeChange, null);
 			Page pager = timeChangeService.getListTimeChangePage(timeChange,
 					pagesize, pagerow, sort, dir);
 			timeChangeList = pager.getData();
@@ -157,11 +156,17 @@ public class TimeChangeAction extends PageAction {
 		lPro.add("trackingContent");
 
 		List<List<String>> lCol = new ArrayList<List<String>>();
-		List<String> lDetail = new ArrayList<String>();
-		lDetail.add("setDetail");
-		lDetail.add("详情");
-		lCol.add(lDetail);
 
+		for (TimeChange timeChange : lData) {
+			timeChange.setTrackingContent(timeChange.getTracking()
+					.getNewProcess());
+			timeChange.setTrackingDate(timeChange.getTracking()
+					.getTrackingDate());
+			timeChange.setTrackingPersonName(timeChange.getTracking()
+					.getProcessor().getUsername());
+		}
+		if (!lData.isEmpty())
+			lData.get(0).setTrackingContent("初次审批");
 		this.setData(timeChange, lData, lPro, lCol);
 		this.tabledata = this.getData();
 		totalrows = this.getTotalrows();

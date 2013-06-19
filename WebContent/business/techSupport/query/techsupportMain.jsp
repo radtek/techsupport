@@ -47,6 +47,7 @@
 <script type="text/javascript">
 var ingridHeight=180;
 var detailWindow;
+detailWidth=930;
 //督办容器
 var supervision_div = "supervision_div";
 //督办页面路径
@@ -83,7 +84,7 @@ function lazyLoad(){
 		tableid="queryContentTable";//查询内容格式表格ID
 		pageUrl=BUSNEISS_PATH+ "/querylist_supportTicket.action";
 		detailid="detailCt";
-		detailWidth=930;
+		
 		detailURL="business/techSupport/query/techsupportDetail.jsp";
 		queryTable=$("#"+tableid);
 		detailWindow=$('#'+detailid);
