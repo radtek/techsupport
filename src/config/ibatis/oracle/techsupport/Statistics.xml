@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+<!-- 	统计部分 -->
+<typeAlias type="com.aisino2.techsupport.domain.Statistics" alias="Statistics"/>
+<resultMap id="Statistics.byRegionRm" class="Statistics">
+  <result property="region" column="region" />
+  <result property="statusWaitCompanyApprovalCount" column="wait_company_appraval"/>
+  <result property="statusWaitDepartmentApprovalCount" column="wait_department_appraval"/>
+  <result column="going" property="statusGoingCount"/>
+  <result column="wait_feedback" property="statusWaitFeedbackCount"/>
+  <result column="feedbacked" property="statusFeedbackCount"/>
+  <result column="gone" property="statusGoneCount"/>
+  <result column="pause" property="statusPauseCount"/>
+  <result column="stop" property="statusStopCount"/>
+</resultMap>
+
+<resultMap id="Statistics.byDepartmentRm" class="Statistics">
+  <result property="departname" column="departname" />
+  <result property="statusDepartmentApprovalNoPassCount" column="department_appraval_nopass"/>
+  <result property="statusWaitDepartmentApprovalCount" column="wait_department_appraval"/>
+  <result column="going" property="statusGoingCount"/>
+  <result column="wait_feedback" property="statusWaitFeedbackCount"/>
+  <result column="feedbacked" property="statusFeedbackCount"/>
+  <result column="gone" property="statusGoneCount"/>
+  <result column="pause" property="statusPauseCount"/>
+  <result column="stop" property="statusStopCount"/>
+</resultMap>
+
+<resultMap id="Statistics.bySupportLeaderRm" class="Statistics">
+  <result property="departname" column="departname" />
+  <result property="stLeaderName" column="username"/>
+  <result property="departfullcode" column="departfullcode"/>
+  <result property="statusWaitDepartmentApprovalCount" column="wait_department_appraval"/>
+  <result column="going" property="statusGoingCount"/>
+  <result column="wait_feedback" property="statusWaitFeedbackCount"/>
+  <result column="feedbacked" property="statusFeedbackCount"/>
+  <result column="gone" property="statusGoneCount"/>
+  <result column="pause" property="statusPauseCount"/>
+  <result column="stop" property="statusStopCount"/>
+</resultMap>
+
+<!-- 统计条件 -->
+<sql id="StatisticsWhere">
+    
+    <isNotEmpty prepend="and" property="applyDateFrom">
+      trunc(ts.apply_date,'dd') >= #applyDateFrom#
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="applyDateTo">
+      trunc(ts.apply_date,'dd') &lt;= #applyDateTo#
+    </isNotEmpty>
+    
+    <isNotEmpty prepend="" property="limitDeparement">
+    	<isNotEmpty prepend="and" property="limitDeparement.departcode">
+    		d.departcode = #limitDeparement.departcode#
+    	</isNotEmpty>
+      
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="applicantId" open="(" close=")">
+      ts.applicant=#applicantId#
+    </isNotEmpty>
+    
+<!--    计划完成时间 -->
+    <isNotEmpty prepend="and" property="scheTimeFrom">
+      ( ts.PSG_SCHE_DATE >= #scheTimeFrom# or ts.DEV_SCHE_DATE >= #scheTimeFrom# )
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="scheTimeTo">
+      ( ts.PSG_SCHE_DATE &lt;= #scheTimeTo# or ts.DEV_SCHE_DATE &lt;= #scheTimeTo# )
+    </isNotEmpty>
+    
+<!--    实际完成时间 -->
+    <isNotEmpty prepend="and" property="compTimeFrom">
+      ( ts.PSG_COMP_DATE >= #compTimeFrom# or ts.DEV_COMP_DATE >= #compTimeFrom# )
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="compTimeTo">
+      ( ts.PSG_COMP_DATE &lt;= #compTimeTo# or ts.DEV_COMP_DATE &lt;= #compTimeTo# )
+    </isNotEmpty>
+</sql>
+<sql id="StatisticsForm">
+  <isNotEmpty prepend=" " property="supportLeaderId">
+  	join t_ts_stsl_map sl on ts.id = sl.st_id 
+  </isNotEmpty>
+  <isNotEmpty prepend=" " property="limitDeparement">
+  	<isNotEmpty property="limitDeparement.departcode">
+  		join t_ts_stdept_mapping sd on ts.id = sd.st_id
+  	</isNotEmpty>
+  </isNotEmpty>
+</sql>
+
+<sql id="StatisticsOutterWhere">
+	<isNotEmpty prepend="and" property="region">
+		t.region = #region#
+	</isNotEmpty>
+	<isEmpty prepend="and" property="region">
+			<isPropertyAvailable property="user_region_list">
+				<isNotEmpty property="user_region_list">
+					t.region in <iterate open="(" close=")" property="user_region_list" conjunction=",">
+						#user_region_list[].fact_value#
+					</iterate>
+				</isNotEmpty>
+			</isPropertyAvailable>
+			
+		</isEmpty>
+	<isNotEmpty prepend="and" property="applyDateFrom">
+    trunc(t.apply_date,'dd') >= #applyDateFrom#
+  </isNotEmpty>
+  <isNotEmpty prepend="and" property="applyDateTo">
+    trunc(t.apply_date,'dd') &lt;= #applyDateTo#
+  </isNotEmpty>
+  <isNotEmpty prepend="and" property="applicantId" open="(" close=")">
+    t.applicant=#applicantId#
+  </isNotEmpty>
+    
+<!--    计划完成时间 -->
+   <isNotEmpty prepend="and" property="scheTimeFrom">
+     ( t.PSG_SCHE_DATE >= #scheTimeFrom# or t.DEV_SCHE_DATE >= #scheTimeFrom# )
+   </isNotEmpty>
+   <isNotEmpty prepend="and" property="scheTimeTo">
+     ( t.PSG_SCHE_DATE &lt;= #scheTimeTo# or t.DEV_SCHE_DATE &lt;= #scheTimeTo# )
+   </isNotEmpty>
+	    
+	<!--    实际完成时间 -->
+	 <isNotEmpty prepend="and" property="compTimeFrom">
+	   ( t.PSG_COMP_DATE >= #compTimeFrom# or t.DEV_COMP_DATE >= #compTimeFrom# )
+	 </isNotEmpty>
+	 <isNotEmpty prepend="and" property="compTimeTo">
+	   ( t.PSG_COMP_DATE &lt;= #compTimeTo# or t.DEV_COMP_DATE &lt;= #compTimeTo# )
+	 </isNotEmpty>
+</sql>
+<!-- 按照区域统计 -->
+<select id="Statistics.byRegion" parameterClass="map" resultMap="Statistics.byRegionRm">
+  select t.region,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status='wait_company_appraval' <include refid="StatisticsWhere"/> ) wait_company_appraval,  
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'wait_department_appraval' <include refid="StatisticsWhere"/>) wait_department_appraval,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'going' <include refid="StatisticsWhere"/>) going,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'wait_feedback' <include refid="StatisticsWhere"/>) wait_feedback,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'feedbacked' <include refid="StatisticsWhere"/>) feedbacked,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'gone' <include refid="StatisticsWhere"/>) gone,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'pause' <include refid="StatisticsWhere"/>) pause,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'stop' <include refid="StatisticsWhere"/>) stop
+from t_ts_tech_support t 
+<dynamic prepend="where">
+	<include refid="StatisticsOutterWhere"/>
+</dynamic>
+  group by region
+</select>
+<!-- 按照部门统计 -->
+<select id="Statistics.byDepartment" parameterClass="map" resultMap="Statistics.byDepartmentRm">
+  
+</select>
+<!-- 按照负责人统计 -->
+<select id="Statistics.bySupportLeader" parameterClass="map" resultMap="Statistics.bySupportLeaderRm">
+  
+</select>
+
+</sqlMap>

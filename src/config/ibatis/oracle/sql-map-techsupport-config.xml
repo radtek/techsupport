@@ -30,4 +30,6 @@
 	<sqlMap resource="config/ibatis/oracle/techsupport/Supervision.xml"/>
 <!-- 	时间变更轨迹 -->
 	<sqlMap resource="config/ibatis/oracle/techsupport/TimeChange.xml"/>
+<!-- 	统计 -->
+	<sqlMap resource="config/ibatis/oracle/techsupport/Statistics.xml"/>
 </sqlMapConfig>

@@ -94,7 +94,10 @@ function lazyLoad(){
 		
 		//时间变更轨迹
 	    daggleDiv('timeChangeCt');
-		
+		//统计口径窗口
+		daggleDiv('statisticsCt');
+		daggleDiv('statisticsDetailCt');
+		$('#statisticsBtn').click(openStatisticsDialog); //统计按钮弹出统计口径选择框
 // 		设置状态下拉条
 		$('#p_stStatus').selectBox({code:ST_STATUS_DICT_CODE});
 		//设置部门选择器
@@ -494,6 +497,13 @@ function lazyLoad(){
 		dataid=id;
 	  detailDialog(timeChangeCt,timeChangeDetailWidth,timeChangeUrl,'时间变更情况');
 	}
+	
+	/**
+		打开统计口径选择窗口
+	*/
+	function openStatisticsDialog() {
+		detailDialog('statisticsCt',300,'business/techSupport/query/statisticsType.jsp','统计口径');
+	}
 </script>
 	</head>
 	<body>
@@ -600,6 +610,10 @@ function lazyLoad(){
 				</div>
 				<div class="column" style="width:25%;">
 					<div class="column">
+						<a href="#" class="item submitbutton " id="statisticsBtn">统  计</a>
+						<div class="clear-column"></div>
+					</div>
+					<div class="column">
 						<a href="#" class="item searchbutton " id="queryBtn">查  询</a>
 						<div class="clear-column"></div>
 					</div>
@@ -648,5 +662,7 @@ function lazyLoad(){
 <div id="supervision_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 <div id="import_detail_div" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 <div id="timeChangeCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
+<div id="statisticsCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
+<div id="statisticsDetailCt" style="position: absolute; z-index: 1000; top:0px; left:160px; display: none;" class="page-layout"></div>
 	</body>
 </html>

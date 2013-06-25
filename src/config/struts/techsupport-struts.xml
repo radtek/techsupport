@@ -88,5 +88,9 @@
   	<action name="*_timeChange" class="timeChangeAction" method="{1}">
   		<result type="json"></result>
   	</action>
+<!--   	统计 -->
+  	<action name="*_statistics" class="statisticsAction" method="{1}">
+  		<result type="json"></result>
+  	</action>
   </package>
 </struts>
