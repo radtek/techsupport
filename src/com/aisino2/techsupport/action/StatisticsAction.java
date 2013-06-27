@@ -164,11 +164,14 @@ public class StatisticsAction extends PageAction {
 
 	public String querylistStatisticsByRegion() throws Exception {
 		try {
+			supportTicket = new SupportTicket();
 			supportTicket = (SupportTicket) this.setClass(supportTicket, null);
+			limitDeparement = new Department();
 			limitDeparement = (Department) this.setClass(limitDeparement, null);
 
 			Map<String, Object> map = new HashMap<String, Object>();
 
+			map.put("statisticsType", 1);
 			map.put("applicantId", supportTicket.getApplicantId());
 			map.put("supportLeaderId", supportTicket.getSupportLeaderId());
 			map.put("stStatus", supportTicket.getStStatus());
@@ -213,7 +216,7 @@ public class StatisticsAction extends PageAction {
 			}
 			throw e;
 		}
-
+		this.result = "success";
 		return SUCCESS;
 	}
 
@@ -254,6 +257,7 @@ public class StatisticsAction extends PageAction {
 			stopCount += statistics.getStatusStopCount();
 		}
 		Statistics statistics = new Statistics();
+		statistics.setRegion("合计");
 		statistics.setRegionName("合计");
 		statistics
 				.setStatusWaitCompanyApprovalCount(waitCompanyApprovalCountSum);
@@ -271,15 +275,19 @@ public class StatisticsAction extends PageAction {
 
 		this.setData(statistics, lData, lPros, lCols);
 		this.tabledata = this.getData();
+		this.totalrows = this.getTotalrows();
 	}
 
 	public String querylistStatisticsByDepartment() throws Exception {
 		try {
+			supportTicket = new SupportTicket();
+			limitDeparement = new Department();
 			supportTicket = (SupportTicket) this.setClass(supportTicket, null);
 			limitDeparement = (Department) this.setClass(limitDeparement, null);
 
 			Map<String, Object> map = new HashMap<String, Object>();
 
+			map.put("statisticsType", 2);
 			map.put("applicantId", supportTicket.getApplicantId());
 			map.put("supportLeaderId", supportTicket.getSupportLeaderId());
 			map.put("stStatus", supportTicket.getStStatus());
@@ -323,6 +331,7 @@ public class StatisticsAction extends PageAction {
 			}
 			throw e;
 		}
+		this.result = SUCCESS;
 		return SUCCESS;
 	}
 
@@ -362,7 +371,7 @@ public class StatisticsAction extends PageAction {
 			stopCount += statistics.getStatusStopCount();
 		}
 		Statistics statistics = new Statistics();
-		statistics.setRegionName("合计");
+		statistics.setDepartname("合计");
 		statistics
 				.setStatusDepartmentApprovalNoPassCount(departmentApprovalNoPassCountSum);
 		statistics
@@ -388,6 +397,7 @@ public class StatisticsAction extends PageAction {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 
+			map.put("statisticsType", 3);
 			map.put("applicantId", supportTicket.getApplicantId());
 			map.put("supportLeaderId", supportTicket.getSupportLeaderId());
 			map.put("stStatus", supportTicket.getStStatus());
@@ -431,7 +441,7 @@ public class StatisticsAction extends PageAction {
 			}
 			throw e;
 		}
-
+		this.result = SUCCESS;
 		return SUCCESS;
 	}
 }

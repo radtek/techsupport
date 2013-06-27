@@ -503,6 +503,8 @@ function lazyLoad(){
 	*/
 	function openStatisticsDialog() {
 		detailDialog('statisticsCt',300,'business/techSupport/query/statisticsType.jsp','统计口径');
+		$('#statisticsCt').css('left',$(this).offset().left+"px")
+											.css('top',$(this).offset().top + $(this).height()+5+"px");
 	}
 </script>
 	</head>
@@ -605,10 +607,10 @@ function lazyLoad(){
 				<div class="clear-row"></div>
 			</div>
 			<div class="row">
-				<div class="column" style="width: 75%;">
+				<div class="column" style="width: 65%;">
 					<div class="clear-column"></div>
 				</div>
-				<div class="column" style="width:25%;">
+				<div class="column" style="width:35%;">
 					<div class="column">
 						<a href="#" class="item submitbutton " id="statisticsBtn">统  计</a>
 						<div class="clear-column"></div>

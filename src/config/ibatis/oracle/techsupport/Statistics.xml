@@ -49,17 +49,21 @@
     <isNotEmpty prepend="and" property="applyDateTo">
       trunc(ts.apply_date,'dd') &lt;= #applyDateTo#
     </isNotEmpty>
+    <isNotEqual property="statisticsType" compareValue="2">
+    	<isNotEmpty prepend="" property="limitDeparement">
+	    	<isNotEmpty prepend="and" property="limitDeparement.departcode">
+	    		d.departcode = #limitDeparement.departcode#
+	    	</isNotEmpty>
+	      
+	    </isNotEmpty>
+    </isNotEqual>
     
-    <isNotEmpty prepend="" property="limitDeparement">
-    	<isNotEmpty prepend="and" property="limitDeparement.departcode">
-    		d.departcode = #limitDeparement.departcode#
-    	</isNotEmpty>
-      
-    </isNotEmpty>
     <isNotEmpty prepend="and" property="applicantId" open="(" close=")">
       ts.applicant=#applicantId#
     </isNotEmpty>
-    
+    <isNotEmpty prepend="and" property="supportLeaderId">
+	  	sl.sl_id = #supportLeaderId#
+	  </isNotEmpty>
 <!--    计划完成时间 -->
     <isNotEmpty prepend="and" property="scheTimeFrom">
       ( ts.PSG_SCHE_DATE >= #scheTimeFrom# or ts.DEV_SCHE_DATE >= #scheTimeFrom# )
@@ -77,14 +81,20 @@
     </isNotEmpty>
 </sql>
 <sql id="StatisticsForm">
-  <isNotEmpty prepend=" " property="supportLeaderId">
-  	join t_ts_stsl_map sl on ts.id = sl.st_id 
-  </isNotEmpty>
-  <isNotEmpty prepend=" " property="limitDeparement">
-  	<isNotEmpty property="limitDeparement.departcode">
-  		join t_ts_stdept_mapping sd on ts.id = sd.st_id
-  	</isNotEmpty>
-  </isNotEmpty>
+  <isNotEqual property="statisticsType" compareValue="3">
+  	<isNotEmpty prepend=" " property="supportLeaderId">
+	  	join t_ts_stsl_map sl on ts.id = sl.st_id 
+	  </isNotEmpty>
+  </isNotEqual>
+  
+  <isNotEqual property="statisticsType" compareValue="2" >
+  	<isNotEmpty prepend=" " property="limitDeparement">
+	  	<isNotEmpty property="limitDeparement.departcode">
+	  		join t_ts_stdept_mapping sd on ts.id = sd.st_id
+	  	</isNotEmpty>
+	  </isNotEmpty>
+  </isNotEqual>
+  
 </sql>
 
 <sql id="StatisticsOutterWhere">
@@ -110,7 +120,6 @@
   <isNotEmpty prepend="and" property="applicantId" open="(" close=")">
     t.applicant=#applicantId#
   </isNotEmpty>
-    
 <!--    计划完成时间 -->
    <isNotEmpty prepend="and" property="scheTimeFrom">
      ( t.PSG_SCHE_DATE >= #scheTimeFrom# or t.DEV_SCHE_DATE >= #scheTimeFrom# )
@@ -146,7 +155,141 @@ from t_ts_tech_support t
 </select>
 <!-- 按照部门统计 -->
 <select id="Statistics.byDepartment" parameterClass="map" resultMap="Statistics.byDepartmentRm">
-  
+  select t.display_name departname
+  , 
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1 
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'wait_department_appraval' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) wait_department_appraval,
+  (select count(distinct ts_id) from (select ts.id ts_id  from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id  
+    <include refid="StatisticsForm"/>  
+    where 1=1
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'department_appraval_nopass' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value ) department_appraval_nopass,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>  
+    where 1=1 
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'going' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) going,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'wait_feedback' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) wait_feedback,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id
+    <include refid="StatisticsForm"/> 
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'feedbacked' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) feedbacked,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+     join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+     <include refid="StatisticsForm"/>
+    where 1=1 
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'gone' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id
+    join t_department d on sd.dept_id = d.departid 
+    where d.departcode = t.fact_value) gone,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+      join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+      <include refid="StatisticsForm"/> 
+    where 1=1 
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'pause' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) pause,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1 
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'stop' group by ts.id having count(sd.dept_id) &lt; 2) dd
+    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
+    join t_department d on sd.dept_id = d.departid
+    where d.departcode = t.fact_value) stop
+from t_dict_item t where t.dict_code = 'dm_ts_depart_list'
+	<isNotEmpty property="limitDeparement">
+		<isNotEmpty prepend="and" property="limitDeparement.departcode">
+			t.fact_value = #limitDeparement.departcode#
+		</isNotEmpty>
+	</isNotEmpty>
+<isEmpty prepend=" " property="limitDeparement">
+  		union all 
+select '产品方案部和技术开发部' departname
+  , 
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1 
+    <include refid="StatisticsWhere"/> 
+    and ts.st_status = 'wait_department_appraval' group by ts.id having count(sd.dept_id) > 1) ) wait_department_appraval,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1 
+    <include refid="StatisticsWhere"/> 
+    and ts.st_status = 'department_appraval_nopass' group by ts.id having count(sd.dept_id) > 1) ) department_appraval_nopass,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'going' group by ts.id having count(sd.dept_id) > 1) ) going,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'wait_feedback' group by ts.id having count(sd.dept_id) > 1) ) wait_feedback,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'feedbacked' group by ts.id having count(sd.dept_id) > 1) ) feedbacked,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'gone' group by ts.id having count(sd.dept_id) > 1) ) gone,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'pause' group by ts.id having count(sd.dept_id) > 1) ) pause,
+  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
+    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
+    <include refid="StatisticsForm"/>
+    where 1=1  
+    <include refid="StatisticsWhere"/>
+    and ts.st_status = 'stop' group by ts.id having count(sd.dept_id) > 1) ) stop
+	from dual 
+  </isEmpty>
+
 </select>
 <!-- 按照负责人统计 -->
 <select id="Statistics.bySupportLeader" parameterClass="map" resultMap="Statistics.bySupportLeaderRm">

@@ -5,6 +5,7 @@
 		$('#statisticsBtn2').click(function(){
 			detailDialog('statisticsDetailCt',800,'business/techSupport/query/statistics.jsp',
 					'',{statisticsType:$('#statisticsType').val()});
+			$('#statisticsCt').hideAndRemove('show');
 		});
 	});
 </script>
