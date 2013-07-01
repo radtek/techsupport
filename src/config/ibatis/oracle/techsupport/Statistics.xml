@@ -293,7 +293,57 @@ select '产品方案部和技术开发部' departname
 </select>
 <!-- 按照负责人统计 -->
 <select id="Statistics.bySupportLeader" parameterClass="map" resultMap="Statistics.bySupportLeaderRm">
-  
+  select d.departname,u.username,d.departfullcode,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts
+	    join t_ts_stsl_map sl on sl.st_id=ts.id   
+	    <include refid="StatisticsForm"/>
+	    where 1=1  
+	    <include refid="StatisticsWhere"/>
+	    and ts.st_status = 'wait_department_appraval' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) wait_department_appraval ,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts 
+	    join t_ts_stsl_map sl on sl.st_id=ts.id   
+	    <include refid="StatisticsForm"/>
+	    where 1=1
+	    <include refid="StatisticsWhere"/>  
+	    and ts.st_status = 'going' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) going,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts
+	    join t_ts_stsl_map sl on sl.st_id=ts.id  
+	    <include refid="StatisticsForm"/> 
+	    where 1=1  
+	    <include refid="StatisticsWhere"/>
+	    and ts.st_status = 'wait_feedback' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) wait_feedback,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts 
+	    join t_ts_stsl_map sl on sl.st_id=ts.id  
+	    <include refid="StatisticsForm"/> 
+	    where 1=1  
+	    <include refid="StatisticsWhere"/>
+	    and ts.st_status = 'feedbacked' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) feedbacked,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts  
+	    join t_ts_stsl_map sl on sl.st_id=ts.id 
+	    <include refid="StatisticsForm"/>  
+	    where 1=1  
+	    <include refid="StatisticsWhere"/>
+	    and ts.st_status = 'gone' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) gone,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts 
+	    join t_ts_stsl_map sl on sl.st_id=ts.id  
+	    <include refid="StatisticsForm"/> 
+	    where 1=1  
+	    <include refid="StatisticsWhere"/>
+	    and ts.st_status = 'pause' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) pause,
+	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts 
+	    join t_ts_stsl_map sl on sl.st_id=ts.id   
+	    <include refid="StatisticsForm"/>
+	    where 1=1
+	    <include refid="StatisticsWhere"/>  
+	    and ts.st_status = 'stop' group by ts.id,SL_ID) where SL_ID = sl.sl_id ) stop
+	from t_ts_stsl_map sl
+	join t_ts_tech_support t on t.id = sl.st_id
+	join t_department d on sl.SL_DEPARTID=d.departid 
+	join t_user u on sl.sl_id = u.userid  
+	where 1=1
+	<include refid="StatisticsOutterWhere"/>
+	group by d.departname,u.username,sl.sl_id,d.departfullcode
+	order by d.departfullcode;
 </select>
 
 </sqlMap>

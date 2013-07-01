@@ -4,7 +4,7 @@
 	$(function(){
 		$('#statisticsBtn2').click(function(){
 			detailDialog('statisticsDetailCt',800,'business/techSupport/query/statistics.jsp',
-					'',{statisticsType:$('#statisticsType').val()});
+					$('#statisticsType option[value='+$('#statisticsType').val()+']').text(),{statisticsType:$('#statisticsType').val()});
 			$('#statisticsCt').hideAndRemove('show');
 		});
 	});

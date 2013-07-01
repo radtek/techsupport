@@ -145,6 +145,13 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 	if(statisticsType==null)
 		statisticsType="";
 %>
+
+<style>
+	.chart {
+		float: left;
+		margin: 2px 5px 2px 5px;
+	}
+</style>
 <input type="hidden" id="statisticsType2" value="<%=statisticsType%>">
 <div id="byRegion">
 	<div>
@@ -171,7 +178,8 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 	</div>
 	
 	<div id="byRegion__chart" class="chart__byRegion dataresult">
-		
+		<div class="chart"></div>
+		<div class="chart"></div>
 	</div>
 </div>
 
@@ -200,7 +208,8 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 	</div>
 	
 	<div id="byDepartment__chart" class="chart__byDepartment dataresult">
-	
+		<div class="chart"></div>
+		<div class="chart"></div>
 	</div>
 </div>
 
@@ -229,6 +238,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 	</div>
 	
 	<div id="bySupportLeader__chart" class="chart__bySupportLeader dataresult">
-	
+		<div class="chart"></div>
+		<div class="chart"></div>
 	</div>
 </div>
