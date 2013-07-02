@@ -63,6 +63,16 @@ public class Statistics {
 
 	private String regionName;
 
+	private String parentDepartname;
+
+	public String getParentDepartname() {
+		return parentDepartname;
+	}
+
+	public void setParentDepartname(String parentDepartname) {
+		this.parentDepartname = parentDepartname;
+	}
+
 	public String getRegionName() {
 		return regionName;
 	}

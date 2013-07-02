@@ -14,6 +14,7 @@ import com.aisino2.core.web.PageAction;
 import com.aisino2.sysadmin.domain.Department;
 import com.aisino2.sysadmin.domain.Dict_item;
 import com.aisino2.sysadmin.domain.User;
+import com.aisino2.sysadmin.service.IDepartmentService;
 import com.aisino2.sysadmin.service.IDict_itemService;
 import com.aisino2.sysadmin.service.IUser_roleService;
 import com.aisino2.techsupport.common.Constants;
@@ -41,12 +42,20 @@ public class StatisticsAction extends PageAction {
 	private IDict_itemService dict_item_service;
 	private WorksheetService worksheet_service;
 	private IUser_roleService user_role_service;
+	private IDepartmentService departmentService;
 	private List<Statistics> lStatistics = new ArrayList<Statistics>();
 
 	// 地区字典
 	private Map<String, String> regionDict;
 
 	private IStatisticsService statisticsService;
+
+	private static final String SESSION_STATISTICS_LIST_TAG = "session_statistics_list_tag";
+
+	@Resource(name = "departmentService")
+	public void setDepartmentService(IDepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
 
 	@Resource(name = "statisticsServiceImpl")
 	public void setStatisticsService(IStatisticsService statisticsService) {
@@ -205,7 +214,8 @@ public class StatisticsAction extends PageAction {
 			lStatistics = statisticsService.getStatisticsByRegion(map);
 			setTabledataRegion(lStatistics);
 			totalrows = lStatistics.size();
-
+			getRequest().getSession().setAttribute(SESSION_STATISTICS_LIST_TAG,
+					lStatistics);
 		} catch (Exception e) {
 			this.returnMsg = "按照区域统计查询错误";
 			this.returnNo = -1;
@@ -321,6 +331,8 @@ public class StatisticsAction extends PageAction {
 			lStatistics = statisticsService.getStatisticsByDepartment(map);
 			setTabledataDepartment(lStatistics);
 			totalrows = lStatistics.size();
+			getRequest().getSession().setAttribute(SESSION_STATISTICS_LIST_TAG,
+					lStatistics);
 		} catch (Exception e) {
 			this.returnNo = -1;
 			this.returnMsg = "按照部门统计查询错误";
@@ -392,6 +404,8 @@ public class StatisticsAction extends PageAction {
 
 	public String querylistStatisticsBySupportLeader() throws Exception {
 		try {
+			supportTicket = new SupportTicket();
+			limitDeparement = new Department();
 			supportTicket = (SupportTicket) this.setClass(supportTicket, null);
 			limitDeparement = (Department) this.setClass(limitDeparement, null);
 
@@ -428,9 +442,11 @@ public class StatisticsAction extends PageAction {
 			List region_list = worksheet_service.get_region_with_userrole(map2);
 			map.put("user_region_list", region_list);
 
-			lStatistics = statisticsService.getStatisticsByDepartment(map);
-			setTabledataDepartment(lStatistics);
+			lStatistics = statisticsService.getStatisticsBySupportLeader(map);
+			setTabledataSupportLeader(lStatistics);
 			totalrows = lStatistics.size();
+			getRequest().getSession().setAttribute(SESSION_STATISTICS_LIST_TAG,
+					lStatistics);
 		} catch (Exception e) {
 			this.returnNo = -1;
 			this.returnMsg = "按照支持负责人统计查询错误";
@@ -441,6 +457,83 @@ public class StatisticsAction extends PageAction {
 			}
 			throw e;
 		}
+		this.result = SUCCESS;
+		return SUCCESS;
+	}
+
+	private void setTabledataSupportLeader(List<Statistics> lData) {
+		List<String> lPros = new ArrayList<String>();
+		lPros.add("departname");
+		lPros.add("parentDepartname");
+		lPros.add("departname");
+		lPros.add("stLeaderName");
+		lPros.add("statusWaitDepartmentApprovalCount");
+		lPros.add("statusGoingCount");
+		lPros.add("statusWaitFeedbackCount");
+		lPros.add("statusFeedbackCount");
+		lPros.add("statusGoneCount");
+		lPros.add("statusPauseCount");
+		lPros.add("statusStopCount");
+
+		int waitDepartmentApprovalCountSum = 0;
+		int goingCountSum = 0;
+		int waitFeedbackConntSum = 0;
+		int feedbackCountSum = 0;
+		int goneCountSum = 0;
+		int pauseCountSum = 0;
+		int stopCount = 0;
+
+		Map<String, String> map = new HashMap<String, String>();
+		Dict_item dict_item = new Dict_item();
+		dict_item.setDict_code(Constants.ST_QUERY_DEPARTMENT_DICTCODE);
+		List<Dict_item> dict_items = dict_item_service
+				.getListDict_item(dict_item);
+		for (Dict_item item : dict_items) {
+			Department department = new Department();
+			department.setDepartcode(item.getFact_value());
+			department = departmentService.getDepartment(department);
+			map.put(department.getDepartfullcode(), department.getDepartname());
+		}
+		for (Statistics statistics : lData) {
+
+			waitDepartmentApprovalCountSum += statistics
+					.getStatusWaitDepartmentApprovalCount();
+			goingCountSum += statistics.getStatusGoingCount();
+			waitFeedbackConntSum += statistics.getStatusWaitFeedbackCount();
+			feedbackCountSum += statistics.getStatusFeedbackCount();
+			goneCountSum += statistics.getStatusGoneCount();
+			pauseCountSum += statistics.getStatusPauseCount();
+			stopCount += statistics.getStatusStopCount();
+
+			for (String key : map.keySet()) {
+				if (statistics.getDepartfullcode().contains(key)) {
+					statistics.setParentDepartname(map.get(key));
+					break;
+				}
+			}
+		}
+		Statistics statistics = new Statistics();
+		statistics.setParentDepartname("合计");
+		statistics
+				.setStatusWaitDepartmentApprovalCount(waitDepartmentApprovalCountSum);
+		statistics.setStatusGoingCount(goingCountSum);
+		statistics.setStatusWaitFeedbackCount(waitFeedbackConntSum);
+		statistics.setStatusFeedbackCount(feedbackCountSum);
+		statistics.setStatusGoneCount(goneCountSum);
+		statistics.setStatusPauseCount(pauseCountSum);
+		statistics.setStatusStopCount(stopCount);
+		lData.add(statistics);
+
+		List<String> lCols = new ArrayList<String>();
+
+		this.setData(statistics, lData, lPros, lCols);
+		this.tabledata = this.getData();
+	}
+
+	public String querySessionStatisticsData() {
+		lStatistics = (List<Statistics>) getRequest().getSession()
+				.getAttribute(SESSION_STATISTICS_LIST_TAG);
+
 		this.result = SUCCESS;
 		return SUCCESS;
 	}

@@ -14,17 +14,21 @@ var supportLeaderDiv='bySupportLeader__Div';
 var supportLeaderTableId='bySupportLeader__table';
 var supportLeaderTable;
 var supportLeaderURL=BUSNEISS_PATH+'/querylistStatisticsBySupportLeader_statistics.action';
-
+var sessionStatisticsDataURL = BUSNEISS_PATH + '/querySessionStatisticsData_statistics.action';
 
 		
 $(function(){
 	$('#byRegion').hide();
 	$('#byDepartment').hide();
 	$('#bySupportLeader').hide();
-	
+	//statisticsTypeAction:key = 1 表示按区域统计,key = 2表示按部门统计, key = 3 表示按负责人统计
 	var statisticsTypeAction = {'1':{container:'byRegion',queryMethod:StatisticsByRegionQuery},
 			'2':{container:'byDepartment',queryMethod:StatisticsByDepartmentQuery},
 			'3':{container:'bySupportLeader',queryMethod:StatisticsBySuppportLeaderQuery}};
+// 	区域统计图表构建
+	statisticsTypeAction['1']['buildChartMethod'] = function(ldata){
+		
+	};
 	
 	initStatisticsByRegionQuery(regionDiv);
 	initStatisticsByDepartmentQuery(departmentDiv);
@@ -39,11 +43,79 @@ $(function(){
 		});
 	});
 	$('#'+statisticsTypeAction[$('#statisticsType2').val()]['container']).show();
-	var query = statisticsTypeAction[$('#statisticsType2').val()]['queryMethod'];
-	query(1);
+	statisticsTypeAction[$('#statisticsType2').val()]['queryMethod'](1);
+// 	buildChart($('#'+statisticsTypeAction[$('#statisticsType2').val()]['container']),statisticsTypeAction[$('#statisticsType2').val()]['buildChartMethod']);
 	$('#'+statisticsTypeAction[$('#statisticsType2').val()]['container']+' input:radio').eq(0).click();
 });
-
+function buildChart(container,func){
+	$.post(sessionStatisticsDataURL,null,function(data){
+		if(data.lStatistics){
+			var chartContainers = container.find('.chart');
+			
+			var pieData = [];
+			var pieTotal=data.lStatistics[data.lStatistics.length-1].statusWaitCompanyApprovalCount+
+			data.lStatistics[data.lStatistics.length-1].statusWaitDepartmentApprovalCount+
+			data.lStatistics[data.lStatistics.length-1].statusGoingCount+
+			data.lStatistics[data.lStatistics.length-1].statusWaitFeedbackCount+
+			data.lStatistics[data.lStatistics.length-1].statusFeedbackCount+
+			data.lStatistics[data.lStatistics.length-1].statusGoneCount+
+			data.lStatistics[data.lStatistics.length-1].statusPauseCount+
+			data.lStatistics[data.lStatistics.length-1].statusStopCount;
+			
+// 			for(var i=0;i< data.lStatistics.length-1 ; i++){
+// 				var x = data.lStatistics[i].statusWaitCompanyApprovalCount+
+// 				data.lStatistics[i].statusWaitDepartmentApprovalCount+
+// 				data.lStatistics[i].statusGoingCount+
+// 				data.lStatistics[i].statusWaitFeedbackCount+
+// 				data.lStatistics[i].statusFeedbackCount+
+// 				data.lStatistics[i].statusGoneCount+
+// 				data.lStatistics[i].statusPauseCount+
+// 				data.lStatistics[i].statusStopCount;
+// 				var data = [data.lStatistics[i].regionName,x/pieTotal];
+// 				pieData.push(data);
+// 			}
+			chartContainers.eq(0).highcharts({
+				chart: {
+		            plotBackgroundColor: null,
+		            plotBorderWidth: null,
+		            plotShadow: false
+		        },
+		        tooltip: {
+		    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		        },
+		        plotOptions: {
+		            pie: {
+		                allowPointSelect: true,
+		                cursor: 'pointer',
+		                dataLabels: {
+		                    enabled: true,
+		                    color: '#000000',
+		                    connectorColor: '#000000',
+		                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+		                }
+		            }
+		        },
+		        series: [{
+		            type: 'pie',
+		            name: '区域统计',
+		            data: [
+		                ['Firefox',   45.0],
+		                ['IE',       26.8],
+		                {
+		                    name: 'Chrome',
+		                    y: 12.8,
+		                    sliced: true,
+		                    selected: true
+		                },
+		                ['Safari',    8.5],
+		                ['Opera',     6.2],
+		                ['Others',   0.7]
+		            ]
+		        }]
+			});
+		}
+	},'json');
+}
 function initStatisticsByRegionQuery(divpageid){
 	regionTable=$("#"+divpageid).html();
 	StatisticsByRegionQuery(1,'#');
@@ -132,10 +204,21 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
                     height:ingridHeight,
                     ingridPageWidth: statisticsWidth,
                     ingridPageParams:sXML,
-                    noSortColIndex:[0,1,2,3,4,5,6,7,8],
+                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9],
                     onRowSelect:null,
                     pageNumber: pageno,
-                    colWidths: ["11%","11%","11%","11%","11%","11%","11%","11%","11%"]        
+                    ingridComplete:function(){
+                    	var $table = $('#'+supportLeaderDiv+' table');
+                    	$table.find('tr').each(function(idx){
+                    		var _tr = $(this);
+                    		if(_tr.find('td:nth(0)').html() == _tr.find('td:nth(1)').html()){
+                    			_tr.find('td:nth(1)').remove();
+                    			_tr.find('td:nth(0)').attr('colSpan',2);
+                    		}
+                    			
+                    	});
+                    },
+                    colWidths: ["10%","10%","10%","10%","10%","10%","10%","10%","10%","10%"]        
                   });       
     }
 }
@@ -151,10 +234,13 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 		float: left;
 		margin: 2px 5px 2px 5px;
 	}
+	.bar {
+		display: none;
+	}
 </style>
 <input type="hidden" id="statisticsType2" value="<%=statisticsType%>">
 <div id="byRegion">
-	<div>
+	<div class="bar">
 		<label><input type="radio" name="displayType" id="list__byRegion">列表</label>
 		<label><input type="radio" name="displayType" id="chart__byRegion">图形</label>
 	</div>
@@ -184,7 +270,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 </div>
 
 <div id="byDepartment">
-	<div>
+	<div class="bar">
 		<label><input type="radio" name="displayType" id="list__byDepartment">列表</label>
 		<label><input type="radio" name="displayType" id="chart__byDepartment">图形</label>
 	</div>
@@ -214,7 +300,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 </div>
 
 <div id="bySupportLeader">
-	<div>
+	<div class="bar">
 		<label><input type="radio" name="displayType" id="list__bySupportLeader">列表</label>
 		<label><input type="radio" name="displayType" id="chart__bySupportLeader">图形</label>
 	</div>
@@ -223,8 +309,8 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 		<table id="bySupportLeader__table">
 			<thead>
 				<tr>
-					<th>上级部门</th>
-					<th>部门</th>
+					<th colspan="2">部门</th>
+					<th>负责人</th>
 					<th>待部门审批</th>
 					<th>进行中</th>
 					<th>待反馈</th>

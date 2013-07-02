@@ -343,7 +343,7 @@ select '产品方案部和技术开发部' departname
 	where 1=1
 	<include refid="StatisticsOutterWhere"/>
 	group by d.departname,u.username,sl.sl_id,d.departfullcode
-	order by d.departfullcode;
+	order by d.departfullcode
 </select>
 
 </sqlMap>

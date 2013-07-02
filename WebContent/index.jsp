@@ -42,7 +42,7 @@
 	<head>
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />     
 		<title></title>
-<!-- 		<script language="javascript" type="text/javascript" src="javascript/jquery.js"></script> -->
+<!-- 		<script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.js"></script> -->
 		<script language="javascript" type="text/javascript" src="business/techSupport/common/javascript/uploadify/jquery-1.4.2.min.js"></script>
 <!-- 		<script language="javascript" type="text/javascript" src="javascript/ext/adapter/jquery/ext-jquery-adapter.js"></script> -->
 <!--         <script language="javascript" type="text/javascript" src="javascript/ext/adapter/ext/ext-base.js"></script> -->

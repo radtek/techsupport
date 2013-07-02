@@ -204,6 +204,11 @@ public class Constants {
 	 */
 	public static final String ST_TIME_CHANGE_TYPE_DEVELOP = "1";
 
+	/**
+	 * 综合查询机构列表字典代码
+	 */
+	public static final String ST_QUERY_DEPARTMENT_DICTCODE = "dm_ts_depart_list";
+
 	static {
 		util = new CommonUtil();
 		try {
