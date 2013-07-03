@@ -30,12 +30,10 @@
 	<sql id="pageWhere">
 		<isNotEmpty property="tracking">
 			<isNotEmpty property="tracking.id" prepend="and">
-				tr.id =
-				#tracking.id#
+				tr.id = #tracking.id#
 			</isNotEmpty>
-			<isNotEmpty property="tracing.stId" prepend="and">
-				tr.st_id =
-				#tracking.stId#
+			<isNotEmpty property="tracking.stId" prepend="and">
+				tr.st_id = #tracking.stId#
 			</isNotEmpty>
 		</isNotEmpty>
 		<isNotEmpty prepend="and" property="type">
