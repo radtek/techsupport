@@ -29,6 +29,10 @@ function saveVerify() {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
 			return false;
 		}
+		if($('#psgScheDate').val() < $('#st input[name="st.psgScheDate"]').val()){
+			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
+			return false;
+		}
 		if ($('#psgstage2').attr('checked')) {
 			if (!checkControlValue("psgDsScheDate", "Date", 1, 100, null, 1,
 					"计划需求时间"))
@@ -46,6 +50,10 @@ function saveVerify() {
 		// 计划完成时间必须大于当前部门审批的时间
 		if ($('#devScheDate').val() < techDepartmentApprovalTime) {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
+			return false;
+		}
+		if($('#devScheDate').val() < $('#st input[name="st.devScheDate"]').val()){
+			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
 			return false;
 		}
 		if ($('#devstage2').attr('checked')) {
