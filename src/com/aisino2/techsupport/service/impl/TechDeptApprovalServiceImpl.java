@@ -74,7 +74,7 @@ public class TechDeptApprovalServiceImpl implements IDeptApprovalService {
 		timeChange.setDevDdScheDate(st.getDevDdScheDate());
 		timeChange.setDevDsScheDate(st.getDevDsScheDate());
 		timeChange.setDevDtScheDate(st.getDevDtScheDate());
-		timeChange.setPsgIsScheDate(st.getPsgIsCompDate());
+		timeChange.setPsgIsScheDate(st.getPsgIsScheDate());
 		timeChange.setType(Constants.ST_TIME_CHANGE_TYPE_DEVELOP);
 		timeChange.setTracking(tracking);
 		timeChangeService.insertTimeChange(timeChange);

@@ -65,7 +65,7 @@ public class RestoreServiceImpl implements IRestoreService {
 		tracking = trackingService.insertTracking(tracking);
 
 		timeChange.setDevDtScheDate(st.getDevDtScheDate());
-		timeChange.setDevDsScheDate(st.getDevDdScheDate());
+		timeChange.setDevDsScheDate(st.getDevDsScheDate());
 		timeChange.setDevDdScheDate(st.getDevDdScheDate());
 		timeChange.setPsgDsScheDate(st.getPsgDsScheDate());
 		timeChange.setPsgIsScheDate(st.getPsgIsScheDate());

@@ -122,7 +122,7 @@ function initProductTimeChangeQuery(divpageid){
             <%--开发计划时间,需要隐藏 --%>
             <th>计划时间</th>
             <th>设计时间</th>
-            <th>实现时间</th>
+            <th>开发时间</th>
             <th>测试时间</th>
             <th>实施时间</th>
             <th>变更原因</th>
@@ -147,7 +147,7 @@ function initProductTimeChangeQuery(divpageid){
             <%--开发计划时间--%>
             <th>计划时间</th>
             <th>设计时间</th>
-            <th>实现时间</th>
+            <th>开发时间</th>
             <th>测试时间</th>
             <th>实施时间</th>
             <th>变更原因</th>
