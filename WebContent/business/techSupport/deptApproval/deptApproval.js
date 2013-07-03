@@ -364,7 +364,7 @@ function submitVerity() {
 					return false;
 				
 				
-				if(Date.parse($('#psgDsScheDate').val()) != Date.parse($('#psgScheDate').val())){
+				if(Date.parse($('#psgDsScheDate').val()) - Date.parse($('#psgScheDate').val()) != 0){
 					jAlert('计划需求时间必须等于计划完成时间','提示');
 					return false;
 				}

@@ -133,7 +133,7 @@ function toFeedbackVerify(){
 			if (!checkControlValue("p_psgDsCompDate","Date",null,null,null,1,"实际需求完成时间"))
 				return false;
 			// 实际完成时间必须等于实际需求完成时间
-			if(!(Date.parse($('#p_psgDsCompDate').val()) == Date.parse($('#p_psgCompDate').val()))){
+			if(Date.parse($('#p_psgDsCompDate').val()) - Date.parse($('#p_psgCompDate').val()) != 0 ){
 					jAlert('实际需求完成时间必须等于实际完成时间','提示');
 					return false;
 				}
