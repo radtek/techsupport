@@ -89,7 +89,7 @@ $(function() {
 						$(this).datepicker();
 						$(this).attr('readOnly', true);
 					});
-
+			$('.schetime').hide();
 			// 初始化该页面值
 			$('#p_taskId').val(dataid);
 
@@ -233,14 +233,17 @@ function loadData() {
 
 		trackingQuery(1, ingridUrl);
 
-		// 颜色控制
-		if ($("#restoreCt input[name=st.psgScheDate]").val()) {
+		// 颜色控制和现实控制
+		if ($("#st input[name=st.psgScheDate]").val()) {
 			$('#psgLabel').addClass("red");
+			$('.psgTime').show();
 		}
-		if ($('#restoreCt input[name=st.devScheDate]').val()) {
+		if ($('#st input[name=st.devScheDate]').val()) {
 			$('#devLabel').addClass("red");
+			$('.devTime').show();
 		}
 
+		
 		// 获取最后的部门审批日期
 		setParams("p_");
 		$.post(trackingInfoURL, params, function(result) {

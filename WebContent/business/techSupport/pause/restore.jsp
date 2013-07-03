@@ -21,8 +21,9 @@
 
 </style>
 <input type="hidden" id="p_taskId">
-<input type="hidden" name="st.id">
+
 <div id="st" style="padding: 5 5 5 5">
+	<input type="hidden" name="st.id">
 	<fieldset>
 		<legend>支持单信息</legend>
 		<div class="row">
@@ -229,7 +230,7 @@
 				</div>
 			</div>
 			<%--产品方案部看到的计划时间 --%>
-			<div class="column-block2 column">
+			<div class="column-block2 column psgTime schetime">
 				<label class="label label-80" id="psgLabel">产品方案部:</label>
 				<div class="clear-column"></div>
 				
@@ -264,7 +265,7 @@
 			</div>
 			
 			<%--技术部门看到的计划时间 --%>
-			<div class="column-block2 column">
+			<div class="column-block2 column devTime schetime">
 				<label class="label label-80" id="devLabel">技术开发部:</label>
 				<div class="clear-column"></div>
 				
