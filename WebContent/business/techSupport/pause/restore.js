@@ -29,7 +29,7 @@ function saveVerify() {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
 			return false;
 		}
-		if($('#psgScheDate').val() < $('#st input[name="st.psgScheDate"]').val()){
+		if($('#psgScheDate').val() <= $('#st input[name="st.psgScheDate"]').val()){
 			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
 			return false;
 		}
@@ -52,7 +52,7 @@ function saveVerify() {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
 			return false;
 		}
-		if($('#devScheDate').val() < $('#st input[name="st.devScheDate"]').val()){
+		if($('#devScheDate').val() <= $('#st input[name="st.devScheDate"]').val()){
 			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
 			return false;
 		}
