@@ -163,8 +163,8 @@ function toFeedbackVerify(){
 			if(!(Date.parse($('#p_devDsCompDate').val()) < Date.parse($('#p_devDdCompDate').val()) &&
 					Date.parse($('#p_devDdCompDate').val()) < Date.parse($('#p_devDtCompDate').val()) &&
 					Date.parse($('#p_devDtCompDate').val()) < Date.parse($('#p_psgIsCompDate').val()) &&
-					!(Date.parse($('#p_devCompDate').val()) > Date.parse($('#p_psgIsCompDate').val()) &&
-					!(Date.parse($('#p_devCompDate').val()) < Date.parse($('#p_psgIsCompDate').val()))))){
+					Date.parse($('#p_devCompDate').val()) - Date.parse($('#p_psgIsCompDate').val()) == 0
+					)){
 					jAlert('实际设计完成时间必须小于实际开发完成时间必须小于实际测试完成时间必须小于实际实施完成时间，实际实施完成时间必须等于实际完成时间，','提示');
 					return false;
 				}

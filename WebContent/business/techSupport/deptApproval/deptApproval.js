@@ -396,8 +396,8 @@ function submitVerity() {
 				if(!(Date.parse($('#devDsScheDate').val()) < Date.parse($('#devDdScheDate').val()) &&
 					Date.parse($('#devDdScheDate').val()) < Date.parse($('#devDtScheDate').val()) &&
 					Date.parse($('#devDtScheDate').val()) < Date.parse($('#psgIsScheDate').val()) && 
-					!(Date.parse($('#devScheDate').val()) > Date.parse($('#psgIsScheDate').val()) && 
-					!(Date.parse($('#devScheDate').val()) < Date.parse($('#psgIsScheDate').val()))))){
+					Date.parse($('#devScheDate').val()) - Date.parse($('#psgIsScheDate').val()) == 0
+					)){
 					jAlert('计划设计时间必须小于计划开发时间必须小于计划测试时间，测试时间必须小于实施时间，实施时间必须等于计划完成时间','提示');
 					return false;
 				}
