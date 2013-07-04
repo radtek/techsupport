@@ -632,7 +632,7 @@ Date.parse = function(timeStr,format){
     var date = null;
     try{
 //        console.log('year = '+year+',month = '+month+',day = '+day+', hours = '+hours+', minutes = '+minutes+', seconds = '+seconds);
-       date =  new Date(parseInt(year),month?parseInt(month)-1:0,day?parseInt(day):0,hours?parseInt(hours):0,minutes?parseInt(minutes):0,seconds?parseInt(seconds):0);
+       date =  new Date(parseInt(year),month?parseInt(month.replace(/^0*/g,''))-1:0,day?parseInt(day.replace(/^0*/g,'')):0,hours?parseInt(hours.replace(/^0*/g,'')):0,minutes?parseInt(minutes.replace(/^0*/g,'')):0,seconds?parseInt(seconds.replace(/^0*/g,'')):0);
     }
     catch(e){
         console.log('日期格式错误');

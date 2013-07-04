@@ -202,7 +202,7 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 					workflow.getTaskService().addTaskParticipatingUser(taskId,
 							tracking.getProcessor().getUserid().toString(),
 							Participation.CANDIDATE);
-					throw e;
+					throw new RuntimeException(e);
 				}
 
 				// 设置提请反馈时间
