@@ -197,12 +197,12 @@ public class TrackingServiceImpl extends BaseService implements TrackingService 
 			if (tracking_users.isEmpty()) {
 				try {
 					// 流程开始
-					workflow.workflowNext(workflow.setVariable(taskId, null));
+					workflow.getTaskService().completeTask(taskId);
 				} catch (Exception e) {
 					workflow.getTaskService().addTaskParticipatingUser(taskId,
 							tracking.getProcessor().getUserid().toString(),
 							Participation.CANDIDATE);
-
+					throw e;
 				}
 
 				// 设置提请反馈时间
