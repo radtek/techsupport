@@ -113,7 +113,11 @@ $(function() {
 			loadPageTrackingQuery(divnid);
 
 			loadData();
-
+			//高度控制
+			$("#detailCt").height($('body').height()-20);
+			$("#detailCt"+' .dialogContent').css('overflow-y','scroll');
+			$("#detailCt"+' .dialogContent').css('overflow-x','hidden');
+			$("#detailCt"+' .dialogContent').height($("#detailCt").height() - $('#detailCt .titleBar').height());
 			// 设置保存按钮
 			$('#saveBtn').click(function() {
 						if (!saveVerify()) {
