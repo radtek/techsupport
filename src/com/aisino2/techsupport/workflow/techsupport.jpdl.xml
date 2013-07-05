@@ -55,7 +55,7 @@
 	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="459,775,161,60" name="exception_process">
 		<description>支持单意外终止</description>
 		<transition to="end"/>
-      <transition name="to pause_join" to="pause_join" g="-90,-20"/>
+      <transition g="-90,-20" name="to pause_join" to="pause_join"/>
 	</task>
 	<join g="321,964,168,52" multiplicity="1" name="terminate_exception_proc">
 		<description>支持单意外分支合并</description>
@@ -69,7 +69,7 @@
 		<description>重新指派负责人</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"/>
 		<transition to="reassign_stleader_condition"/>
-      <transition name="to pause_join" to="pause_join" g="-90,-20"/>
+      <transition g="-90,-20" name="to pause_join" to="pause_join"/>
 	</task>
 	<decision expr="#{reassign_stleader_repeat}" g="710,936,168,60" name="reassign_stleader_condition">
 		<description>无限重新指派</description>
