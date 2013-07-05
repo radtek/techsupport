@@ -6,7 +6,9 @@
 <resultMap id="Statistics.byRegionRm" class="Statistics">
   <result property="region" column="region" />
   <result property="statusWaitCompanyApprovalCount" column="wait_company_appraval"/>
+  <result property="statusCompanyApprovalNoPassCount" column="company_appraval_nopass"/>
   <result property="statusWaitDepartmentApprovalCount" column="wait_department_appraval"/>
+  <result property="statusDepartmentApprovalNoPassCount" column="department_appraval_nopass"/>
   <result column="going" property="statusGoingCount"/>
   <result column="wait_feedback" property="statusWaitFeedbackCount"/>
   <result column="feedbacked" property="statusFeedbackCount"/>
@@ -139,8 +141,10 @@
 <!-- 按照区域统计 -->
 <select id="Statistics.byRegion" parameterClass="map" resultMap="Statistics.byRegionRm">
   select t.region,
-  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status='wait_company_appraval' <include refid="StatisticsWhere"/> ) wait_company_appraval,  
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status='wait_company_appraval' <include refid="StatisticsWhere"/> ) wait_company_appraval,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status='company_appraval_nopass' <include refid="StatisticsWhere"/> ) company_appraval_nopass, 
   (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'wait_department_appraval' <include refid="StatisticsWhere"/>) wait_department_appraval,
+  (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'department_appraval_nopass' <include refid="StatisticsWhere"/>) department_appraval_nopass,
   (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'going' <include refid="StatisticsWhere"/>) going,
   (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'wait_feedback' <include refid="StatisticsWhere"/>) wait_feedback,
   (select count(distinct ts.id) from t_ts_tech_support ts <include refid="StatisticsForm"/> where ts.region = t.region and ts.st_status = 'feedbacked' <include refid="StatisticsWhere"/>) feedbacked,

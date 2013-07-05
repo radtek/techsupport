@@ -235,7 +235,9 @@ public class StatisticsAction extends PageAction {
 		lPros.add("region");
 		lPros.add("regionName");
 		lPros.add("statusWaitCompanyApprovalCount");
+		lPros.add("statusCompanyApprovalNoPassCount");
 		lPros.add("statusWaitDepartmentApprovalCount");
+		lPros.add("statusDepartmentApprovalNoPassCount");
 		lPros.add("statusGoingCount");
 		lPros.add("statusWaitFeedbackCount");
 		lPros.add("statusFeedbackCount");
@@ -244,7 +246,9 @@ public class StatisticsAction extends PageAction {
 		lPros.add("statusStopCount");
 
 		int waitCompanyApprovalCountSum = 0;
+		int companyApprovalNoPassCountSum = 0;
 		int waitDepartmentApprovalCountSum = 0;
+		int departmentApprovalNoPassCountSum = 0;
 		int goingCountSum = 0;
 		int waitFeedbackConntSum = 0;
 		int feedbackCountSum = 0;
@@ -255,6 +259,10 @@ public class StatisticsAction extends PageAction {
 		for (Statistics statistics : lData) {
 			statistics.setRegionName(getRegionDict()
 					.get(statistics.getRegion()));
+			companyApprovalNoPassCountSum += statistics
+					.getStatusCompanyApprovalNoPassCount();
+			departmentApprovalNoPassCountSum += statistics
+					.getStatusDepartmentApprovalNoPassCount();
 			waitCompanyApprovalCountSum += statistics
 					.getStatusWaitCompanyApprovalCount();
 			waitDepartmentApprovalCountSum += statistics
@@ -269,6 +277,10 @@ public class StatisticsAction extends PageAction {
 		Statistics statistics = new Statistics();
 		statistics.setRegion("合计");
 		statistics.setRegionName("合计");
+		statistics
+				.setStatusCompanyApprovalNoPassCount(companyApprovalNoPassCountSum);
+		statistics
+				.setStatusDepartmentApprovalNoPassCount(departmentApprovalNoPassCountSum);
 		statistics
 				.setStatusWaitCompanyApprovalCount(waitCompanyApprovalCountSum);
 		statistics

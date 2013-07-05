@@ -140,10 +140,10 @@ function StatisticsByRegionQuery(pageno,url){
                     height:ingridHeight,
                     ingridPageWidth: statisticsWidth,
                     ingridPageParams:sXML,
-                    noSortColIndex:[0,1,2,3,4,5,6,7,8],
+                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9,10],
                     onRowSelect:null,
                     pageNumber: pageno,
-                    colWidths: ["11%","11%","11%","11%","11%","11%","11%","11%","11%"]        
+                    colWidths: ["9%","9%","9%","9%","9%","9%","9%","9%","9%","9%","9%"]        
                   });       
     }
 }
@@ -251,7 +251,9 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 				<tr>
 					<th>大区</th>
 					<th>待公司审批</th>
+					<th>公司审批不通过</th>
 					<th>待部门审批</th>
+					<th>部门审批不通过</th>
 					<th>进行中</th>
 					<th>待反馈</th>
 					<th>已反馈</th>

@@ -27,6 +27,11 @@ public class Statistics {
 	 * 状态待公司审批计数
 	 */
 	private int statusWaitCompanyApprovalCount;
+
+	/**
+	 * 状态公司审批未通过计数
+	 */
+	private int statusCompanyApprovalNoPassCount;
 	/**
 	 * 状态部门审批不通过计数
 	 */
@@ -64,6 +69,15 @@ public class Statistics {
 	private String regionName;
 
 	private String parentDepartname;
+
+	public int getStatusCompanyApprovalNoPassCount() {
+		return statusCompanyApprovalNoPassCount;
+	}
+
+	public void setStatusCompanyApprovalNoPassCount(
+			int statusCompanyApprovalNoPassCount) {
+		this.statusCompanyApprovalNoPassCount = statusCompanyApprovalNoPassCount;
+	}
 
 	public String getParentDepartname() {
 		return parentDepartname;
