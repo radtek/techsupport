@@ -13,6 +13,8 @@ var techDepartmentApprovalTime = null;
 var productDepartmentApprovalTime = null;
 // 追踪批复链接
 var trackingInfoURL = BUSNEISS_PATH + "/querylistNoPage_tracking.action";
+//用户具有的审批角色
+var approvalRoles = {};
 /** 保存验证 */
 function saveVerify() {
 	if (!checkControlValue("p_newProcess", "String", 1, 3000, null, 1, "恢复原因"))
@@ -21,7 +23,7 @@ function saveVerify() {
 			"恢复日期"))
 		return false;
 
-	if ($("#st input[name=st.psgScheDate]").val()) {
+	if (approvalRoles[ST_ROLE_PRODUCT_DEPT_APPR_TYPE]) {
 		if (!checkControlValue("psgScheDate", "Date", 1, 100, null, 1, "计划完成时间"))
 			return false;
 		// 计划完成时间必须大于当前部门审批的时间
@@ -44,7 +46,7 @@ function saveVerify() {
 			}
 		}
 	}
-	if ($('#st input[name=st.devScheDate]').val()) {
+	if (approvalRoles[ST_ROLE_TECH_DEPT_APPR_TYPE]) {
 		if (!checkControlValue("devScheDate", "Date", 1, 100, null, 1, "计划完成时间"))
 			return false;
 		// 计划完成时间必须大于当前部门审批的时间
@@ -245,16 +247,25 @@ function loadData() {
 
 		trackingQuery(1, ingridUrl);
 
+		
 		// 颜色控制和现实控制
-		if ($("#st input[name=st.psgScheDate]").val()) {
-			$('#psgLabel').addClass("red");
-			$('.psgTime').show();
-		}
-		if ($('#st input[name=st.devScheDate]').val()) {
-			$('#devLabel').addClass("red");
-			$('.devTime').show();
-		}
-
+		var roleURL="sysadmin/queryUsreRoleList_user.action"
+		setParams('t_');
+ 		$.post(roleURL,params,function(data){
+ 			for(var i=0;i<data.userRoleList.length;i++){
+//  				产品部门审批
+ 				if(ST_ROLE_PRODUCT_DEPT_APPR_TYPE == data.userRoleList[i].rolename){
+						$('#psgLabel').addClass("red");
+						$('.psgTime').show();
+						approvalRoles[data.userRoleList[i].rolename] = data.userRoleList[i].rolename;
+ 				}
+ 				else if (ST_ROLE_TECH_DEPT_APPR_TYPE == data.userRoleList[i].rolename){
+ 						$('#devLabel').addClass("red");
+						$('.devTime').show();
+						approvalRoles[data.userRoleList[i].rolename]=data.userRoleList[i].rolename;
+ 				}
+ 			}
+ 		});
 		
 		// 获取最后的部门审批日期
 		setParams("p_");

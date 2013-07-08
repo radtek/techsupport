@@ -135,4 +135,6 @@
 	   * 支持单时间改变轨迹状态, 开发
 	   */
 	var ST_TIME_CHANGE_TYPE_DEVELOP = "<%=com.aisino2.techsupport.common.Constants.ST_TIME_CHANGE_TYPE_DEVELOP%>";
+	//查询机构字典或者说审批机构字典
+	var ST_QUERY_DEPARTMENT_DICTCODE = "<%=com.aisino2.techsupport.common.Constants.ST_QUERY_DEPARTMENT_DICTCODE%>";
 </script>
