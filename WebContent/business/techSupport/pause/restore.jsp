@@ -21,7 +21,7 @@
 
 </style>
 <input type="hidden" id="p_taskId">
-
+<input type="hidden" id="pp_userid" value="<%=user.getUserid()%>">
 <div id="st" style="padding: 5 5 5 5">
 	<input type="hidden" name="st.id">
 	<fieldset>

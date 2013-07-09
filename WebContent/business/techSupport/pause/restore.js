@@ -250,11 +250,12 @@ function loadData() {
 		
 		// 颜色控制和现实控制
 		var roleURL="sysadmin/queryUsreRoleList_user.action"
-		setParams('t_');
+		setParams('pp_');
  		$.post(roleURL,params,function(data){
  			for(var i=0;i<data.userRoleList.length;i++){
 //  				产品部门审批
  				if(ST_ROLE_PRODUCT_DEPT_APPR_TYPE == data.userRoleList[i].rolename){
+ 						alert(data.userRoleList[i].rolename);
 						$('#psgLabel').addClass("red");
 						$('.psgTime').show();
 						approvalRoles[data.userRoleList[i].rolename] = data.userRoleList[i].rolename;
