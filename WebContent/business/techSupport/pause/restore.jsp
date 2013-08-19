@@ -3,22 +3,19 @@
     pageEncoding="UTF-8"%>
 <%@include file="../../../public/common.jsp" %>
 <%@include file="../common/base.jsp" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>支持单恢复</title>
-<script type="text/javascript" src="<%=tsBase %>/common/javascript/common.js"></script>
 <link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
-</head>
-<body>
-	<script type="text/javascript" src="<%=tsBase %>/pause/restore.js"></script>
-<link href="<%=tsBase %>/common/css/basets.css" type="text/css" rel="stylesheet"></link>
-<style type="text/css">
+<script type="text/javascript" src="<%=tsBase %>/pause/restore.js"></script>
+<style>
 .date {
 	width: 100px !important;
 }
-
+.label-90 {
+	width:90px !important;
+}
+.column-block3 {
+	line-height:16px;
+	width:220px !important;
+}
 </style>
 <input type="hidden" id="p_taskId">
 <input type="hidden" id="pp_userid" value="<%=user.getUserid()%>">
@@ -66,13 +63,13 @@
 				<textarea style="width:250px ! important;height: 80px;" class="ro item  inputstyle" name="st.supportContent" id="p_supportContent"></textarea>
 				<div class="clear-column"></div>
 			</div>
-			<div class="column-block2 column">
-				<label class="label label-80">产品方案部:</label>
+			<div class="column-block3 column">
+				<label class="label label-90">产品方案部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">原计划完成时间:</label>
+						<label class="label label-90">原计划完成时间:</label>
 						<input type="text" class=" item inputstyle ro label-100" name="st.psgScheDate" >
 						<div class="clear-column"></div>
 					</div>
@@ -81,7 +78,7 @@
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">阶段:</label>
+						<label class="label label-90">阶段:</label>
 						<input type="checkbox" class=" item" id="psgstage">
 						<div class="clear-column"></div>
 					</div>
@@ -91,7 +88,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="psgstage">
-							<label class="label label-80" >需求:</label>
+							<label class="label label-90" >需求:</label>
 							<input type="text" class="psgstage item inputstyle ro label-100" name="st.psgDsScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -101,13 +98,13 @@
 				
 			</div>
 			
-			<div class="column-block2 column">
-				<label class="label label-80">技术开发部:</label>
+			<div class="column-block3 column">
+				<label class="label label-90">技术开发部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">原计划完成时间:</label>
+						<label class="label label-90">原计划完成时间:</label>
 						<input type="text" class=" item inputstyle ro label-100" name="st.devScheDate" >
 						<div class="clear-column"></div>
 					</div>
@@ -115,7 +112,7 @@
 				</div>
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">阶段:</label>
+						<label class="label label-90">阶段:</label>
 						<input type="checkbox" class=" item"  id="devstage">
 						<div class="clear-column"></div>
 					</div>
@@ -125,7 +122,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage">
-							<label class="label label-80" >设计:</label>
+							<label class="label label-90" >设计:</label>
 							<input type="text" class="devstage item inputstyle ro label-100" name="st.devDsScheDate" >
 						</div>
 						<div class="clear-column"></div>
@@ -136,7 +133,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage">
-							<label class="label label-80" >开发:</label>
+							<label class="label label-90" >开发:</label>
 							<input type="text" class="devstage item inputstyle label-100 ro" name="st.devDdScheDate" >
 						</div>
 						<div class="clear-column"></div>
@@ -148,7 +145,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage">
-							<label class="label label-80" >测试:</label>
+							<label class="label label-90" >测试:</label>
 							<input type="text" class="devstage item inputstyle label-100 ro" name="st.devDtScheDate" >
 						</div>
 						<div class="clear-column"></div>
@@ -161,7 +158,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage">
-							<label class="label label-80" >实施:</label>
+							<label class="label label-90" >实施:</label>
 							<input type="text" class="devstage item inputstyle ro label-100" name="st.psgIsScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -230,13 +227,13 @@
 				</div>
 			</div>
 			<%--产品方案部看到的计划时间 --%>
-			<div class="column-block2 column psgTime schetime">
-				<label class="label label-80" id="psgLabel">产品方案部:</label>
+			<div class="column-block3 column psgTime schetime">
+				<label class="label label-90" id="psgLabel">产品方案部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">现计划完成时间:</label>
+						<label class="label label-90">现计划完成时间:</label>
 						<input type="text" class="date item inputstyle ro label-100" name="st.psgScheDate" id="psgScheDate" >
 						<div class="clear-column"></div>
 					</div>
@@ -245,7 +242,7 @@
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">阶段:</label>
+						<label class="label label-90">阶段:</label>
 						<input type="checkbox" class=" item" id="psgstage2">
 						<div class="clear-column"></div>
 					</div>
@@ -255,7 +252,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="psgstage2">
-							<label class="label label-80" >需求:</label>
+							<label class="label label-90" >需求:</label>
 							<input type="text" class="date psgstage2 item inputstyle ro label-100" name="st.psgDsScheDate" id="psgDsScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -265,13 +262,13 @@
 			</div>
 			
 			<%--技术部门看到的计划时间 --%>
-			<div class="column-block2 column devTime schetime">
-				<label class="label label-80" id="devLabel">技术开发部:</label>
+			<div class="column-block3 column devTime schetime">
+				<label class="label label-90" id="devLabel">技术开发部:</label>
 				<div class="clear-column"></div>
 				
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">现计划完成时间:</label>
+						<label class="label label-90">现计划完成时间:</label>
 						<input type="text" class="date item inputstyle ro label-100" name="st.devScheDate" id="devScheDate">
 						<div class="clear-column"></div>
 					</div>
@@ -279,7 +276,7 @@
 				</div>
 				<div class="row">
 					<div class="column">
-						<label class="label label-80">阶段:</label>
+						<label class="label label-90">阶段:</label>
 						<input type="checkbox" class=" item"  id="devstage2">
 						<div class="clear-column"></div>
 					</div>
@@ -289,7 +286,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage2">
-							<label class="label label-80" >设计:</label>
+							<label class="label label-90" >设计:</label>
 							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.devDsScheDate" id="devDsScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -300,7 +297,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage2">
-							<label class="label label-80" >开发:</label>
+							<label class="label label-90" >开发:</label>
 							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDdScheDate" id="devDdScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -312,7 +309,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage2">
-							<label class="label label-80" >测试:</label>
+							<label class="label label-90" >测试:</label>
 							<input type="text" class="date devstage2 item inputstyle label-100 ro" name="st.devDtScheDate" id="devDtScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -325,7 +322,7 @@
 				<div class="row">
 					<div class="column">
 						<div class="devstage2">
-							<label class="label label-80" >实施:</label>
+							<label class="label label-90" >实施:</label>
 							<input type="text" class="date devstage2 item inputstyle ro label-100" name="st.psgIsScheDate" id="psgIsScheDate">
 						</div>
 						<div class="clear-column"></div>
@@ -349,5 +346,3 @@
 		<div class="clear-row"></div>
 	</div>
 </div>
-</body>
-</html>
