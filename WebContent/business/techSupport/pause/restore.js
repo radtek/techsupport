@@ -31,10 +31,10 @@ function saveVerify() {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
 			return false;
 		}
-		if($('#psgScheDate').val() <= $('#st input[name="st.psgScheDate"]').val()){
-			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
-			return false;
-		}
+//		if($('#psgScheDate').val() <= $('#st input[name="st.psgScheDate"]').val()){
+//			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
+//			return false;
+//		}
 		if ($('#psgstage2').attr('checked')) {
 			if (!checkControlValue("psgDsScheDate", "Date", 1, 100, null, 1,
 					"计划需求时间"))
@@ -54,10 +54,10 @@ function saveVerify() {
 			jAlert('计划完成时间必须大于等于审批日期', '提示');
 			return false;
 		}
-		if($('#devScheDate').val() <= $('#st input[name="st.devScheDate"]').val()){
-			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
-			return false;
-		}
+//		if($('#devScheDate').val() <= $('#st input[name="st.devScheDate"]').val()){
+//			jAlert('现计划完成时间必须大于原计划完成时间', '提示');
+//			return false;
+//		}
 		if ($('#devstage2').attr('checked')) {
 			if (!checkControlValue("devDsScheDate", "Date", 1, 100, null, 1,
 					"计划设计时间"))
@@ -255,7 +255,6 @@ function loadData() {
  			for(var i=0;i<data.userRoleList.length;i++){
 //  				产品部门审批
  				if(ST_ROLE_PRODUCT_DEPT_APPR_TYPE == data.userRoleList[i].rolename){
- 						alert(data.userRoleList[i].rolename);
 						$('#psgLabel').addClass("red");
 						$('.psgTime').show();
 						approvalRoles[data.userRoleList[i].rolename] = data.userRoleList[i].rolename;
