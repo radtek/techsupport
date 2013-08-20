@@ -109,7 +109,7 @@ function initProductTimeChangeQuery(divpageid){
 <body>
   <div id="productTimeCt" style="width:45%;float: left;" class="timeCt">
     <fieldset>
-      <legend>产品计划时间变更</legend>
+      <legend>产品方案部</legend>
       <div id="productTimeChangeDiv" >
         <table id="productTimeChangeTable">
          <thead>
@@ -134,7 +134,7 @@ function initProductTimeChangeQuery(divpageid){
   </div>
   <div id="developTimeCt" style="float: left;width:53%" class="timeCt">
     <fieldset>
-      <legend>开发计划时间变更</legend>
+      <legend>技术开发部</legend>
       <div id="developTimeChangeDiv">
         <table id="developTimeChangeTable">
         	 <thead>

@@ -495,7 +495,7 @@ function lazyLoad(){
 // 	时间变更情况查询
   function setTimeChange(id){
 		dataid=id;
-	  detailDialog(timeChangeCt,timeChangeDetailWidth,timeChangeUrl,'时间变更情况');
+	  detailDialog(timeChangeCt,timeChangeDetailWidth,timeChangeUrl,'计划完成时间变更情况');
 	}
 	
 	/**
