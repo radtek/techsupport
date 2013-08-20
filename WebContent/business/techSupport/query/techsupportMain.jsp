@@ -66,7 +66,7 @@ var supervision_width = 690;
 var applicant_page = "business/techSupport/query/techsupportModify.jsp";
 // 时间变更情况链接地址
 var timeChangeUrl = "business/techSupport/query/timeChange.jsp";
-var timeChangeDetailWidth = detailWidth;
+var timeChangeDetailWidth = 980;
 var timeChangeCt = "timeChangeCt";
 
 // 延迟加载

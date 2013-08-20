@@ -8,12 +8,12 @@
 <script type="text/javascript">
 var developTimeCt = "developTimeChangeDiv";
 var developTimeTableId = "developTimeChangeTable";
-var developTimeCtWidth=450;
+var developTimeCtWidth=505;
 var developTimeTable;
 
 var productTimeCt = "productTimeChangeDiv";
 var productTimeTableId = "productTimeChangeTable";
-var productTimeCtWidth  = 450;
+var productTimeCtWidth  = 430;
 var productTimeTable;
 
 var timeChangeQueryUrl = BUSNEISS_PATH + "/querylist_timeChange.action";
@@ -107,7 +107,7 @@ function initProductTimeChangeQuery(divpageid){
 </style>
 </head>
 <body>
-  <div id="productTimeCt" style="width:49%;float: left;" class="timeCt">
+  <div id="productTimeCt" style="width:45%;float: left;" class="timeCt">
     <fieldset>
       <legend>产品计划时间变更</legend>
       <div id="productTimeChangeDiv" >
@@ -117,14 +117,14 @@ function initProductTimeChangeQuery(divpageid){
              <th>变更人</th>
             <th>变更时间</th>
             <%-- 产品计划时间 --%>
-            <th>计划时间</th>
-            <th>需求时间</th>
+            <th>计划完成时间</th>
+            <th>需求阶段</th>
             <%--开发计划时间,需要隐藏 --%>
-            <th>计划时间</th>
-            <th>设计时间</th>
-            <th>开发时间</th>
-            <th>测试时间</th>
-            <th>实施时间</th>
+            <th>计划完成时间</th>
+            <th>设计阶段</th>
+            <th>开发阶段</th>
+            <th>测试阶段</th>
+            <th>实施阶段</th>
             <th>变更原因</th>
           </tr>
          </thead>
@@ -132,7 +132,7 @@ function initProductTimeChangeQuery(divpageid){
       </div>
     </fieldset>
   </div>
-  <div id="developTimeCt" style="float: left;width:49%" class="timeCt">
+  <div id="developTimeCt" style="float: left;width:53%" class="timeCt">
     <fieldset>
       <legend>开发计划时间变更</legend>
       <div id="developTimeChangeDiv">
@@ -142,14 +142,14 @@ function initProductTimeChangeQuery(divpageid){
             <th>变更人</th>
             <th>变更时间</th>
             <%-- 产品计划时间 ,需要隐藏--%>
-            <th>计划时间</th>
-            <th>需求时间</th>
+            <th>计划完成时间</th>
+            <th>需求阶段</th>
             <%--开发计划时间--%>
-            <th>计划时间</th>
-            <th>设计时间</th>
-            <th>开发时间</th>
-            <th>测试时间</th>
-            <th>实施时间</th>
+            <th>计划完成时间</th>
+            <th>设计阶段</th>
+            <th>开发阶段</th>
+            <th>测试阶段</th>
+            <th>实施阶段</th>
             <th>变更原因</th>
           </tr>
            </thead>
