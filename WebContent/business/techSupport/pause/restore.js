@@ -138,7 +138,7 @@ $(function() {
 						params['st.id'] = $('input:hidden[name=st.id]').val();
 						params['taskId'] = $('#p_taskId').val();
 
-						if ($('#st input[name=st.devScheDate]').val()) {
+						if ($('#devScheDate').val()) {
 						  params['timeChange.type'] = ST_TIME_CHANGE_TYPE_DEVELOP;
 						}
 						else
