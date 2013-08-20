@@ -98,13 +98,18 @@
 
 	<select id="TimeChange.getListForPage" parameterClass="map"
 		resultMap="timeChangeListR">
+		select x.* from (
+		select rownum rowno,z.* from 
+		(
 		select
-		t.*,tr.id tr_id,tr.st_id ,tr.tracking_date,tr.new_process,tr.new_process,tr.processor
+		t.*,tr.id tr_id,tr.st_id ,tr.tracking_date,tr.new_process,tr.processor
 		,u.username
 		from t_ts_timechange t, t_user u, t_ts_tracking tr
 		where
 		t.tracking_id = tr.id and tr.processor = u.userid
 		<include refid="pageWhere" />
+		order by $pageSort$ ) z
+		) x where rowno &gt;$beginRow$ and rowno &lt;= $endRow$ 
 	</select>
 
 	<select id="TimeChange.getListForPageCount" parameterClass="map" resultClass="int">
