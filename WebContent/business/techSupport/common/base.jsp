@@ -38,6 +38,8 @@
 	var ST_STATUS_WAIT_DEPARTMENT_APPRAVAL="<%=com.aisino2.techsupport.common.Constants.ST_STATUS_WAIT_DEPARTMENT_APPRAVAL%>";
 	//部门审批未通过
 	var ST_STATUS_DEPARTMENT_APPRAVAL_NOPASS="<%=com.aisino2.techsupport.common.Constants.ST_STATUS_DEPARTMENT_APPRAVAL_NOPASS%>";
+	//已暂停
+	var ST_STATUS_PAUSE = "<%=com.aisino2.techsupport.common.Constants.ST_STATUS_PAUSE%>";
 	
 	//支持单状态字典代码
 	var ST_STATUS_DICT_CODE="<%=com.aisino2.techsupport.common.Constants.ST_STATUS_DICT_CODE%>";

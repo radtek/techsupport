@@ -14,8 +14,15 @@ var supervision_table_id="supervision_list_table";
 var supervision_tables;
 //督办查询路径
 var supervision_query_url = BUSNEISS_PATH +"/querylist_supervision.action";
+
+var isPause=false;
 /**保存验证*/
 function saveVerify() {
+	//如果为已暂停的单子是不允许修改
+	if(isPause){
+		jAlert('支持单在已暂停状态不能重新指派负责人','警告');
+		return false;
+	}
 	if (!checkControlValue("p_newProcess","String",1,4000,null,1,"变更原因"))
 		return false;
 	if (!checkControlValue("p_trackingDate","Datetime",null,null,null,1,"变更日期"))
@@ -239,6 +246,8 @@ function loadData(){
 		trackingQuery(1,ingridUrl);
 		//督办
 		$('#sv_st_id').val(data.st.id);
+		if(data.st.stStatus == ST_STATUS_PAUSE)
+			isPause=true;
 		load_page_supervision_query(supervision_div_id);
 		supervision_query(1);
 	},'json');
