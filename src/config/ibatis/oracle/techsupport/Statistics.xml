@@ -28,7 +28,7 @@
   <result column="gone" property="statusGoneCount"/>
   <result column="pause" property="statusPauseCount"/>
   <result column="stop" property="statusStopCount"/>
-  <result property="supportCount" column="support_count"/>
+<!--   <result property="supportCount" column="support_count"/> -->
 </resultMap>
 
 <resultMap id="Statistics.bySupportLeaderRm" class="Statistics">
@@ -42,7 +42,7 @@
   <result column="gone" property="statusGoneCount"/>
   <result column="pause" property="statusPauseCount"/>
   <result column="stop" property="statusStopCount"/>
-  <result property="supportCount" column="support_count"/>
+<!--   <result property="supportCount" column="support_count"/> -->
 </resultMap>
 
 <!-- 统计条件 -->
@@ -165,15 +165,15 @@ from t_ts_tech_support t
 <select id="Statistics.byDepartment" parameterClass="map" resultMap="Statistics.byDepartmentRm">
   select t.display_name departname
   , 
-  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
-    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
-    <include refid="StatisticsForm"/>
-    where 1=1 
-    <include refid="StatisticsWhere"/>
-    group by ts.id having count(sd.dept_id) &lt; 2) dd
-    join t_ts_stdept_mapping sd on ts_id = sd.st_id 
-    join t_department d on sd.dept_id = d.departid
-    where d.departcode = t.fact_value) support_count,
+<!--   (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts  -->
+<!--     join t_ts_stdept_mapping sd on ts.id=sd.st_id  -->
+<!--     <include refid="StatisticsForm"/> -->
+<!--     where 1=1  -->
+<!--     <include refid="StatisticsWhere"/> -->
+<!--     group by ts.id having count(sd.dept_id) &lt; 2) dd -->
+<!--     join t_ts_stdept_mapping sd on ts_id = sd.st_id  -->
+<!--     join t_department d on sd.dept_id = d.departid -->
+<!--     where d.departcode = t.fact_value) support_count, -->
   (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
     join t_ts_stdept_mapping sd on ts.id=sd.st_id 
     <include refid="StatisticsForm"/>
@@ -256,12 +256,12 @@ from t_dict_item t where t.dict_code = 'dm_ts_depart_list'
   		union all 
 select '产品方案部和技术开发部' departname
   ,
-  (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
-    join t_ts_stdept_mapping sd on ts.id=sd.st_id 
-    <include refid="StatisticsForm"/>
-    where 1=1 
-    <include refid="StatisticsWhere"/> 
-     group by ts.id having count(sd.dept_id) > 1) ) support_count, 
+<!--   (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts  -->
+<!--     join t_ts_stdept_mapping sd on ts.id=sd.st_id  -->
+<!--     <include refid="StatisticsForm"/> -->
+<!--     where 1=1  -->
+<!--     <include refid="StatisticsWhere"/>  -->
+<!--      group by ts.id having count(sd.dept_id) > 1) ) support_count,  -->
   (select count(distinct ts_id) from (select ts.id ts_id from t_ts_tech_support ts 
     join t_ts_stdept_mapping sd on ts.id=sd.st_id 
     <include refid="StatisticsForm"/>
@@ -317,12 +317,12 @@ select '产品方案部和技术开发部' departname
 <!-- 按照负责人统计 -->
 <select id="Statistics.bySupportLeader" parameterClass="map" resultMap="Statistics.bySupportLeaderRm">
   select d.departname,u.username,d.departfullcode,
-   (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts
-	    join t_ts_stsl_map sl on sl.st_id=ts.id   
-	    <include refid="StatisticsForm"/>
-	    where 1=1  
-	    <include refid="StatisticsWhere"/>
-	    group by ts.id,SL_ID) where SL_ID = sl.sl_id ) support_count ,
+<!--    (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts -->
+<!-- 	    join t_ts_stsl_map sl on sl.st_id=ts.id    -->
+<!-- 	    <include refid="StatisticsForm"/> -->
+<!-- 	    where 1=1   -->
+<!-- 	    <include refid="StatisticsWhere"/> -->
+<!-- 	    group by ts.id,SL_ID) where SL_ID = sl.sl_id ) support_count , -->
 	  (select count(1) from (select ts.id ts_id ,sl.SL_ID sl_id from t_ts_tech_support ts
 	    join t_ts_stsl_map sl on sl.st_id=ts.id   
 	    <include refid="StatisticsForm"/>

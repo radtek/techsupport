@@ -408,14 +408,14 @@ public class StatisticsAction extends PageAction {
 			pauseCountSum += statistics.getStatusPauseCount();
 			stopCount += statistics.getStatusStopCount();
 
-			// statistics.setSupportCount(statistics.getStatusGoingCount()
-			// + statistics.getStatusWaitFeedbackCount()
-			// + statistics.getStatusFeedbackCount()
-			// + statistics.getStatusGoneCount()
-			// + statistics.getStatusPauseCount()
-			// + statistics.getStatusStopCount()
-			// + statistics.getStatusDepartmentApprovalNoPassCount()
-			// + statistics.getStatusWaitDepartmentApprovalCount());
+			statistics.setSupportCount(statistics.getStatusGoingCount()
+					+ statistics.getStatusWaitFeedbackCount()
+					+ statistics.getStatusFeedbackCount()
+					+ statistics.getStatusGoneCount()
+					+ statistics.getStatusPauseCount()
+					+ statistics.getStatusStopCount()
+					+ statistics.getStatusDepartmentApprovalNoPassCount()
+					+ statistics.getStatusWaitDepartmentApprovalCount());
 
 			supportCount += statistics.getSupportCount();
 		}
@@ -545,14 +545,14 @@ public class StatisticsAction extends PageAction {
 			pauseCountSum += statistics.getStatusPauseCount();
 			stopCount += statistics.getStatusStopCount();
 
-			// statistics.setSupportCount(statistics
-			// .getStatusWaitDepartmentApprovalCount()
-			// + statistics.getStatusGoingCount()
-			// + statistics.getStatusWaitFeedbackCount()
-			// + statistics.getStatusFeedbackCount()
-			// + statistics.getStatusGoneCount()
-			// + statistics.getStatusPauseCount()
-			// + statistics.getStatusStopCount());
+			statistics.setSupportCount(statistics
+					.getStatusWaitDepartmentApprovalCount()
+					+ statistics.getStatusGoingCount()
+					+ statistics.getStatusWaitFeedbackCount()
+					+ statistics.getStatusFeedbackCount()
+					+ statistics.getStatusGoneCount()
+					+ statistics.getStatusPauseCount()
+					+ statistics.getStatusStopCount());
 			supportCount += statistics.getSupportCount();
 
 			for (String key : map.keySet()) {
@@ -563,17 +563,6 @@ public class StatisticsAction extends PageAction {
 			}
 		}
 		Statistics statistics = new Statistics();
-		statistics.setParentDepartname("合计");
-		statistics
-				.setStatusWaitDepartmentApprovalCount(waitDepartmentApprovalCountSum);
-		statistics.setStatusGoingCount(goingCountSum);
-		statistics.setStatusWaitFeedbackCount(waitFeedbackConntSum);
-		statistics.setStatusFeedbackCount(feedbackCountSum);
-		statistics.setStatusGoneCount(goneCountSum);
-		statistics.setStatusPauseCount(pauseCountSum);
-		statistics.setStatusStopCount(stopCount);
-		statistics.setSupportCount(supportCount);
-		lData.add(statistics);
 
 		List<String> lCols = new ArrayList<String>();
 
