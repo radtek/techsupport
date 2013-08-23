@@ -17,7 +17,7 @@
 	<task candidate-users="#{feedbackUsers}" form="/business/techSupport/feedback/feedback.jsp" g="265,1027,168,60" name="feedback">
 		<description>反馈</description>
 		<transition to="archive"/>
-		<transition g="35,1056;34,673:-85,-25" name="no_feedback" to="exception_tracking_fork"/>
+		<transition g="35,1056;34,673:-85,-25" name="no_feedback" to="pause_fork"/>
 	</task>
 	<task candidate-users="#{archiveUsers}" form="/business/techSupport/archive/archive.jsp" g="265,1138,171,60" name="archive">
 		<description>归档</description>
