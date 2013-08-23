@@ -234,6 +234,7 @@ public class StatisticsAction extends PageAction {
 		List<String> lPros = new ArrayList<String>();
 		lPros.add("region");
 		lPros.add("regionName");
+		lPros.add("supportCount");
 		lPros.add("statusWaitCompanyApprovalCount");
 		lPros.add("statusCompanyApprovalNoPassCount");
 		lPros.add("statusWaitDepartmentApprovalCount");
@@ -255,7 +256,7 @@ public class StatisticsAction extends PageAction {
 		int goneCountSum = 0;
 		int pauseCountSum = 0;
 		int stopCount = 0;
-
+		int supportCount = 0;
 		for (Statistics statistics : lData) {
 			statistics.setRegionName(getRegionDict()
 					.get(statistics.getRegion()));
@@ -273,6 +274,16 @@ public class StatisticsAction extends PageAction {
 			goneCountSum += statistics.getStatusGoneCount();
 			pauseCountSum += statistics.getStatusPauseCount();
 			stopCount += statistics.getStatusStopCount();
+			//
+			// statistics.setSupportCount(statistics.getStatusGoingCount()
+			// + statistics.getStatusWaitFeedbackCount()
+			// + statistics.getStatusGoneCount()
+			// + statistics.getStatusPauseCount()
+			// + statistics.getStatusStopCount()
+			// + statistics.getStatusCompanyApprovalNoPassCount()
+			// + statistics.getStatusDepartmentApprovalNoPassCount()
+			// + statistics.getStatusWaitCompanyApprovalCount());
+			supportCount += statistics.getSupportCount();
 		}
 		Statistics statistics = new Statistics();
 		statistics.setRegion("合计");
@@ -291,6 +302,7 @@ public class StatisticsAction extends PageAction {
 		statistics.setStatusGoneCount(goneCountSum);
 		statistics.setStatusPauseCount(pauseCountSum);
 		statistics.setStatusStopCount(stopCount);
+		statistics.setSupportCount(supportCount);
 		lData.add(statistics);
 
 		List<String> lCols = new ArrayList<String>();
@@ -363,6 +375,7 @@ public class StatisticsAction extends PageAction {
 		List<String> lPros = new ArrayList<String>();
 		lPros.add("departname");
 		lPros.add("departname");
+		lPros.add("supportCount");
 		lPros.add("statusDepartmentApprovalNoPassCount");
 		lPros.add("statusWaitDepartmentApprovalCount");
 		lPros.add("statusGoingCount");
@@ -380,6 +393,7 @@ public class StatisticsAction extends PageAction {
 		int goneCountSum = 0;
 		int pauseCountSum = 0;
 		int stopCount = 0;
+		int supportCount = 0;
 
 		for (Statistics statistics : lData) {
 
@@ -393,6 +407,17 @@ public class StatisticsAction extends PageAction {
 			goneCountSum += statistics.getStatusGoneCount();
 			pauseCountSum += statistics.getStatusPauseCount();
 			stopCount += statistics.getStatusStopCount();
+
+			// statistics.setSupportCount(statistics.getStatusGoingCount()
+			// + statistics.getStatusWaitFeedbackCount()
+			// + statistics.getStatusFeedbackCount()
+			// + statistics.getStatusGoneCount()
+			// + statistics.getStatusPauseCount()
+			// + statistics.getStatusStopCount()
+			// + statistics.getStatusDepartmentApprovalNoPassCount()
+			// + statistics.getStatusWaitDepartmentApprovalCount());
+
+			supportCount += statistics.getSupportCount();
 		}
 		Statistics statistics = new Statistics();
 		statistics.setDepartname("合计");
@@ -406,6 +431,7 @@ public class StatisticsAction extends PageAction {
 		statistics.setStatusGoneCount(goneCountSum);
 		statistics.setStatusPauseCount(pauseCountSum);
 		statistics.setStatusStopCount(stopCount);
+		statistics.setSupportCount(supportCount);
 		lData.add(statistics);
 
 		List<String> lCols = new ArrayList<String>();
@@ -479,6 +505,7 @@ public class StatisticsAction extends PageAction {
 		lPros.add("parentDepartname");
 		lPros.add("departname");
 		lPros.add("stLeaderName");
+		lPros.add("supportCount");
 		lPros.add("statusWaitDepartmentApprovalCount");
 		lPros.add("statusGoingCount");
 		lPros.add("statusWaitFeedbackCount");
@@ -494,6 +521,7 @@ public class StatisticsAction extends PageAction {
 		int goneCountSum = 0;
 		int pauseCountSum = 0;
 		int stopCount = 0;
+		int supportCount = 0;
 
 		Map<String, String> map = new HashMap<String, String>();
 		Dict_item dict_item = new Dict_item();
@@ -517,6 +545,16 @@ public class StatisticsAction extends PageAction {
 			pauseCountSum += statistics.getStatusPauseCount();
 			stopCount += statistics.getStatusStopCount();
 
+			// statistics.setSupportCount(statistics
+			// .getStatusWaitDepartmentApprovalCount()
+			// + statistics.getStatusGoingCount()
+			// + statistics.getStatusWaitFeedbackCount()
+			// + statistics.getStatusFeedbackCount()
+			// + statistics.getStatusGoneCount()
+			// + statistics.getStatusPauseCount()
+			// + statistics.getStatusStopCount());
+			supportCount += statistics.getSupportCount();
+
 			for (String key : map.keySet()) {
 				if (statistics.getDepartfullcode().contains(key)) {
 					statistics.setParentDepartname(map.get(key));
@@ -534,6 +572,7 @@ public class StatisticsAction extends PageAction {
 		statistics.setStatusGoneCount(goneCountSum);
 		statistics.setStatusPauseCount(pauseCountSum);
 		statistics.setStatusStopCount(stopCount);
+		statistics.setSupportCount(supportCount);
 		lData.add(statistics);
 
 		List<String> lCols = new ArrayList<String>();

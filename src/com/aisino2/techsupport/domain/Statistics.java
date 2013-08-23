@@ -70,6 +70,16 @@ public class Statistics {
 
 	private String parentDepartname;
 
+	private int supportCount;
+
+	public int getSupportCount() {
+		return supportCount;
+	}
+
+	public void setSupportCount(int supportCount) {
+		this.supportCount = supportCount;
+	}
+
 	public int getStatusCompanyApprovalNoPassCount() {
 		return statusCompanyApprovalNoPassCount;
 	}

@@ -140,10 +140,10 @@ function StatisticsByRegionQuery(pageno,url){
                     height:ingridHeight,
                     ingridPageWidth: statisticsWidth,
                     ingridPageParams:sXML,
-                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9,10],
+                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9,10,11],
                     onRowSelect:null,
                     pageNumber: pageno,
-                    colWidths: ["9%","9%","9%","9%","9%","9%","9%","9%","9%","9%","9%"]        
+                    colWidths: ["8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%","8.3%"]        
                   });       
     }
 }
@@ -172,10 +172,10 @@ function StatisticsByDepartmentQuery(pageno,url){
                     height:ingridHeight,
                     ingridPageWidth: statisticsWidth,
                     ingridPageParams:sXML,
-                    noSortColIndex:[0,1,2,3,4,5,6,7,8],
+                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9],
                     onRowSelect:null,
                     pageNumber: pageno,
-                    colWidths: ["11%","11%","11%","11%","11%","11%","11%","11%","11%"]        
+                    colWidths: ["10%","10%","10%","10%","10%","10%","10%","10%","10%","10%"]        
                   });       
     }
 }
@@ -195,7 +195,13 @@ function setStatisticsBySuppportLeaderQuery(pageno,url){
 	 
 function StatisticsBySuppportLeaderQuery(pageno,url){
 
-  if (true){
+  if (validate()){
+	//总工查询时间控制
+		if($('#p_trackingDateFrom').val() || $('#p_trackingDateTo').val()){
+			$('#p_type').val(TRACKING_TYPE_CEREPLY);
+		}
+		else
+			$('#p_type').val(null);
     url=setStatisticsBySuppportLeaderQuery(pageno,url);
     // create the grid
     // returns a jQ object with a 'g' property - that's ingrid
@@ -204,7 +210,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
                     height:ingridHeight,
                     ingridPageWidth: statisticsWidth,
                     ingridPageParams:sXML,
-                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9],
+                    noSortColIndex:[0,1,2,3,4,5,6,7,8,9,10],
                     onRowSelect:null,
                     pageNumber: pageno,
                     ingridComplete:function(){
@@ -218,7 +224,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
                     			
                     	});
                     },
-                    colWidths: ["10%","10%","10%","10%","10%","10%","10%","10%","10%","10%"]        
+                    colWidths: ["9%","9%","9%","9%","9%","9%","9%","9%","9%","9%","9%"]        
                   });       
     }
 }
@@ -250,6 +256,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 			<thead>
 				<tr>
 					<th>大区</th>
+					<th>支持单数量</th>
 					<th>待公司审批</th>
 					<th>公司审批不通过</th>
 					<th>待部门审批</th>
@@ -282,6 +289,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 			<thead>
 				<tr>
 					<th>部门</th>
+					<th>支持单数量</th>
 					<th>部门审批不通过</th>
 					<th>待部门审批</th>
 					<th>进行中</th>
@@ -313,6 +321,7 @@ function StatisticsBySuppportLeaderQuery(pageno,url){
 				<tr>
 					<th colspan="2">部门</th>
 					<th>负责人</th>
+					<th>支持单数量</th>
 					<th>待部门审批</th>
 					<th>进行中</th>
 					<th>待反馈</th>
