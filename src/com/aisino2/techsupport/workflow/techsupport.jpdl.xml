@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <process key="techsupport2" name="techsupport" version="10" xmlns="http://jbpm.org/4.4/jpdl">
-	<variable init-expr="true" name="techDeptApprResult" type="bool">
-	</variable>
-	<variable init-expr="true" name="productDeptApprResult" type="bool">
-	</variable>
+	<variable init-expr="true" name="techDeptApprResult" type="bool"/>
+	<variable init-expr="true" name="productDeptApprResult" type="bool"/>
+
 	<start g="106,20,168,52" name="start1">
+        <description>开始</description>
 		<transition to="ce_appr"/>
 	</start>
 	<task form="/business/techSupport/tracking/tracking.jsp" g="237,713,171,60" name="tracking_appr">
@@ -120,36 +120,45 @@
 		<transition g="196,564;34,559;31,340:-23,11" name="to_reassign_department_fork" to="reassign_department_fork"/>
 	</decision>
 	<script expr="false" g="60,251,146,52" name="initDeptAppr" var="departmentAppr">
+        <description>初始化部门审批变量为否</description>
 		<transition to="reassign_department_fork"/>
 	</script>
 	<fork g="160,315,171,52" name="reassign_department_fork">
+        <description>重新指派部门分支</description>
 		<transition to="reassign_depart"/>
 		<transition to="fork1"/>
 	</fork>
 	<script expr="true" g="158,462,127,52" name="settingDeptAppr" var="departmentAppr">
+        <description>设置为部门审批</description>
 		<transition to="end_reassign_department_join"/>
 	</script>
 	<decision g="449,426,48,48" name="tech_department_appr_exclusive">
+        <description>技术部门审批条件</description>
 		<handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
 		<transition g="-10,-18" name="both" to="end_department_appr_join"/>
 		<transition g="-29,-5" name="tech_appr" to="settingDeptAppr"/>
 	</decision>
 	<decision g="576,424,48,48" name="product_department_appr_exclusive">
+        <description>产品部门审批条件</description>
 		<handler class="com.aisino2.techsupport.workflow.decision.DepartmentApprovalDecisionHandler" />
 		<transition g="-21,-19" name="both" to="end_department_appr_join"/>
 		<transition g="561,516;446,517:-127,-20" name="product_appr" to="settingDeptAppr"/>
 	</decision>
 	<script expr="true" g="220,164,151,52" name="resetProductResult" var="productDeptApprResult">
+        <description>产品部门审批结果</description>
 		<transition to="join1"/>
 	</script>
 	<script expr="true" g="239,265,125,52" name="resetTechResult" var="techDeptApprResult">
+        <description>技术部门审批结果</description>
 		<transition to="join1"/>
 	</script>
 	<fork g="199,222,48,48" name="fork1">
+        <description>技术部门和产品部门审批初始化分支</description>
 		<transition to="resetTechResult"/>
 		<transition to="resetProductResult"/>
 	</fork>
 	<join g="347,213,48,48" name="join1">
+        <description>技术部门和产品部门审批初始化合并</description>
 		<transition to="department_appr_condition"/>
 	</join>
 	<fork g="211,651,48,48" name="pause_fork">
