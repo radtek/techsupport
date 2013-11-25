@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process key="techsupport2" name="techsupport" version="11" xmlns="http://jbpm.org/4.4/jpdl">
+<process key="techsupport2" name="techsupport" version="10" xmlns="http://jbpm.org/4.4/jpdl">
 	<variable init-expr="true" name="techDeptApprResult" type="bool"/>
 	<variable init-expr="true" name="productDeptApprResult" type="bool"/>
 
@@ -74,10 +74,7 @@
       <transition g="-90,-20" name="to pause_join" to="pause_join"/>
         <transition name="to_terminate_exception_proc" to="terminate_exception_proc"/>
     </task>
-	<decision expr="#{reassign_stleader_repeat}" g="710,936,168,60" name="reassign_stleader_condition">
-		<description>无限重新指派</description>
-    </decision>
-	<task form="/business/techSupport/deptApproval/deptApproval.jsp" g="509,339,195,52" name="product_department_appr">
+    <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="509,339,195,52" name="product_department_appr">
 		<description>产品部门审批</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.DepartmentApprovalAssignmentHandler">
 			<field name="department_approval_type">
