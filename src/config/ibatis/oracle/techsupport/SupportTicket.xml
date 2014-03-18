@@ -371,14 +371,17 @@
 			</isNotEmpty>
 <!-- 			重新指派部门,是需要清除已经相关的计划时间 -->
 			<isEqual prepend="," property="reassignDept" compareValue="true">
-				DEV_SCHE_DATE = null,
-				PSG_SCHE_DATE = null,
-				DEV_DS_SCHE_DATE = null,
-				DEV_DD_SCHE_DATE = null,
-				PSG_DS_SCHE_DATE = null,
-				PSG_IS_SCHE_DATE = null,
-				DEV_DT_SCHE_DATE = null
+                <isEqual property="importable" compareValue="false">
+                    DEV_SCHE_DATE = null,
+                    PSG_SCHE_DATE = null,
+                    DEV_DS_SCHE_DATE = null,
+                    DEV_DD_SCHE_DATE = null,
+                    PSG_DS_SCHE_DATE = null,
+                    PSG_IS_SCHE_DATE = null,
+                    DEV_DT_SCHE_DATE = null
+                </isEqual>
 			</isEqual>
+
 		</dynamic>
 
 		where ID = #id#

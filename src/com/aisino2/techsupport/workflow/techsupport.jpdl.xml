@@ -56,7 +56,6 @@
 	<task candidate-users="#{ceApprovalUsers}" form="/business/techSupport/exception/exception.jsp" g="459,775,161,60" name="exception_process">
 		<description>支持单意外终止</description>
 		<transition to="end"/>
-      <transition g="-90,-20" name="to pause_join" to="pause_join"/>
         <transition name="to_terminate_exception_proc" to="terminate_exception_proc"/>
     </task>
 	<join g="321,964,168,52" multiplicity="1" name="terminate_exception_proc">
@@ -71,7 +70,6 @@
 		<description>重新指派负责人</description>
 		<assignment-handler class="com.aisino2.techsupport.workflow.assignee.ReassignStleaderAssignmentHandler"/>
 		<transition to="reassgin_stleader"/>
-      <transition g="-90,-20" name="to pause_join" to="pause_join"/>
         <transition name="to_terminate_exception_proc" to="terminate_exception_proc"/>
     </task>
     <task form="/business/techSupport/deptApproval/deptApproval.jsp" g="509,339,195,52" name="product_department_appr">
@@ -191,7 +189,5 @@
     <fork g="303,826,48,48" name="create_exception_reassign_leader_fork">
    	<description>用于重新创建被pause_join强制关闭的exception_reassign_leader_fork</description>
       <transition to="restore_or_feedback"/>
-        <transition to="exception_process"/>
-        <transition to="reassgin_stleader"/>
     </fork>
 </process>

@@ -124,7 +124,17 @@ public class SupportTicket {
 	 * 重新指派部门标识,true表示为重新指派,false表示不是重新指派
 	 */
 	private boolean reassignDept = false;
+    /**
+     * 导出标志
+     */
+    private boolean importable = false;
 
+    public boolean isImportable() {
+        return importable;
+    }
+    public void setImportable(boolean importable) {
+        this.importable = importable;
+    }
 	public boolean isReassignDept() {
 		return reassignDept;
 	}

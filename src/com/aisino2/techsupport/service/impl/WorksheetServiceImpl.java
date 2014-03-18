@@ -725,6 +725,8 @@ public class WorksheetServiceImpl extends BaseService implements
 
 		// 环节导入
 		for (SupportTicket st : lstSupportTicket) {
+            //设置导入标志
+            st.setImportable(true);
 			if (Constants.ST_STATUS_WAIT_COMPANY_APPRAVAL.equals(st
 					.getStStatus())) {
 				st.setTrackList(null);
