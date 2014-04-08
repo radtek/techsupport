@@ -2,6 +2,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.BufferedInputStream"%>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -15,10 +16,15 @@
 	String default_filename = (String) request.getAttribute("filename");
 	if (default_filename == null)
 		default_filename = new Date().getTime() + "";
-	
+
+    String filename = null;
+    if(request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0)
+        filename = URLEncoder.encode(default_filename,"utf8");
+    else
+        filename = new String(default_filename.getBytes(),"ISO8895-1");
 	response.reset();
 	response.addHeader("Content-Disposition", "attachment;filename="
-			+ new String(default_filename.getBytes(),"ISO8859-1") + "");
+			+ filename + "");
 	response.setContentType("application/x-download");
 	
 	//response.sendRedirect(filestorepath);

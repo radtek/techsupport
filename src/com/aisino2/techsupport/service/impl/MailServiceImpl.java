@@ -283,7 +283,7 @@ public class MailServiceImpl implements MailService {
 		Thread t = new Thread(){
 			public void run() {
 				try {
-					connect(mail, true, true, false);
+					connect(mail, true, mail.isDebug(), false);
 					send(mail,subject,to,cc,pgp,signature,text,attach,html);
 				} catch (Exception e) {
 					e.printStackTrace();

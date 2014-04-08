@@ -215,7 +215,7 @@ public class SupportTicketAction extends PageAction implements
 
 			label = new Label(0, y, excel_st.getStNo());
 			sheet.addCell(label);
-			label = new Label(1, y, excel_st.getApplicant().getUsername());
+			label = new Label(1, y, excel_st.getApplicant() != null ? excel_st.getApplicant().getUsername() : "用户不存在");
 			sheet.addCell(label);
 			label = new Label(2, y, excel_st.getRegion());
 			sheet.addCell(label);
