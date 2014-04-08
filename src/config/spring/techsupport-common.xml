@@ -37,7 +37,7 @@
  		</property>
  		<!-- cron表达式 -->
  		<property name="cronExpression">
- 			<value>0 0 */1 ? * * *</value>
+ 			<value>0 0 23 ? * * *</value>
  		</property>
  	</bean>
  
@@ -69,9 +69,9 @@
 	    <aop:aspect  id="bindTestAspect" ref="bindTestBean">
 	        <aop:after-returning  method="testBind" arg-names="st" pointcut="execution( * com.aisino2.techsupport.test.*.invok*(..)) and args(st)" />
 	        <aop:after  method="testBind2" arg-names="taskId,st" pointcut="execution( * com.aisino2.techsupport.test.*.invoke(..)) and args(taskId,st)" />
-	        <aop:after  method="testBind3" arg-names="taskId,st,track" pointcut="execution( * com.aisino2.techsupport.test.*.invoke(..)) and args(taskId,st,track)" /> 
+	        <aop:after  method="testBind3" arg-names="taskId,st,track" pointcut="execution( * com.aisino2.techsupport.test.*.invoke(..)) and args(taskId,st,track)" />
 	    </aop:aspect>
-	    
+
 <!-- 	    自动环节提示切片 -->
 	    <aop:aspect id="promptProcessAutoAspect" ref="WorksheetServiceImpl">
 	    	<aop:after-returning method="promptProcessAuto" arg-names="st" pointcut="execution( * com.aisino2.techsupport.service.*.insertApplyAndGo(..)) and args(st)"/>
@@ -92,8 +92,8 @@
  		</property>
     </bean>
     
-    <!-- 定义触发时间 -->
- 	<bean id="scheduledPromptTrackingAuto" class="org.springframework.scheduling.quartz.CronTriggerBean">	
+     <!--定义触发时间 -->
+ 	<bean id="scheduledPromptTrackingAuto" class="org.springframework.scheduling.quartz.CronTriggerBean">
  		<property name="jobDetail">
  			<ref bean="methodPromptTrackingAuto"/>
  		</property>
@@ -102,7 +102,7 @@
  			<value>0 0 8 ? * *</value>
  		</property>
  	</bean>
- 
+
    <bean id="startPromptTrackingAuto" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
  		<property name="triggers">
  			<list>

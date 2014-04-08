@@ -22,9 +22,9 @@
 <!-- 	 <property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.1.154:1521:orcl</property>  -->
      <property name="hibernate.connection.username">techsupport</property>
      <property name="hibernate.connection.password">techsupport</property>
-     <property name="hibernate.hbm2ddl.auto"></property>
-     <property name="hibernate.format_sql">true</property>
-     <property name="hibernate.show_sql">true</property>
+     <property name="hibernate.hbm2ddl.auto">none</property>
+     <property name="hibernate.format_sql">false</property>
+     <property name="hibernate.show_sql">false</property>
      
      <mapping resource="jbpm.repository.hbm.xml" />
      <mapping resource="jbpm.execution.hbm.xml" />

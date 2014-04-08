@@ -25,8 +25,11 @@
 	<bean id="dataSysadmin" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     	<property name="driverClassName" value="oracle.jdbc.OracleDriver" />      
         <property name="url" value="jdbc:oracle:thin:@192.168.1.202:1521:test" />      
-        <property name="username" value="techsupport" />      
-        <property name="password" value="techsupport" />   
+        <property name="username" value="techsupportr" />
+        <property name="password" value="techsupportr" />
+        <property name="maxActive" value="50"/>
+        <property name="maxIdle" value="25"/>
+        <property name="maxWait" value="8000"/>
 	</bean>
 	
 	<bean id="transactionManager"
@@ -124,16 +127,16 @@
 				<value>jbpm.identity.hbm.xml</value>
 			</list>
 		</property>
-		<property name="hibernateProperties"> 
+		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
 					org.hibernate.dialect.Oracle10gDialect
 				</prop>
 				<prop key="hibernate.show_sql">
-					true
+					false
 				</prop>
 				<prop key="hibernate.format_sql">
-					true
+					false
 				</prop>
 				<prop key="hibernate.hbm2ddl.auto">none</prop>
 			</props>

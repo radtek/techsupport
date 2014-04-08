@@ -575,7 +575,8 @@
 
 				t.APPLICANT,
 				
-				dbms_lob.substr(t.SUPPORT_CONTENT,10000) SUPPORT_CONTENT,
+				<!--dbms_lob.substr(t.SUPPORT_CONTENT,10000) SUPPORT_CONTENT,-->
+                '' SUPPORT_CONTENT,
 				
 				t.SUPPORT_LEADER,
 				
