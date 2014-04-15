@@ -941,29 +941,33 @@ public class WorksheetServiceImpl extends BaseService implements
                         .getProperty("automessage.archive_content");
                 mail.setSubject(properties
                         .getProperty("automessage.approval_subject"));
+                mail.setContent(mailContent);
 
             }
 
-            for (Participation candidate : candidateSet) {
-                if (candidate.getType().equals(Participation.CANDIDATE)) {
-                    User user = new User();
-                    user.setUserid(Integer.parseInt(candidate.getUserId()));
-                    user = userService.getUser(user);
-                    if (user == null) {
-                        log.error("用户ID为" + candidate.getUserId() + "的不存在,跳过此用户");
-                        continue;
+            if (StringUtil.isNotEmpty(mail.getContent()) && StringUtil.isNotEmpty(mail.getSubject())) {
+                for (Participation candidate : candidateSet) {
+                    if (candidate.getType().equals(Participation.CANDIDATE)) {
+                        User user = new User();
+                        user.setUserid(Integer.parseInt(candidate.getUserId()));
+                        user = userService.getUser(user);
+                        if (user == null) {
+                            log.error("用户ID为" + candidate.getUserId() + "的不存在,跳过此用户");
+                            continue;
+                        }
+                        mail.setEmail(getUserEmailMap()
+                                .get(user.getUsername()));
+                        SimpleDateFormat sdf = new SimpleDateFormat(
+                                "yyyy-MM-dd");
+                        mail.setContent(util.getMsg(mail.getContent(), new String[]{
+                                user.getUseraccount(), st.getStNo(), sdf.format(new Date())}));
+                        mailService.sendByDaemon(mail, mail.getSubject(),
+                                mail.getEmail(), null, mail.getContent(), false
+                        );
                     }
-                    mail.setEmail(getUserEmailMap()
-                            .get(user.getUsername()));
-                    SimpleDateFormat sdf = new SimpleDateFormat(
-                            "yyyy-MM-dd");
-                    mail.setContent(util.getMsg(mail.getContent(), new String[]{
-                            user.getUseraccount(), st.getStNo(), sdf.format(new Date())}));
-                    mailService.sendByDaemon(mail, mail.getSubject(),
-                            mail.getEmail(), null, mail.getContent(), false
-                    );
                 }
             }
+
         }
 
     }
