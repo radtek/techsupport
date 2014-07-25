@@ -170,7 +170,7 @@ public class WorksheetServiceImpl extends BaseService implements
      */
     public Page getWorksheetTaskForPage(int pageNo, int pagesize,
                                         String assignee, String activity, String candidateUser,
-                                        String slNo, String region, String stNO) {
+                                        String slNo, String region, String stNO,String sort, String dir) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (assignee != null && assignee.trim().length() > 0) {
@@ -197,7 +197,7 @@ public class WorksheetServiceImpl extends BaseService implements
         }
 
         Page pagein = worksheet_dao.getWorksheetTaskForPage(map, pageNo,
-                pagesize, null, null);
+                pagesize, sort, dir);
         List<Worksheet> worksheetList = pagein.getData();
 
         for (Worksheet sheet : worksheetList) {

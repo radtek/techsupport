@@ -19,268 +19,270 @@ import com.aisino2.techsupport.domain.Worksheet;
 import com.aisino2.techsupport.service.WorksheetService;
 
 /**
- * 
  * 支持单 代办工作单 视图
- * 
  */
 @SuppressWarnings("serial")
 @Component("WorksheetAction")
 @Scope("prototype")
 public class WorksheetAction extends PageAction {
-	private WorksheetService worksheetService;
+    private WorksheetService worksheetService;
 
-	private String slCode;
-	private String rgCode;
-	private String activity;
-	private String tabledata;
-	private String result;
-	private String taskId;
+    private String slCode;
+    private String rgCode;
+    private String activity;
+    private String tabledata;
+    private String result;
+    private String taskId;
 
-	private Worksheet worksheet;
+    private Worksheet worksheet;
 
-	private List lWorksheet = new ArrayList();
-	
-	private int totalrows = 0;
-	
-	/**
-	 * 调用返回结果
-	 */
-	private int returnNo = 0;
-	/**
-	 * 调用返回消息
-	 */
-	private String returnMsg = "";
-	/**
-	 *  部署ID
-	 */
-	private String deploy_id = "";
-	
-	public String getDeploy_id() {
-		return deploy_id;
-	}
+    private List lWorksheet = new ArrayList();
 
-	public void setDeploy_id(String deploy_id) {
-		this.deploy_id = deploy_id;
-	}
+    private int totalrows = 0;
 
-	public int getReturnNo() {
-		return returnNo;
-	}
+    /**
+     * 调用返回结果
+     */
+    private int returnNo = 0;
+    /**
+     * 调用返回消息
+     */
+    private String returnMsg = "";
+    /**
+     * 部署ID
+     */
+    private String deploy_id = "";
 
-	public void setReturnNo(int returnNo) {
-		this.returnNo = returnNo;
-	}
+    public String getDeploy_id() {
+        return deploy_id;
+    }
 
-	public String getReturnMsg() {
-		return returnMsg;
-	}
+    public void setDeploy_id(String deploy_id) {
+        this.deploy_id = deploy_id;
+    }
 
-	public void setReturnMsg(String returnMsg) {
-		this.returnMsg = returnMsg;
-	}
+    public int getReturnNo() {
+        return returnNo;
+    }
 
-	
-	/**
-	 * 通过XML文件部署一个流程
-	 * @return
-	 * @throws Exception
-	 */
-	public String deploy_by_xml() throws Exception{
-		try{
-			worksheetService.deployWorkflowByXml();
-		}
-		catch(RuntimeException e){
-			log.error(e);
-			log.debug(e,e.fillInStackTrace());
-			returnNo = 1;
-			returnMsg = e.getMessage();
-		}
-		
-		return SUCCESS;
-	}
-	/**
-	 * 删除一个已经部署的流程。
-	 * @return
-	 * @throws Exception
-	 */
-	public String remove_deployment() throws Exception{
-		try{
-			worksheetService.removeDeployment(deploy_id);
-		}catch(RuntimeException e){
-			log.error(e);
-			log.debug(e,e.fillInStackTrace());
-			returnNo=1;
-			returnMsg = e.getMessage();
-		}
-		
-		return SUCCESS;
-	}
-	/**
-	 * 待办工作单
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public String querylist() throws Exception {
-		HttpServletRequest request = this.getRequest();
-		HttpSession session = request.getSession();
+    public void setReturnNo(int returnNo) {
+        this.returnNo = returnNo;
+    }
 
-		Worksheet worksheet = new Worksheet();
-		worksheet = (Worksheet) this.setClass(worksheet, null);
+    public String getReturnMsg() {
+        return returnMsg;
+    }
 
-		if(worksheet.getActivityName()==null || worksheet.getActivityName().trim().length() == 0)
-			worksheet.setActivityName(null);
-		if(worksheet.getApplicantName()==null || worksheet.getApplicantName().trim().length() == 0)
-			worksheet.setApplicantName(null);
-		if(worksheet.getStStatusCode()==null || worksheet.getStStatusCode().trim().length() == 0)
-			worksheet.setStStatusCode(null);
-		if(worksheet.getRegionCode()==null || worksheet.getRegionCode().trim().length() == 0)
-			worksheet.setRegionCode(null);
-		
-		User curuser = (User) session.getAttribute(Constants.userKey);
-		
-		Page taskPage = worksheetService.getWorksheetTaskForPage(pagesize,
-				pagerow, null, worksheet.getActivityName(),
-				String.valueOf(curuser.getUserid()),
-				worksheet.getSupportLeaderId()==null?null:String.valueOf(worksheet.getSupportLeaderId()), worksheet.getRegionCode(),worksheet.getStNo());
+    public void setReturnMsg(String returnMsg) {
+        this.returnMsg = returnMsg;
+    }
 
-		totalpage = taskPage.getTotalPages();
-		totalrows = taskPage.getTotalRows();
-		lWorksheet = taskPage.getData();
-		setTabledata(lWorksheet);
-		this.result = "success";
-		return SUCCESS;
-	}
 
-	/**
-	 * 重新指派
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public String reAssigner() throws Exception {
-		return SUCCESS;
-	}
+    /**
+     * 通过XML文件部署一个流程
+     *
+     * @return
+     * @throws Exception
+     */
+    public String deploy_by_xml() throws Exception {
+        try {
+            worksheetService.deployWorkflowByXml();
+        } catch (RuntimeException e) {
+            log.error(e);
+            log.debug(e, e.fillInStackTrace());
+            returnNo = 1;
+            returnMsg = e.getMessage();
+        }
 
-	/**
-	 * 获取单一工作单
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public String worksheet() throws Exception {
-		worksheet = worksheetService.getWorksheetTask(taskId);
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setTabledata(List lData) throws Exception {
-		List lPro = new ArrayList();
-		lPro.add("taskId");
-		lPro.add("stNo");
-		lPro.add("regionName");
-		lPro.add("applicantName");
-		lPro.add("supportLeaderName");
-		lPro.add("supportDeptName");
-		lPro.add("stStatusName");
-		lPro.add("activityName");
+    /**
+     * 删除一个已经部署的流程。
+     *
+     * @return
+     * @throws Exception
+     */
+    public String remove_deployment() throws Exception {
+        try {
+            worksheetService.removeDeployment(deploy_id);
+        } catch (RuntimeException e) {
+            log.error(e);
+            log.debug(e, e.fillInStackTrace());
+            returnNo = 1;
+            returnMsg = e.getMessage();
+        }
 
-		List lCol = new ArrayList();
+        return SUCCESS;
+    }
 
-		if (PageUtil.checkFunction("ts_process")) {
-			List lModify = new ArrayList();
-			lModify.add("setProcess");
-			lModify.add("处理");
-			lCol.add(lModify);
-		}
-		if (PageUtil.checkFunction("ts_sms")) {
-			List lDel = new ArrayList();
-			lDel.add("sendSMS");
-			lDel.add("短信");
-			lCol.add(lDel);
-		}
+    /**
+     * 待办工作单
+     *
+     * @return
+     * @throws Exception
+     */
+    public String querylist() throws Exception {
+        HttpServletRequest request = this.getRequest();
+        HttpSession session = request.getSession();
 
-		Worksheet worksheet = new Worksheet();
-		this.setData(worksheet, lData, lPro, lCol);
-		this.tabledata = this.getData();
-		totalrows = this.getTotalrows();
-	}
+        Worksheet worksheet = new Worksheet();
+        worksheet = (Worksheet) this.setClass(worksheet, null);
 
-	@Resource(name="WorksheetServiceImpl")
-	public void setWorksheetService(WorksheetService worksheetService) {
-		this.worksheetService = worksheetService;
-	}
+        if (worksheet.getActivityName() == null || worksheet.getActivityName().trim().length() == 0)
+            worksheet.setActivityName(null);
+        if (worksheet.getApplicantName() == null || worksheet.getApplicantName().trim().length() == 0)
+            worksheet.setApplicantName(null);
+        if (worksheet.getStStatusCode() == null || worksheet.getStStatusCode().trim().length() == 0)
+            worksheet.setStStatusCode(null);
+        if (worksheet.getRegionCode() == null || worksheet.getRegionCode().trim().length() == 0)
+            worksheet.setRegionCode(null);
 
-	public String getSlCode() {
-		return slCode;
-	}
+        User curuser = (User) session.getAttribute(Constants.userKey);
 
-	public void setSlCode(String slCode) {
-		this.slCode = slCode;
-	}
+        Page taskPage = worksheetService.getWorksheetTaskForPage(pagesize,
+                pagerow, null, worksheet.getActivityName(),
+                String.valueOf(curuser.getUserid()),
+                worksheet.getSupportLeaderId() == null ? null : String.valueOf(worksheet.getSupportLeaderId()), worksheet.getRegionCode(), worksheet.getStNo(),
+                sort, dir);
 
-	public String getRgCode() {
-		return rgCode;
-	}
+        totalpage = taskPage.getTotalPages();
+        totalrows = taskPage.getTotalRows();
+        lWorksheet = taskPage.getData();
+        setTabledata(lWorksheet);
+        this.result = "success";
+        return SUCCESS;
+    }
 
-	public void setRgCode(String rgCode) {
-		this.rgCode = rgCode;
-	}
+    /**
+     * 重新指派
+     *
+     * @return
+     * @throws Exception
+     */
+    public String reAssigner() throws Exception {
+        return SUCCESS;
+    }
 
-	public String getActivity() {
-		return activity;
-	}
+    /**
+     * 获取单一工作单
+     *
+     * @return
+     * @throws Exception
+     */
+    public String worksheet() throws Exception {
+        worksheet = worksheetService.getWorksheetTask(taskId);
+        return SUCCESS;
+    }
 
-	public void setActivity(String activity) {
-		this.activity = activity;
-	}
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void setTabledata(List lData) throws Exception {
+        List lPro = new ArrayList();
+        lPro.add("taskId");
+        lPro.add("stNo");
+        lPro.add("regionName");
+        lPro.add("applicantName");
+        lPro.add("supportLeaderName");
+        lPro.add("supportDeptName");
+        lPro.add("stStatusName");
+        lPro.add("activityName");
 
-	public String getTabledata() {
-		return tabledata;
-	}
+        List lCol = new ArrayList();
 
-	public void setTabledata(String tabledata) {
-		this.tabledata = tabledata;
-	}
+        if (PageUtil.checkFunction("ts_process")) {
+            List lModify = new ArrayList();
+            lModify.add("setProcess");
+            lModify.add("处理");
+            lCol.add(lModify);
+        }
+        if (PageUtil.checkFunction("ts_sms")) {
+            List lDel = new ArrayList();
+            lDel.add("sendSMS");
+            lDel.add("短信");
+            lCol.add(lDel);
+        }
 
-	public String getResult() {
-		return result;
-	}
+        Worksheet worksheet = new Worksheet();
+        this.setData(worksheet, lData, lPro, lCol);
+        this.tabledata = this.getData();
+        totalrows = this.getTotalrows();
+    }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+    @Resource(name = "WorksheetServiceImpl")
+    public void setWorksheetService(WorksheetService worksheetService) {
+        this.worksheetService = worksheetService;
+    }
 
-	public String getTaskId() {
-		return taskId;
-	}
+    public String getSlCode() {
+        return slCode;
+    }
 
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
-	}
+    public void setSlCode(String slCode) {
+        this.slCode = slCode;
+    }
 
-	public Worksheet getWorksheet() {
-		return worksheet;
-	}
+    public String getRgCode() {
+        return rgCode;
+    }
 
-	public void setWorksheet(Worksheet worksheet) {
-		this.worksheet = worksheet;
-	}
+    public void setRgCode(String rgCode) {
+        this.rgCode = rgCode;
+    }
 
-	public List getlWorksheet() {
-		return lWorksheet;
-	}
+    public String getActivity() {
+        return activity;
+    }
 
-	public void setlWorksheet(List lWorksheet) {
-		this.lWorksheet = lWorksheet;
-	}
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
 
-	public int getTotalrows() {
-		return totalrows;
-	}
+    public String getTabledata() {
+        return tabledata;
+    }
 
-	public void setTotalrows(int totalrows) {
-		this.totalrows = totalrows;
-	}
+    public void setTabledata(String tabledata) {
+        this.tabledata = tabledata;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Worksheet getWorksheet() {
+        return worksheet;
+    }
+
+    public void setWorksheet(Worksheet worksheet) {
+        this.worksheet = worksheet;
+    }
+
+    public List getlWorksheet() {
+        return lWorksheet;
+    }
+
+    public void setlWorksheet(List lWorksheet) {
+        this.lWorksheet = lWorksheet;
+    }
+
+    public int getTotalrows() {
+        return totalrows;
+    }
+
+    public void setTotalrows(int totalrows) {
+        this.totalrows = totalrows;
+    }
 
 }
