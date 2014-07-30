@@ -4,12 +4,12 @@
 	<typeAlias alias="Worksheet" type="com.aisino2.techsupport.domain.Worksheet"/>
 	
 	<resultMap class="Worksheet" id="worksheetMap">
-		<result property="task.name" column="name_"/>
-		<result property="task.description" column="descr_"/>
-		<result property="task.dbid" column="dbid_"/>
-		<result property="task.state" column="state_"/>
-		<result property="task.activityName" column="activity_Name_"/>
-		<result property="task.assignee" column="assignee_"/>
+		<result property="task.name" column="NAME_"/>
+		<!--<result property="task.description" column="descr_"/>-->
+		<result property="task.dbid" column="DBID_"/>
+		<result property="task.state" column="STATE_"/>
+		<result property="task.activityName" column="ACTIVITY_NAME_"/>
+		<result property="task.assignee" column="ASSIGNEE_"/>
 		
 		<result property="st.stNo" column="ST_NO" />
 		
@@ -18,13 +18,16 @@
         <result property="st.applicant.userid" column="APPLICANT"/>
         <result property="st.applicant.username" column="applicant_name"/>
 
-		<result property="st.supportContent" column="SUPPORT_CONTENT" />
+		<!--<result property="st.supportContent" column="SUPPORT_CONTENT" />-->
 		<!-- 技术支持人信息 -->
-		<result property="st.lstSupportLeaders" column="ID" select="SupportLeaderRelation.querySupportLeaderByStId"/>
-        <!--<result property="st.lstSupportLeaders" column="ID"/>-->
+		<!--<result property="st.lstSupportLeaders" column="ID" select="SupportLeaderRelation.querySupportLeaderByStId"/>-->
+        <result property="st.supportLeader.userid" column="SUPPORT_LEADER_ID"/>
+        <result property="st.supportLeader.username" column="SUPPORT_LEADER_NAME"/>
 		<!-- 单位 -->
-		<result property="st.supportDeptList" column="ID" select="SupportDept.queryDepartmentByStId" />
-		
+		<!--<result property="st.supportDeptList" column="ID" select="SupportDept.queryDepartmentByStId" />-->
+		<result property="st.supportDeprtment.departid" column="DEPARTID"/>
+        <result property="st.supportDeprtment.departcode" column="DEPARTCODE"/>
+        <result property="st.supportDeprtment.departname" column="DEPARTNAME"/>
 		<!--<result property="st.devScheDate" column="DEV_SCHE_DATE" />-->
 		<!--<result property="st.psgScheDate" column="PSG_SCHE_DATE" />-->
 		<result property="st.stStatus" column="ST_STATUS" />
@@ -84,66 +87,90 @@
 		<isNotEmpty prepend="and" property="stNo">
 			s.st_no = #stNo#
 		</isNotEmpty>
-		<isNotEmpty prepend="and" property="useSlMap">
-			sl.st_id = s.id
-			<isNotEmpty prepend="and" property="supportLeader">
-				sl.sl_id = #supportLeader#
-			</isNotEmpty>
-		</isNotEmpty>
+
+        <isNotEmpty prepend="and" property="supportLeader">
+            sl.sl_id = #supportLeader#
+        </isNotEmpty>
 	</sql>
 	
-	<sql id="worksheet.getlistForPageFrom">
-		<isNotEmpty prepend="," property="useSlMap">
-			T_TS_STSL_MAP sl
-		</isNotEmpty>
-	</sql>
-	
+
 	<select id="worksheet.getlistForPage" parameterClass="map"
 		resultMap="worksheetMap">
-		select x.* from (
-		select rownum rowno,z.* from 
-		(
-		
-			select
-			     t.*,s.id,s.APPLICANT,s.ST_STATUS,s.REGION,s.SERIAL_NUMBER,s.SUPPORT_CONTENT,s.ST_NO,
-                  u.username APPLICANT_NAME
-			from
-			    JBPM4_TASK t,
-			    t_ts_tech_support s,
-			    JBPM4_VARIABLE v,
-                t_user u
-			    <include refid="worksheet.getlistForPageFrom"/>
-			<dynamic prepend="">
-				where
-				t.procinst_ = v.EXECUTION_
-                and u.userid=s.applicant
-			    and  exists ( select p.task_  from JBPM4_PARTICIPATION P where p.task_ = t.dbid_ <include refid="worksheet.getlistForPage_ParticipationWhere" />)
-			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
-				<include refid="worksheet.getListForPageWhere"/>
-				<!-- 过滤掉重新指派部门的环节并且为进行中的记录 -->
-				and not (t.ACTIVITY_NAME_ = 'reassign_depart' and s.st_status = 'going')
-			</dynamic>
-			order by $pageSort$)  z 
-		) x where rowno &gt;$beginRow$ and rowno &lt;= $endRow$ 
-		
+        SELECT
+        sl.SL_ID     SUPPORT_LEADER_ID,
+        slu.username SUPPORT_LEADER_NAME,
+        d.departid,
+        d.departcode,
+        d.departname,
+        s.id,
+        s.APPLICANT,
+        s.ST_STATUS,
+        s.REGION,
+        s.SERIAL_NUMBER,
+        s.ST_NO,
+        ac.username  APPLICANT_NAME,
+        t.DBID_,
+        t.NAME_,
+        t.STATE_,
+        t.ASSIGNEE_,
+        t.ACTIVITY_NAME_
+        FROM JBPM4_TASK t
+        join (SELECT
+        x.*
+        FROM (SELECT
+        rownum rowno,
+        z.*
+        FROM (SELECT
+        dbid_,
+        st_id
+        FROM (SELECT distinct
+        sl.SL_ID,
+        sd.DEPT_ID,
+        s.APPLICANT,
+        s.ST_STATUS,
+        s.REGION,
+        s.SERIAL_NUMBER,
+        s.ST_NO,
+        t.DBID_,
+        t.NAME_,
+        s.id st_id
+        FROM JBPM4_TASK t
+        join JBPM4_VARIABLE v on v.execution_ = t.procinst_
+        join t_ts_tech_support s on v.long_value_ = s.id
+        join JBPM4_PARTICIPATION p on p.task_ = t.dbid_
+        left join t_ts_stdept_mapping sd on sd.ST_ID=s.id
+        left join t_ts_stsl_map sl on sl.ST_ID = sd.ST_ID
+        WHERE 1=1
+        <include refid="worksheet.getlistForPage_ParticipationWhere" />
+        AND v.key_ = 'worksheetno'
+        AND NOT (t.ACTIVITY_NAME_ = 'reassign_depart' AND s.st_status = 'going')
+        <include refid="worksheet.getListForPageWhere"/>
+        ORDER BY $pageSort$)
+        GROUP BY dbid_, st_id) z) x
+        WHERE rowno > $beginRow$ AND rowno &lt;= $endRow$) task
+        on task.dbid_ = t.dbid_
+        join t_ts_tech_support s on s.id = task.st_id
+        left join t_ts_stdept_mapping sd on s.id = sd.ST_ID
+        left join t_ts_stsl_map sl on sl.st_id = sd.st_id and sl.SL_DEPARTID = sd.dept_id
+        left join t_department d on d.departid = sd.dept_id
+        left join t_user slu on slu.userid = sl.SL_ID
+        left join t_user ac on ac.userid = s.applicant
+        ORDER BY $pageSort$
 	</select>
 	<select id="worksheet.getlistForPageCount" parameterClass="map" resultClass="int">
-		select
-			     count(t.dbid_)
-			from
-			    JBPM4_TASK t,
-			    t_ts_tech_support s,
-			    JBPM4_VARIABLE v
-			    <include refid="worksheet.getlistForPageFrom"/>
-			<dynamic prepend="">
-				where
-				t.procinst_ = v.EXECUTION_ 
-			    and  exists ( select p.task_  from JBPM4_PARTICIPATION P where p.task_ = t.dbid_ <include refid="worksheet.getlistForPage_ParticipationWhere" />)
-			    and  v.key_ = 'worksheetno' and v.long_value_ = s.id 
-				<include refid="worksheet.getListForPageWhere"/>
-				<!-- 过滤掉重新指派部门的环节并且为进行中的记录 -->
-				and not (t.ACTIVITY_NAME_ = 'reassign_depart' and s.st_status = 'going')
-			</dynamic>
+        SELECT count(distinct t.dbid_)
+        FROM JBPM4_TASK t
+        join JBPM4_VARIABLE v on v.execution_ = t.procinst_
+        join t_ts_tech_support s on v.long_value_ = s.id
+        join JBPM4_PARTICIPATION p on p.task_ = t.dbid_
+        left join t_ts_stdept_mapping sd on sd.ST_ID=s.id
+        left join t_ts_stsl_map sl on sl.ST_ID = sd.ST_ID
+        WHERE 1=1
+        <include refid="worksheet.getlistForPage_ParticipationWhere" />
+        AND v.key_ = 'worksheetno'
+        AND NOT (t.ACTIVITY_NAME_ = 'reassign_depart' AND s.st_status = 'going')
+        <include refid="worksheet.getListForPageWhere"/>
+
 	</select>
 
 	<select id="get_region_with_userrole" parameterClass="map" resultClass="dict_item">

@@ -12,10 +12,11 @@ public class SupportTicket {
 	private String stNo;
 	private User applicant;
 	private String supportContent;
-	// private User supportLeader;
+	private User supportLeader;
 	// @fixed 一个支持单指派多个负责人
 	private List<User> lstSupportLeaders = new ArrayList<User>();
-	private List<Department> supportDeptList = new ArrayList<Department>();;
+	private List<Department> supportDeptList = new ArrayList<Department>();
+
 	private Date devScheDate;
 	private Date psgScheDate;
 	private String stStatus;
@@ -71,7 +72,7 @@ public class SupportTicket {
 	private Integer applicantId;
 	private String supportLeaderName;
 	private Integer supportLeaderId;
-
+    private Department supportDeprtment;
 	// 附件信息
 	private List<Attachment> attachment_list = new ArrayList<Attachment>();
 
@@ -128,6 +129,22 @@ public class SupportTicket {
      * 导出标志
      */
     private boolean importable = false;
+
+    public User getSupportLeader() {
+        return supportLeader;
+    }
+
+    public void setSupportLeader(User supportLeader) {
+        this.supportLeader = supportLeader;
+    }
+
+    public Department getSupportDeprtment() {
+        return supportDeprtment;
+    }
+
+    public void setSupportDeprtment(Department supportDeprtment) {
+        this.supportDeprtment = supportDeprtment;
+    }
 
     public boolean isImportable() {
         return importable;
