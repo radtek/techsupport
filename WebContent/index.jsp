@@ -74,7 +74,10 @@
 		<script src="javascript/DateTimeMask.js" language="javascript" type="text/javascript" charset="utf-8"></script>
 		<script language="javascript" type="text/javascript" src="javascript/jquery.lightbox-0.5.js"></script>
 		<script language="javascript" type="text/javascript" src="javascript/jquery.mypagination.js"></script>
-		
+        <%-- 加入图表插件 --%>
+        <script language="JavaScript" src="javascript/FusionCharts.js"></script>
+        <script language="JavaScript" src="javascript/ChartsCreate.js"></script>
+
 		<link rel="stylesheet" href="css/stylemenu.css" type="text/css" />
 		<link rel="stylesheet" href="css/jdMenu.css" type="text/css" />
 		<link rel="stylesheet" href="css/jdMenu.jdsharp.css" type="text/css" />
