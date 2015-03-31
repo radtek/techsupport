@@ -354,7 +354,7 @@ function submitVerity() {
 					"计划完成时间"))
 				return false;
 			// 计划完成时间必须大于当前部门审批的时间
-			if (Date.parse($('#psgScheDate').val()) < Date.parse($('#deptApprovalDate').val(),'yyyy-MM-dd hh:mm:ss')){
+			if (Date.parse(setNull($('#psgScheDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#deptApprovalDate').val()).replace(/-/g,"/"))){
 				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
@@ -364,7 +364,7 @@ function submitVerity() {
 					return false;
 				
 				
-				if(Date.parse($('#psgDsScheDate').val()) - Date.parse($('#psgScheDate').val()) != 0){
+				if(Date.parse(setNull($('#psgDsScheDate').val()).replace(/-/g,"/")) - Date.parse(setNull($('#psgScheDate').val()).replace(/-/g,"/")) != 0){
 					jAlert('计划需求时间必须等于计划完成时间','提示');
 					return false;
 				}
@@ -375,7 +375,7 @@ function submitVerity() {
 				return false;
 				
 			// 计划完成时间必须大于当前部门审批的时间
-			if (Date.parse($('#devScheDate').val()) < Date.parse($('#deptApprovalDate').val(),'yyyy-MM-dd hh:mm:ss')){
+			if (Date.parse(setNull($('#devScheDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#deptApprovalDate').val()).replace(/-/g,"/"))){
 				jAlert('计划完成时间必须大于等于审批日期','提示');
 				return false;
 			}
@@ -393,10 +393,10 @@ function submitVerity() {
 				if (!checkControlValue("psgIsScheDate", "Date", 1, 100, null,
 						1, "计划实施时间"))
 					return false;
-				if(!(Date.parse($('#devDsScheDate').val()) < Date.parse($('#devDdScheDate').val()) &&
-					Date.parse($('#devDdScheDate').val()) < Date.parse($('#devDtScheDate').val()) &&
-					Date.parse($('#devDtScheDate').val()) < Date.parse($('#psgIsScheDate').val()) && 
-					Date.parse($('#devScheDate').val()) - Date.parse($('#psgIsScheDate').val()) == 0
+				if(!(   Date.parse(setNull($('#devDsScheDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#devDdScheDate').val()).replace(/-/g,"/")) &&
+                        Date.parse(setNull($('#devDdScheDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#devDtScheDate').val()).replace(/-/g,"/")) &&
+                        Date.parse(setNull($('#devDtScheDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#psgIsScheDate').val()).replace(/-/g,"/")) &&
+                        Date.parse(setNull($('#devScheDate').val()).replace(/-/g,"/") )- Date.parse(setNull($('#psgIsScheDate').val()).replace(/-/g,"/")) == 0
 					)){
 					jAlert('计划设计时间必须小于计划开发时间必须小于计划测试时间，测试时间必须小于实施时间，实施时间必须等于计划完成时间','提示');
 					return false;

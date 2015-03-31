@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ page import="com.aisino2.sysadmin.domain.User"%>
-<%@ page import="com.aisino2.sysadmin.Constants;"%>
+<%@ page import="com.aisino2.sysadmin.Constants"%>
 <%
 	//登录用户ID，用于获得菜单
 	String useraccount = "";

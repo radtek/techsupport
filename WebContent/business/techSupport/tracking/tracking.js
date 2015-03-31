@@ -160,10 +160,10 @@ function toFeedbackVerify(){
 				return false;
 			if (!checkControlValue("p_psgIsCompDate","Date",null,null,null,1,"实际实施完成时间"))
 				return false;
-			if(!(Date.parse($('#p_devDsCompDate').val()) < Date.parse($('#p_devDdCompDate').val()) &&
-					Date.parse($('#p_devDdCompDate').val()) < Date.parse($('#p_devDtCompDate').val()) &&
-					Date.parse($('#p_devDtCompDate').val()) < Date.parse($('#p_psgIsCompDate').val()) &&
-					Date.parse($('#p_devCompDate').val()) - Date.parse($('#p_psgIsCompDate').val()) == 0
+			if(!(Date.parse(setNull($('#p_devDsCompDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#p_devDdCompDate').val()).replace(/-/g,"/")) &&
+					Date.parse(setNull($('#p_devDdCompDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#p_devDtCompDate').val()).replace(/-/g,"/")) &&
+					Date.parse(setNull($('#p_devDtCompDate').val()).replace(/-/g,"/")) < Date.parse(setNull($('#p_psgIsCompDate').val()).replace(/-/g,"/")) &&
+					Date.parse(setNull($('#p_devCompDate').val()).replace(/-/g,"/") )-   Date.parse(setNull($('#p_psgIsCompDate').val()).replace(/-/g,"/")) == 0
 					)){
 					jAlert('实际设计完成时间必须小于实际开发完成时间必须小于实际测试完成时间必须小于实际实施完成时间，实际实施完成时间必须等于实际完成时间，','提示');
 					return false;
@@ -351,8 +351,8 @@ function loadData(){
 			for(var i=0;i<data.lTracking.length;i++){
 				var track = data.lTracking[i];
 				if (track.type == TRACKING_TYPE_PGMREPLY || track.type == TRACKING_TYPE_HDEVREPLY) {
-					sLatestDepartmentApprovalDate = sLatestDepartmentApprovalDate && sLatestDepartmentApprovalDate >= Date.parse(track.trackingDate,'yyyy-MM-dd hh:mm:ss') ?
-						sLatestDepartmentApprovalDate:Date.parse(setNull(track.trackingDate),'yyyy-MM-dd hh:mm:ss');
+					sLatestDepartmentApprovalDate = sLatestDepartmentApprovalDate && sLatestDepartmentApprovalDate >= Date.parse(track.trackingDate.replace(/-/g,"/")) ?
+						sLatestDepartmentApprovalDate:Date.parse(setNull(track.trackingDate.replace(/-/g,"/")));
 //					if(track.trackingDate > sLatestDepartmentApprovalDate)
 //						sLatestDepartmentApprovalDate = setNull(track.trackingDate);
 				}

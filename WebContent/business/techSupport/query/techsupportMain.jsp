@@ -332,8 +332,8 @@ function lazyLoad(){
 		
 		if($('#p_applyDateFrom').val() && $('#p_applyDateTo').val())
 		{
-			var fromDateStr = $('#p_applyDateFrom').val().replace("-","/"); 
-			var toDateStr = $('#p_applyDateTo').val().replace("-","/");
+			var fromDateStr = $('#p_applyDateFrom').val().replace(/-/g,"/");
+			var toDateStr = $('#p_applyDateTo').val().replace(/-/g,"/");
 			var fromDate = new Date(Date.parse(fromDateStr))
 			var toDate = new Date(Date.parse(toDateStr));
 			if(fromDate > toDate)
@@ -346,8 +346,8 @@ function lazyLoad(){
 		//计划完成时间 
 		if($('#p_scheTimeFrom').val() && $('#p_scheTimeTo').val())
 		{
-			var fromDateStr = $('#p_scheTimeFrom').val().replace("-","/"); 
-			var toDateStr = $('#p_scheTimeTo').val().replace("-","/");
+			var fromDateStr = $('#p_scheTimeFrom').val().replace(/-/g,"/");
+			var toDateStr = $('#p_scheTimeTo').val().replace(/-/g,"/");
 			var fromDate = new Date(Date.parse(fromDateStr))
 			var toDate = new Date(Date.parse(toDateStr));
 			if(fromDate > toDate)
@@ -359,8 +359,8 @@ function lazyLoad(){
 		//实际完成时间
 		if($('#p_compTimeFrom').val() && $('#p_compTimeTo').val())
 		{
-			var fromDateStr = $('#p_compTimeFrom').val().replace("-","/"); 
-			var toDateStr = $('#p_compTimeTo').val().replace("-","/");
+			var fromDateStr = $('#p_compTimeFrom').val().replace(/-/g,"/");
+			var toDateStr = $('#p_compTimeTo').val().replace(/-/g,"/");
 			var fromDate = new Date(Date.parse(fromDateStr))
 			var toDate = new Date(Date.parse(toDateStr));
 			if(fromDate > toDate)
