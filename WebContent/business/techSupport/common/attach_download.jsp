@@ -21,7 +21,7 @@
     if(request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0)
         filename = URLEncoder.encode(default_filename,"utf8");
     else
-        filename = new String(default_filename.getBytes(),"ISO8895-1");
+        filename = new String(default_filename.getBytes(),"ISO-8859-1");
 	response.reset();
 	response.addHeader("Content-Disposition", "attachment;filename="
 			+ filename + "");
