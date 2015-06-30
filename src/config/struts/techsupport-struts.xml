@@ -92,5 +92,9 @@
   	<action name="*_statistics" class="statisticsAction" method="{1}">
   		<result type="json"></result>
   	</action>
+<!--   	首页提醒 -->
+  	<action name="*_sytx" class="SytxAction" method="{1}">
+  		<result type="json"></result>
+  	</action>  	
   </package>
 </struts>

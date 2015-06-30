@@ -32,4 +32,6 @@
 	<sqlMap resource="config/ibatis/oracle/techsupport/TimeChange.xml"/>
 <!-- 	统计 -->
 	<sqlMap resource="config/ibatis/oracle/techsupport/Statistics.xml"/>
+<!-- 	首页提醒 -->
+	<sqlMap resource="config/ibatis/oracle/techsupport/Sytx.xml"/>	
 </sqlMapConfig>
